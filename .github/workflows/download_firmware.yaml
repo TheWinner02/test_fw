@@ -23,8 +23,8 @@ jobs:
         # Estrai il firmware se è in formato zip
         unzip firmware.zip -d firmware_extracted/
 
-    - name: Carica Firmware Estratto (opzionale)
-      uses: actions/upload-artifact@v3
+    - name: Carica Firmware Estratto
+      uses: actions/upload-artifact@v3  # Usa la versione v3
       with:
         name: firmware-extracted
         path: firmware_extracted/
