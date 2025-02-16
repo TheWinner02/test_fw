@@ -22,7 +22,7 @@ jobs:
       run: |
         # Estrai il firmware se è in formato zip
         unzip firmware.zip -d firmware_extracted/
-      
+
     - name: Verifica Contenuti Estratti
       run: |
         # Controlliamo il contenuto della cartella estratta
@@ -38,10 +38,13 @@ jobs:
         -d '{"tag_name": "v1.0.0", "name": "Firmware v1.0.0", "body": "Release del firmware estratto.", "draft": false, "prerelease": false}' \
         https://api.github.com/repos/${{ github.repository }}/releases
 
+    - name: Verifica il file da caricare
+      run: |
+        # Verifica che il file firmware.zip esista nella cartella estratta
+        ls -al firmware_extracted/firmware.zip
+
     - name: Carica Firmware Estratto come Asset
       run: |
-        # Verifica il file da caricare
-        ls -al firmware_extracted/firmware.zip
         # Carica il firmware estratto come asset nella release appena creata
         GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
         curl -X POST \
