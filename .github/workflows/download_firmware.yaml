@@ -24,7 +24,7 @@ jobs:
         unzip firmware.zip -d firmware_extracted/
 
     - name: Carica Firmware Estratto
-      uses: actions/upload-artifact@v3  # Usa la versione v3
+      uses: actions/upload-artifact@v4
       with:
         name: firmware-extracted
         path: firmware_extracted/
