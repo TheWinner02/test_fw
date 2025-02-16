@@ -23,8 +23,22 @@ jobs:
         # Estrai il firmware se è in formato zip
         unzip firmware.zip -d firmware_extracted/
 
-    - name: Carica Firmware Estratto
-      uses: actions/upload-artifact@v4
-      with:
-        name: firmware-extracted
-        path: firmware_extracted/
+    - name: Crea Release GitHub
+      id: create_release
+      run: |
+        # Crea una nuova release su GitHub
+        GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+        curl -X POST \
+        -H "Authorization: token $GITHUB_TOKEN" \
+        -d '{"tag_name": "v1.0.0", "name": "Firmware v1.0.0", "body": "Release del firmware estratto.", "draft": false, "prerelease": false}' \
+        https://api.github.com/repos/${{ github.repository }}/releases
+
+    - name: Carica Firmware Estratto come Asset
+      run: |
+        # Carica il firmware estratto come asset nella release appena creata
+        GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+        curl -X POST \
+        -H "Authorization: token $GITHUB_TOKEN" \
+        -H "Content-Type: application/zip" \
+        --data-binary @firmware_extracted/firmware.zip \
+        https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }}/assets?name=firmware.zip
