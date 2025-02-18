@@ -1,10 +1,5 @@
 name: Download e Estrai Firmware Samsung
 
-on:
-  schedule:
-    - cron: '0 0 * * *'  # Esegui ogni giorno a mezzanotte
-  workflow_dispatch:  # Permette di eseguire manualmente il workflow
-
 jobs:
   download_firmware:
     runs-on: ubuntu-latest
