@@ -25,16 +25,18 @@ jobs:
 
     - name: Estrai md5
       run: |
-        # Estrai il firmware se è in formato zip
+        # Estrai il firmware se è in formato md5
         mkdir lz4
         tar -xvf firmware/*.tar.md5 -C lz4
         rm -rf firmware
 
-    - name: Verifica Contenuti Estratti
+    - name: Estrai lz4
       run: |
-        # Controlliamo il contenuto della cartella estratta
-        ls -al firmware_extracted/
-
+        # Estrai il firmware se è in formato lz4
+        mkdir img
+        find lz4 -type f -name "*.img.lz4" -exec lz4 -d {} \;
+        rm -rf lz4
+        
     - name: Crea Release GitHub
       id: create_release
       run: |
