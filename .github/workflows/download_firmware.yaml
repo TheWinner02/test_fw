@@ -30,18 +30,10 @@ jobs:
         tar -xvf firmware/*.tar.md5 -C lz4
         rm -rf firmware
 
-    - name: Estrai lz4
-      run: |
-        # Estrai il firmware se è in formato lz4
-        mkdir img
-        find lz4 -type f -name "*.img.lz4" -exec lz4 -d {} \;
-        mv -v lz4/*.img img/
-        rm -rf lz4
-
     - name: Comprimi Firmware
       run: |
         # Comprimi il firmware
-        cd img
+        cd lz4
         zip -r -9 -FS -m firmware.zip .
         cd ../
         
@@ -62,5 +54,5 @@ jobs:
         curl -X POST \
         -H "Authorization: token $GITHUB_TOKEN" \
         -H "Content-Type: application/zip" \
-        --data-binary @img/firmware.zip \
+        --data-binary @lz4/firmware.zip \
         https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }}/assets?name=firmware.zip
