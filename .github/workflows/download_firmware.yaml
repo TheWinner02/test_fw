@@ -44,7 +44,6 @@ jobs:
         cd img
         zip -r -9 -FS -m firmware.zip .
         cd ../
-        rm -rf img
         
     - name: Crea Release GitHub
       id: create_release
