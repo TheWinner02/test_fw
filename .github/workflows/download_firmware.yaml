@@ -1,8 +1,6 @@
 name: Download e Estrai Firmware Samsung
 
-on:
-  schedule:
-    - cron: '0 0 * * *'  # Esegui ogni giorno a mezzanotte
+on:  
   workflow_dispatch:  # Permette di eseguire manualmente il workflow
 
 jobs:
