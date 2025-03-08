@@ -40,19 +40,20 @@ jobs:
     - name: Crea Release GitHub
       id: create_release
       run: |
-        # Crea una nuova release su GitHub usando il GITHUB_TOKEN predefinito
-        curl -X POST \
-        -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-        -d '{"tag_name": "fw", "name": "Firmware", "body": "Release del firmware estratto.", "draft": false, "prerelease": false}' \
-        https://api.github.com/repos/${{ github.repository }}/releases
+           # Crea una nuova release su GitHub usando il GITHUB_TOKEN predefinito
+            response=$(curl -X POST \
+           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+           -d '{"tag_name": "fw", "name": "Firmware", "body": "Release del firmware estratto.", "draft": false, "prerelease": false}' \
+            https://api.github.com/repos/${{ github.repository }}/releases)
+            release_id=$(echo $response | jq -r '.id')
+            echo "release_id=$release_id" >> $GITHUB_ENV
       
 
     - name: Carica Firmware Estratto come Asset
       run: |
-        # Carica il firmware estratto come asset nella release appena creata
-        GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
-        curl -X POST \
-        -H "Authorization: token $GITHUB_TOKEN" \
-        -H "Content-Type: application/zip" \
-        --data-binary @lz4/firmware.zip \
-        https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }}/assets?name=firmware.zip
+            # Carica il firmware estratto come asset nella release appena creata
+            curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/zip" \
+            --data-binary @lz4/firmware.zip \
+            https://uploads.github.com/repos/${{ github.repository }}/releases/${{ env.release_id }}/assets?name=firmware.zip
