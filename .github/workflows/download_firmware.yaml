@@ -35,6 +35,7 @@ jobs:
         # Estrai il firmware se è in formato lz4
         mkdir img
         find lz4 -type f -name "*.img.lz4" -exec lz4 -d {} \;
+        mv -v lz4/*.img img/
         rm -rf lz4
 
     - name: Comprimi Firmware
