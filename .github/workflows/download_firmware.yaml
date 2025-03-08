@@ -45,12 +45,7 @@ jobs:
         -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
         -d '{"tag_name": "v1.0.0", "name": "Firmware v1.0.0", "body": "Release del firmware estratto.", "draft": false, "prerelease": false}' \
         https://api.github.com/repos/${{ github.repository }}/releases
-
-
-    - name: Verifica il file da caricare
-      run: |
-        # Verifica che il file firmware.zip esista nella cartella estratta
-        ls -al firmware_extracted/firmware.zip
+      
 
     - name: Carica Firmware Estratto come Asset
       run: |
@@ -59,5 +54,5 @@ jobs:
         curl -X POST \
         -H "Authorization: token $GITHUB_TOKEN" \
         -H "Content-Type: application/zip" \
-        --data-binary @firmware_extracted/firmware.zip \
+        --data-binary @img/firmware.zip \
         https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }}/assets?name=firmware.zip
