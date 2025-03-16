@@ -32,11 +32,11 @@ jobs:
         # Estrai il firmware se è in formato lz4
         lz4 -d -q --rm super.img.lz4 super.img.sparse
 
-    - name: Installa simg2imng
+    - name: Installa simg2img
       run: |
         # Installa simg2img
         sudo apt-get update
-        sudo apt-get install simg2img
+        sudo apt-get install android-sdk-libsparse-utils
 
     - name: Converti Sparse in Raw
       run: |
