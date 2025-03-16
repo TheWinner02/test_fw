@@ -14,26 +14,39 @@ jobs:
     - name: Scarica Firmware
       run: |
         # Usando curl per scaricare il firmware da una URL
-        curl -L https://dl.samfwpremium.cloud/b48bfb6261d77b286a74fae476fcc1f9lGFEgH6JGWaDjHLF8OKuPTiia7y_Qbz63VLQPQazdMk00qJDRh4aa-DwOgY3dc5UnpqGTTMnfO73XywWdJcrOhYSA8PSb3ETUGFWLHQ-IaJCCP9MGZsaQRhqjdeVJ0pKrEF0UE6_lugV5rS4rEBXbJeLdP1M0I_cxaj6mYbSD2Nf1PBBAah3YUIQTMIIDL7avXQXKg6k86QAE1SEiYS0A24fbCwYFSABmrprVfo4jmnQkd2lrHawRKN-czJKokO0sPjvX_D00rUqbM3tEzSBBn8SqjLuCGAIU5jxuHnOZyYfQb9tCDVZslifJrLwGWSf4AIFYq9qVpd5U9eavo4CF785ET5locTLmbqVdhZNxJyLbME313NwVRcSNmY1LPT2peXPfmlS6KWY25m6kXyd8ESkrlfuKoEYk0zsobAZTLrCEiu0njrdKlirzVGs0ud_5LJ-ESku4APjz1gW57O-3GC9MhsqSxwc4nVZmRVF6CyqeovCnfpf_942bKQu3zUPymLKeaHU3rLMbXLh_Lw4NYQopnvFwv4bzzZFSzZbMjjfyjj5eVYZf3baxLHflAfmObpcsTAKmFuhyr0ZaMPz0T1Lx8u2A1-Vu7H13hmpH3fbsr8cqXPCFG6J781L8o1QgRwu6XyjLt4EdXYHOyaJ5UozgnWm7P7_g4ZZO6kLiIRyOdOkjKuLqO0PDCPMf9eLufVYQKM_JYmvDRqSA5Tbmoaj9C6gq3FGibsVgZCcsAswK_w7nbWDeeTIFk6TLvhr3yCjF0Z_vvV418xk39AmbpdjRvNYDCq0NlKAteRaTFCb8NaQN-LenG8tKF6wYWdGFt7LH9XcPv1wtM7KUZ93jjnBobGTvdQ5ZZE8A5xKqic4gzP_iuG-KWWeGyE7C5WIpApEB8sp0xPXc16bCSvBbGPw8jZlqrVwQdahRcxpukDZhEork4v4_HbSPwfZaNbac3VmN2eCNzK0sX4jyySVongvkXQ-vp68vN3UqMgxZjBaBDVxV9MpBN1SKA7dK7_FA8EFBdNt9ka_Cht3tjhG3jA-02-9z0yK5BfPHYjlYHhicM3x7CFMT3bD81PofJ3UJUO55acdEZEmMkDaONXiwA?file_name=CSC_OKR_N981NOKR7HYA1_MQB91005004_REV00_user_low_ship_MULTI_CERT.tar.md5.zip -o firmware.zip
+        curl -L https://dl.samfwpremium.cloud/77573282f3209d5b9ddf43597d4256d5tymI8-coAj1QG-beWUn358P3Hx-vRqDAMENErpYiAqoeJWVAMYXeGqYsGQegLZE7WdDJkhkhjtAYaNSzTyLlgGFebskUrxuPRtOqe6V6uWgsz7ezfrAiE0QG0uANiUAVyVIYRspqoYgpLvCf81rAH6-c6HuJNK_oKuzxc0Fu2tzVG9BQq7fvvHcz1McbSazhlzUw64JYudik9ReapHfVQh7QmH3VaNYWtFTfWe8_ZaLOZAlgSsi4wvmFyHzMNYzUSDm0OS-W6yTbTtslfkVUcxw9CYjQC0HU97zcbPMQMWIleVe07o7Lp4-hbIMKZDIwe9FkkCeo667b0ae4FM5dZ0p9g1hZ_HPGhK7BUX1Pi00AI8WM08EpD9B_XYXUJRPmQ9PoCLejzzlDS665cDsf4XqPG5DlyumDs5Pmta3dGxEjTf3-S-IusprkICAps3uiZBrWMtB03XEbMA-40uPS94gNMoFGTHK0rvnRFv7s80uQzjE8I7NSWEJGJg2Q9niuyL32P_sUKfVYCzcLqZxpS_FFv1xtDLEWldNtgqtxU4bkN3j6YcNS7jsYM5PAnrU7s6i63P5eANnoI45Sc82SsEj2xVRWXyogSfJlX8omPHjeOF62kqWyxuQQIpAmO9Wjv0fXnr8sIGP8Gdr9yWBZ5HBZxozcbyUDswSSWVCgPtRfUurqk83jU90C8u2rwL-vc8WtAPS7rtZo8XmklKKyOiGDBD7Xa-kYIVASXOXJmqcMGb3qSGUwuhED8V8KGxEALZZnNPwWoB66l7TttuLWJbYBM1j1VaSB_A-YVs8GdFvPArqim9RoWJrx1MQPIURwTluaAcXdwDd1g1UunkG74chtuZL19mNbyW2-snqzMcLS45wwpALAuPMK7tb0VjAOpFeWFUwhnhflKgdrufS8Bq8LGG53MZvMez-ecGP8bbupTJQktZwTwz7FBK8LPuI61VbFhSHxMWt_RzU0z075g0cb9u9trFujiXvCVz_9n50QZmoFoKHj9SMvbOZS3EuPR6naZxJH-S7DUwKpPQvK6zfvxVgisVdDowBdnaUC6RX2_PQp5ZF1Whq4ZCqwO14tivk-w7XbMLYlkjcvxnFO7g?file_name=AP_A536BXXSDEYB1_A536BXXSDEYB1_MQB91722882_REV00_user_low_ship_MULTI_CERT_meta_OS14.tar.md5.zip -o firmware.zip
 
     - name: Estrai Firmware.zip
       run: |
         # Estrai il firmware se è in formato zip
-        unzip firmware.zip -d firmware
+        unzip firmware.zip -d firmware && rm -rf firmware.zip
 
     - name: Estrai md5
       run: |
         # Estrai il firmware se è in formato md5
-        mkdir lz4
-        tar -xvf firmware/*.tar.md5 -C lz4
+        tar -xf firmware/*.tar.md5 super.img.lz4
         rm -rf firmware
 
+    - name: Estrai lz4
+      run: |
+        # Estrai il firmware se è in formato lz4
+        lz4 -d -q --rm super.img.lz4 super.img.sparse
+
+    - name: Installa simg2imng
+      run: |
+        # Installa simg2img
+        sudo apt-get update
+        sudo apt-get install simg2img
+
+    - name: Converti Sparse in Raw
+      run: |
+        # Converti sparse in raw
+        simg2img super.img.sparse super.img && rm -rf super.img.sparse
+        
     - name: Comprimi Firmware
       run: |
         # Comprimi il firmware
-        cd lz4
-        zip -r -9 -FS -m firmware.zip .
-        cd ../
+        zip -r -9 -FS -m firmware.zip super.img && rm -rf super.img
         
     - name: Crea Release GitHub
       id: create_release
@@ -53,5 +66,5 @@ jobs:
             curl -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Content-Type: application/zip" \
-            --data-binary @lz4/firmware.zip \
+            --data-binary @firmware.zip \
             https://uploads.github.com/repos/${{ github.repository }}/releases/${{ env.release_id }}/assets?name=firmware.zip
