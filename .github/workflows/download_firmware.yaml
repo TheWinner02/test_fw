@@ -14,22 +14,25 @@ jobs:
     - name: Scarica Firmware
       run: |
         # Usando curl per scaricare il firmware da una URL
-        curl -L https://dl.samfwpremium.cloud/b7027b89e156f333af7b48714c3acdd1rY43IV6zdnJJQF_UwWL39lqQ1PjbQa00dluXlrhv9tySu89bkv_e1CZdBgAn9nTjFmWH3jhuC1C7KnvteFaC2Xsl8k44CPi0RBd5dAGgHwtiZsTpOwF_Z_xmX4_58wccUxEopPUKPlBjgEe1ohvzFm0F7PEcJ-epu2YkdzJUdYN97u8NMRabem6KdBDdDpfvwPsX7CXor7QTeHz_vdz6aMxnTOX1AdZPvA9_d3L0LSmMSXx6GJJ7OAqGzfe-jNBbCrIoGRWnEk-GojdM5n4iZXII8EgaUpA1Y4Q1dQHm0yC0sZGITdMDrK1fPmGY2T_mfuWe011zR_PqSrOqrG6eliKOnvlBV3qBKA8hLfsbE315d1Cwo55BmeHkuXvvG9xIoLIfPInewacbCR5xCdz9911xIYo6Cp8Y4o2XqtSFnPS3IgmcbXZ5LDEH3l49exvXMb6F36oaJNwP0DBdOPARbC9nqBL9jRp15HPvbxc5i9h4qjc43JCxEiU0HFeBl8vCek0CaSUaVzGMtp2CQDKzAuLeYNUabNX-a5h9TisOwHzdw2Cl7pQejIurkYr4jQSJgXaWD2bt-rgnTHFfrnsAP3LDif5riJxqEmfWTspqmfgGbXgT6UTQrunsm2ACv8GP6JrC76IPwNfr0hPzx_dnn7tWT6jgKK8CAe750uFGjBIna3reokS-wJ2pu9IaUBJhScLjyULwyUv95MptOSw3y05JBAwaaEvNyJ8l_Z-vLwkVfUXX6gW21FYgPXqvkupI1ALtTk2IEMGjDjmFyP7oXXQJXM_6HyV7F2c0DYy3OEt5-GUcGVYusJ-TRsT29UwqzHg63_PUng_J36VNu0XRjo13nXkEoNYYfC_Q-4_tRLJWHac7Nf38gbldc4XSQ81k7NSzQQc1iwjnzXUA-b2QEH4en_vwqg12cSk_lt2jMkL1FreYAQ-eiH27LWxEndp4rr92IxD8ojA_-KqDNzLJzAtaCew86q168_vhFqO96EmVqXr4qDRyFBpGyKVu4g8O_rEJjJgd0DHRLsvU80jq8ReUA1lNCk5X4Bg67r7s0d1cOTXLj3mL5yZu6CbuUW5BiZ-9iYiLWiSpE0cf4bM7EA?file_name=CSC_OXM_A536BOXMDEYB1_MQB91722882_REV00_user_low_ship_MULTI_CERT.tar.md5.zip -o firmware.zip
+        curl -L https://dl.samfwpremium.cloud/e61d67b6c07db2f873df4b8347bb543aEHmB4rW6WWe9GCUu0jQsi6rhUkifcLERyKY6r4WgznXaqTRA8R-AgbUf0P3VeZPVpwxPXpwgCVCGg4Oc8B2EaHpoLX39fioEDVKT8EOhNoZjU2LKNln87pbVP3O9iNjrleFwr9zryEzvEKxFUsUZ1u6OOPBNkKMUD7ceOzjVwqgwbiAxsd4jdHaCfUb_ipwyvdhhlcBULP2BuUZzmOq5fQa89Xm9kf0bsi7SYHP59ZsONJbJuOaWm-PBIkl8W4A53EZiGBdk74J05kYtT0p6Juqod2agQ2tEuE8rXJEAzHHFif3e8srFqf55_4yKNLsdm3_PXaxiC5AhqkBcEePILJ3GpQfadSIX4etdwqra--OFCbKONyCFDM1D19mqrqZ7LsQEyxs7wpz7HVDHOdZN9mACWBZm--tnKnlAnxvQuFgk0evVRwDWpwr70SEWgx5Ed8rVdZDYmuajG3ikKIg_sHy1L-2LpFck6BGEIXmj8uKfKc5DB_DIRzIreZP55FcF-8zJPHIqQCw3aGDmO7YTNDnQ_spsImT0YtKh_mCwGE7q0GxP2ExhAd1fhgwQbBQe-bZvcq_zvy5v0S-ZXUhxOzb5SasoHST5MxZ_8tu3h6j6Z4ndDeEpyOvT2KCvF9eM8CkY2DMc8uckeZhXDC8tzPy6uEik17t6vc28OXEdon3ybUB68jzTyHoT8MFaeTtp_vLZtPuyo9ESqFgkN0_1zfhtzAfl34ok-Vrk21y_GGNaXrzKL_jCpqybnRLup1ZTvhT6dwD5aPcXowBhBFZM2Pih9p1umhoW43_nurk7Dl4CO3ELuJl6puxuSkWhjeaCBdxTGGwuqqduArDduC2EGRaoglcCq4c7kHL5F2HCN_DalwoHoKWf03IbiSmMNkseyg2dqi_zN1GnWeyD3XIPGqiKtVxY94Z4nvydXjAr9jvddemUFMVqF47Zz7LD4uZiw-InKNcrcnPenbjGCc9_pJVpIj5Yp7iZ0ic8PKknqniiUV2qPQgtpHcDXaYjRIz0ZHbF05IuqXZcAHwPuDIRO-AO9NpJytG2mCzz4AstM3IHMMzm9EJPJhy3W0TtubpsScrpIkV3eE-iDulIwIY2gQ?file_name=SAMFW.COM_SM-A536B_EUX_A536BXXSDEYB1_fac.zip -o firmware.zip
 
     - name: Estrai Firmware.zip
       run: |
         # Estrai il firmware se è in formato zip
         unzip firmware.zip -d firmware && rm -rf firmware.zip
+        rm -rf firmware/BL*.tar.md5 && rm -rf firmware/CP*.tar.md5 && rm -rf firmware/HOME*.tar.md5 && rm -rf firmware/*.txt
 
     - name: Estrai md5
       run: |
         # Estrai il firmware se è in formato md5
-        tar -xf firmware/*.tar.md5 && rm -rf firmware
+        tar -xf firmware/AP*.tar.md5 super.img.lz4 && rm -rf firmware/AP*.tar.md5
+        tar -xf firmware/CSC*.tar.md5 optics.img.lz4 && tar -xf firmware/CSC*.tar.md5 prism.img.lz4
+        rm -rf firmware
 
     - name: Estrai lz4
       run: |
         # Estrai il firmware se è in formato lz4
-        lz4 -d -q --rm optics.img.lz4 optics.img.sparse && lz4 -d -q --rm prism.img.lz4 prism.img.sparse
+        lz4 -d -q --rm super.img.lz4 super.img.sparse && lz4 -d -q --rm optics.img.lz4 optics.img.sparse && lz4 -d -q --rm prism.img.lz4 prism.img.sparse
 
     - name: Installa simg2img
       run: |
@@ -39,13 +42,14 @@ jobs:
     - name: Converti Sparse in Raw
       run: |
         # Converti sparse in raw
+        simg2img super.img.sparse super.img && rm -rf super.img.sparse
         simg2img optics.img.sparse optics.img && rm -rf optics.img.sparse
         simg2img prism.img.sparse prism.img && rm -rf prism.img.sparse
         
     - name: Comprimi Firmware
       run: |
         # Comprimi il firmware
-        zip -r -9 -FS -m firmware.zip optics.img prism.img
+        zip -r -9 -FS -m firmware.zip super.img optics.img prism.img
         
     - name: Crea Release GitHub
       id: create_release
