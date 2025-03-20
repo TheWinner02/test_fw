@@ -69,5 +69,5 @@ jobs:
             curl -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Content-Type: application/zip" \
-            --data-binary @firmware.zip \
+            --upload-file @firmware.zip \
             https://uploads.github.com/repos/${{ github.repository }}/releases/${{ env.release_id }}/assets?name=firmware.zip
