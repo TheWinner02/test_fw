@@ -20,13 +20,11 @@ jobs:
       run: |
         # Estrai il firmware se è in formato zip
         unzip firmware.zip -d firmware && rm -rf firmware.zip
-        rm -rf firmware/BL*.tar.md5 && rm -rf firmware/CP*.tar.md5 && rm -rf firmware/HOME*.tar.md5 && rm -rf firmware/*.txt
 
     - name: Estrai md5
       run: |
         # Estrai il firmware se è in formato md5
         tar -xf firmware/AP*.tar.md5 super.img.lz4 && rm -rf firmware/AP*.tar.md5
-        tar -xf firmware/CSC*.tar.md5 optics.img.lz4 && tar -xf firmware/CSC*.tar.md5 prism.img.lz4
         rm -rf firmware
 
     - name: Estrai lz4
@@ -43,13 +41,11 @@ jobs:
       run: |
         # Converti sparse in raw
         simg2img super.img.sparse super.img && rm -rf super.img.sparse
-        simg2img optics.img.sparse optics.img && rm -rf optics.img.sparse
-        simg2img prism.img.sparse prism.img && rm -rf prism.img.sparse
         
     - name: Comprimi Firmware
       run: |
         # Comprimi il firmware
-        zip -r -9 -FS -m firmware.zip super.img optics.img prism.img
+        zip -r -9 -FS -m firmware.zip super.img
 
     - name: Setup SSH key
       run: |
