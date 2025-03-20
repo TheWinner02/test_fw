@@ -34,10 +34,11 @@ jobs:
         # Estrai il firmware se è in formato lz4
         lz4 -d -q --rm super.img.lz4 super.img.sparse && lz4 -d -q --rm optics.img.lz4 optics.img.sparse && lz4 -d -q --rm prism.img.lz4 prism.img.sparse
 
-    - name: Installa simg2img
+    - name: Installa simg2img & 7z
       run: |
         # Installa simg2img
         sudo apt-get update && sudo apt-get install android-sdk-libsparse-utils
+        sudo apt-get install p7zip-full
 
     - name: Converti Sparse in Raw
       run: |
@@ -50,6 +51,7 @@ jobs:
       run: |
         # Comprimi il firmware
         zip -r -9 -FS -m firmware.zip super.img optics.img prism.img
+        7z a -v500m firmware.7z firmware.zip && rm -rf firmware.zip
         
     - name: Crea Release GitHub
       id: create_release
@@ -69,5 +71,5 @@ jobs:
             curl -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Content-Type: application/zip" \
-            --data-binary @firmware.zip \
+            --data-binary @firmware.7z.* \
             https://uploads.github.com/repos/${{ github.repository }}/releases/${{ env.release_id }}/assets?name=firmware.zip
