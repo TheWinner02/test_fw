@@ -30,7 +30,7 @@ jobs:
     - name: Estrai lz4
       run: |
         # Estrai il firmware se è in formato lz4
-        lz4 -d -q --rm super.img.lz4 super.img.sparse && lz4 -d -q --rm optics.img.lz4 optics.img.sparse && lz4 -d -q --rm prism.img.lz4 prism.img.sparse
+        lz4 -d -q --rm super.img.lz4 super.img.sparse
 
     - name: Installa simg2img
       run: |
