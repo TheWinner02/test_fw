@@ -14,7 +14,7 @@ jobs:
     - name: Scarica Firmware
       run: |
         # Usando curl per scaricare il firmware da una URL
-        curl -L https://dl.samfwpremium.cloud/77573282f3209d5b9ddf43597d4256d5tymI8-coAj1QG-beWUn358P3Hx-vRqDAMENErpYiAqoeJWVAMYXeGqYsGQegLZE7WdDJkhkhjtAYaNSzTyLlgGFebskUrxuPRtOqe6V6uWgsz7ezfrAiE0QG0uANiUAVyVIYRspqoYgpLvCf81rAH6-c6HuJNK_oKuzxc0Fu2tzVG9BQq7fvvHcz1McbSazhlzUw64JYudik9ReapHfVQh7QmH3VaNYWtFTfWe8_ZaLOZAlgSsi4wvmFyHzMNYzUSDm0OS-W6yTbTtslfkVUcxw9CYjQC0HU97zcbPMQMWIleVe07o7Lp4-hbIMKZDIwe9FkkCeo667b0ae4FM5dZ0p9g1hZ_HPGhK7BUX1Pi00AI8WM08EpD9B_XYXUJRPmQ9PoCLejzzlDS665cDsf4XqPG5DlyumDs5Pmta3dGxEjTf3-S-IusprkICAps3uiZBrWMtB03XEbMA-40uPS94gNMoFGTHK0rvnRFv7s80uQzjE8I7NSWEJGJg2Q9niuyL32P_sUKfVYCzcLqZxpS_FFv1xtDLEWldNtgqtxU4bkN3j6YcNS7jsYM5PAnrU7s6i63P5eANnoI45Sc82SsEj2xVRWXyogSfJlX8omPHjeOF62kqWyxuQQIpAmO9Wjv0fXnr8sIGP8Gdr9yWBZ5HBZxozcbyUDswSSWVCgPtRfUurqk83jU90C8u2rwL-vc8WtAPS7rtZo8XmklKKyOiGDBD7Xa-kYIVASXOXJmqcMGb3qSGUwuhED8V8KGxEALZZnNPwWoB66l7TttuLWJbYBM1j1VaSB_A-YVs8GdFvPArqim9RoWJrx1MQPIURwTluaAcXdwDd1g1UunkG74chtuZL19mNbyW2-snqzMcLS45wwpALAuPMK7tb0VjAOpFeWFUwhnhflKgdrufS8Bq8LGG53MZvMez-ecGP8bbupTJQktZwTwz7FBK8LPuI61VbFhSHxMWt_RzU0z075g0cb9u9trFujiXvCVz_9n50QZmoFoKHj9SMvbOZS3EuPR6naZxJH-S7DUwKpPQvK6zfvxVgisVdDowBdnaUC6RX2_PQp5ZF1Whq4ZCqwO14tivk-w7XbMLYlkjcvxnFO7g?file_name=AP_A536BXXSDEYB1_A536BXXSDEYB1_MQB91722882_REV00_user_low_ship_MULTI_CERT_meta_OS14.tar.md5.zip -o firmware.zip
+        curl -L https://dl.samfwpremium.cloud/b7027b89e156f333af7b48714c3acdd1rY43IV6zdnJJQF_UwWL39lqQ1PjbQa00dluXlrhv9tySu89bkv_e1CZdBgAn9nTjFmWH3jhuC1C7KnvteFaC2Xsl8k44CPi0RBd5dAGgHwtiZsTpOwF_Z_xmX4_58wccUxEopPUKPlBjgEe1ohvzFm0F7PEcJ-epu2YkdzJUdYN97u8NMRabem6KdBDdDpfvwPsX7CXor7QTeHz_vdz6aMxnTOX1AdZPvA9_d3L0LSmMSXx6GJJ7OAqGzfe-jNBbCrIoGRWnEk-GojdM5n4iZXII8EgaUpA1Y4Q1dQHm0yC0sZGITdMDrK1fPmGY2T_mfuWe011zR_PqSrOqrG6eliKOnvlBV3qBKA8hLfsbE315d1Cwo55BmeHkuXvvG9xIoLIfPInewacbCR5xCdz9911xIYo6Cp8Y4o2XqtSFnPS3IgmcbXZ5LDEH3l49exvXMb6F36oaJNwP0DBdOPARbC9nqBL9jRp15HPvbxc5i9h4qjc43JCxEiU0HFeBl8vCek0CaSUaVzGMtp2CQDKzAuLeYNUabNX-a5h9TisOwHzdw2Cl7pQejIurkYr4jQSJgXaWD2bt-rgnTHFfrnsAP3LDif5riJxqEmfWTspqmfgGbXgT6UTQrunsm2ACv8GP6JrC76IPwNfr0hPzx_dnn7tWT6jgKK8CAe750uFGjBIna3reokS-wJ2pu9IaUBJhScLjyULwyUv95MptOSw3y05JBAwaaEvNyJ8l_Z-vLwkVfUXX6gW21FYgPXqvkupI1ALtTk2IEMGjDjmFyP7oXXQJXM_6HyV7F2c0DYy3OEt5-GUcGVYusJ-TRsT29UwqzHg63_PUng_J36VNu0XRjo13nXkEoNYYfC_Q-4_tRLJWHac7Nf38gbldc4XSQ81k7NSzQQc1iwjnzXUA-b2QEH4en_vwqg12cSk_lt2jMkL1FreYAQ-eiH27LWxEndp4rr92IxD8ojA_-KqDNzLJzAtaCew86q168_vhFqO96EmVqXr4qDRyFBpGyKVu4g8O_rEJjJgd0DHRLsvU80jq8ReUA1lNCk5X4Bg67r7s0d1cOTXLj3mL5yZu6CbuUW5BiZ-9iYiLWiSpE0cf4bM7EA?file_name=CSC_OXM_A536BOXMDEYB1_MQB91722882_REV00_user_low_ship_MULTI_CERT.tar.md5.zip -o firmware.zip
 
     - name: Estrai Firmware.zip
       run: |
@@ -24,29 +24,28 @@ jobs:
     - name: Estrai md5
       run: |
         # Estrai il firmware se è in formato md5
-        tar -xf firmware/*.tar.md5 super.img.lz4
-        rm -rf firmware
+        tar -xf firmware/*.tar.md5 && rm -rf firmware
 
     - name: Estrai lz4
       run: |
         # Estrai il firmware se è in formato lz4
-        lz4 -d -q --rm super.img.lz4 super.img.sparse
+        lz4 -d -q --rm optics.img.lz4 optics.img.sparse && lz4 -d -q --rm prism.img.lz4 prism.img.sparse
 
     - name: Installa simg2img
       run: |
         # Installa simg2img
-        sudo apt-get update
-        sudo apt-get install android-sdk-libsparse-utils
+        sudo apt-get update && sudo apt-get install android-sdk-libsparse-utils
 
     - name: Converti Sparse in Raw
       run: |
         # Converti sparse in raw
-        simg2img super.img.sparse super.img && rm -rf super.img.sparse
+        simg2img optics.img.sparse optics.img && rm -rf optics.img.sparse
+        simg2img prism.img.sparse prism.img && rm -rf prism.img.sparse
         
     - name: Comprimi Firmware
       run: |
         # Comprimi il firmware
-        zip -r -9 -FS -m firmware.zip super.img && rm -rf super.img
+        zip -r -9 -FS -m firmware.zip optics.img prism.img
         
     - name: Crea Release GitHub
       id: create_release
