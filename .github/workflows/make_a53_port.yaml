@@ -1,4 +1,4 @@
-name: Download e Estrai Firmware Samsung
+name: A53 Port Universal7885
 
 on:  
   workflow_dispatch:  # Permette di eseguire manualmente il workflow
