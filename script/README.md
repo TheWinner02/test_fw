@@ -1,0 +1,1 @@
+# this folder contain all scripts for build ports for universal7885

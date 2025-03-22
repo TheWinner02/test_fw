@@ -1,0 +1,1 @@
+# this folder contain all files for build s21 5g port for universal7885
