@@ -20,3 +20,8 @@ jobs:
       run: |
         # Estrai il firmware se è in formato zip
         unzip a53/ROM/system.zip -d a53/ROM/ && rm -rf a53/ROM/system.zip
+
+    - name: Debloat
+      run: |
+        # Esegui il debloat
+        chmod +x script/debloat.sh && ./script/debloat.sh
