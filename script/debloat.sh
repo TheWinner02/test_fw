@@ -1,3 +1,10 @@
+# System/ Debloat
+rm -rf a53/ROM/system/system/heimdallddata
+rm -rf a53/ROM/system/system/hidden
+rm -rf a53/ROM/system/system/imagefilter_program_binary
+rm -rf a53/ROM/system/system/preload
+rm -rf a53/ROM/system/system/voicecommanddata
+
 # System/App Debloat
 
 rm -rf a53/ROM/system/system/app/ARCore
@@ -61,3 +68,127 @@ rm -rf a53/ROM/system/system/app/VTCameraSetting
 rm -rf a53/ROM/system/system/app/WebManual
 rm -rf a53/ROM/system/system/app/WifiGuider
 rm -rf a53/ROM/system/system/app/WlanTest
+
+# System/Bin Debloat
+
+rm -rf a53/ROM/system/system/bin/kumihodecoder
+rm -rf a53/ROM/system/system/bin/fabric_crypto
+
+# System/CameraData Debloat
+
+rm -rf a53/ROM/system/system/cameradata/portrait_data
+rm -rf a53/ROM/system/system/cameradata/singletake
+rm -rf a53/ROM/system/system/cameradata/aremoji-feature.xml
+rm -rf a53/ROM/system/system/cameradata/camera-feature.xml
+
+# System/Etc Debloat
+
+rm -rf a53/ROM/system/system/etc/ailasso
+rm -rf a53/ROM/system/system/etc/epdg
+rm -rf a53/ROM/system/system/etc/kumiho
+rm -rf a53/ROM/system/system/etc/mars
+rm -rf a53/ROM/system/system/etc/theme
+rm -rf a53/ROM/system/system/etc/init/fabric_crypto.rc
+rm -rf a53/ROM/system/system/etc/init/kumioencoder.rc
+
+# System/Priv-App Debloat
+
+rm -rf a53/ROM/system/system/priv-app/AdaptSound_U
+rm -rf a53/ROM/system/system/priv-app/AppUpdateCenter
+rm -rf a53/ROM/system/system/priv-app/AREmoji
+rm -rf a53/ROM/system/system/priv-app/AREmojiEditor
+rm -rf a53/ROM/system/system/priv-app/AuthFramework
+rm -rf a53/ROM/system/system/priv-app/AutoDoodle
+rm -rf a53/ROM/system/system/priv-app/AvatarEmojiSticker
+rm -rf a53/ROM/system/system/priv-app/BCService
+rm -rf a53/ROM/system/system/priv-app/BeaconManager
+rm -rf a53/ROM/system/system/priv-app/Bixby
+rm -rf a53/ROM/system/system/priv-app/BixbyVisionFramework3.5
+rm -rf a53/ROM/system/system/priv-app/BuiltInPrintService
+rm -rf a53/ROM/system/system/priv-app/CIDManager
+rm -rf a53/ROM/system/system/priv-app/Crane
+rm -rf a53/ROM/system/system/priv-app/DeviceBasedServiceConsent
+rm -rf a53/ROM/system/system/priv-app/DeviceQualityAgent31
+rm -rf a53/ROM/system/system/priv-app/DiagMonAgent91
+rm -rf a53/ROM/system/system/priv-app/DigitalWellbeing
+rm -rf a53/ROM/system/system/priv-app/DualOutFocusViewer_S
+rm -rf a53/ROM/system/system/priv-app/DynamicLockscreen
+rm -rf a53/ROM/system/system/priv-app/DynamicSystemInstallationService
+rm -rf a53/ROM/system/system/priv-app/EasySetup
+rm -rf a53/ROM/system/system/priv-app/EmergencySOS
+rm -rf a53/ROM/system/system/priv-app/EpdgService
+rm -rf a53/ROM/system/system/priv-app/EsimClient
+rm -rf a53/ROM/system/system/priv-app/FacAtFunction
+rm -rf a53/ROM/system/system/priv-app/FactoryTestProvider
+rm -rf a53/ROM/system/system/priv-app/FBInstaller_NS
+rm -rf a53/ROM/system/system/priv-app/FBServices
+rm -rf a53/ROM/system/system/priv-app/Fmm
+rm -rf a53/ROM/system/system/priv-app/FotaAgent
+rm -rf a53/ROM/system/system/priv-app/GalleryWidget
+rm -rf a53/ROM/system/system/priv-app/Game*
+rm -rf a53/ROM/system/system/priv-app/GpuWatchApp
+rm -rf a53/ROM/system/system/priv-app/HdmApk
+rm -rf a53/ROM/system/system/priv-app/HwModuleTest
+rm -rf a53/ROM/system/system/priv-app/IAFDManagerService
+rm -rf a53/ROM/system/system/priv-app/IntelligentDynamicFpsService
+rm -rf a53/ROM/system/system/priv-app/IpsGeofence
+rm -rf a53/ROM/system/system/priv-app/KLMSAgent
+rm -rf a53/ROM/system/system/priv-app/KmxService
+rm -rf a53/ROM/system/system/priv-app/knoxanalyticsagent
+rm -rf a53/ROM/system/system/priv-app/KnoxCore
+rm -rf a53/ROM/system/system/priv-app/KnoxGuard
+rm -rf a53/ROM/system/system/priv-app/KnoxMposAgent
+rm -rf a53/ROM/system/system/priv-app/KnoxNetworkFilter
+rm -rf a53/ROM/system/system/priv-app/knoxvpnproxyhandler
+rm -rf a53/ROM/system/system/priv-app/KnoxZtFramework
+rm -rf a53/ROM/system/system/priv-app/KPECore
+rm -rf a53/ROM/system/system/priv-app/LinkToWindowsService
+rm -rf a53/ROM/system/system/priv-app/MobileWips
+rm -rf a53/ROM/system/system/priv-app/OdaService
+rm -rf a53/ROM/system/system/priv-app/OMCAgent5
+rm -rf a53/ROM/system/system/priv-app/OneDrive_Samsung_v3
+rm -rf a53/ROM/system/system/priv-app/ONS
+rm -rf a53/ROM/system/system/priv-app/PaymentFramework
+rm -rf a53/ROM/system/system/priv-app/PhoneErrService
+rm -rf a53/ROM/system/system/priv-app/PhotoRemasterService
+rm -rf a53/ROM/system/system/priv-app/RubinVersion34
+rm -rf a53/ROM/system/system/priv-app/SamsungBilling
+rm -rf a53/ROM/system/system/priv-app/SamsungCamera
+rm -rf a53/ROM/system/system/priv-app/SamsungCore*
+rm -rf a53/ROM/system/system/priv-app/SamsungExperienceService
+rm -rf a53/ROM/system/system/priv-app/SamsungIntelliVoiceServices
+rm -rf a53/ROM/system/system/priv-app/SamsungMagnifier3
+rm -rf a53/ROM/system/system/priv-app/SamsungPass
+rm -rf a53/ROM/system/system/priv-app/SCPMAgent
+rm -rf a53/ROM/system/system/priv-app/SDMConfig
+rm -rf a53/ROM/system/system/priv-app/sec_camerax_service
+rm -rf a53/ROM/system/system/priv-app/SecAppSeparation
+rm -rf a53/ROM/system/system/priv-app/SecureFolder
+rm -rf a53/ROM/system/system/priv-app/SEMFactoryApp
+rm -rf a53/ROM/system/system/priv-app/SendHelpMessage
+rm -rf a53/ROM/system/system/priv-app/SettingsBixby
+rm -rf a53/ROM/system/system/priv-app/SingleTakeService
+rm -rf a53/ROM/system/system/priv-app/SKMSAgent
+rm -rf a53/ROM/system/system/priv-app/SmartEpdgTestApp
+rm -rf a53/ROM/system/system/priv-app/SmartManager_v6_DeviceSecurity
+rm -rf a53/ROM/system/system/priv-app/SmartSwitch*
+rm -rf a53/ROM/system/system/priv-app/SmartThingsKit
+rm -rf a53/ROM/system/system/priv-app/SOAgent7
+rm -rf a53/ROM/system/system/priv-app/SPPPushClient
+rm -rf a53/ROM/system/system/priv-app/StickerFaceARAvatar
+rm -rf a53/ROM/system/system/priv-app/StoryService
+rm -rf a53/ROM/system/system/priv-app/SumeNNService
+rm -rf a53/ROM/system/system/priv-app/SVCAgent
+rm -rf a53/ROM/system/system/priv-app/SVoiceIME
+rm -rf a53/ROM/system/system/priv-app/TalkbackSE
+rm -rf a53/ROM/system/system/priv-app/Upday
+rm -rf a53/ROM/system/system/priv-app/YourPhone_P1_5
+
+# System/SystemExt/Apex Debloat
+
+rm -rf a53/ROM/system/system/system_ext/apex
+
+# System/SystemExt/Priv-app Debloat
+
+rm -rf a53/ROM/system/system/system_ext/priv-app/GoogleFeedback
+rm -rf a53/ROM/system/system/system_ext/priv-app/SetupWizard
