@@ -24,4 +24,4 @@ jobs:
     - name: Debloat
       run: |
         # Esegui il debloat
-        chmod +x script/debloat.sh && ./script/debloat.sh
+        chmod +x script/system/debloat.sh && ./script/system/debloat.sh
