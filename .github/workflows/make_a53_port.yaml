@@ -1,4 +1,4 @@
-name: A53 Port Universal7885
+name: A53 Port Exynos7904
 
 on:  
   workflow_dispatch:  # Permette di eseguire manualmente il workflow
