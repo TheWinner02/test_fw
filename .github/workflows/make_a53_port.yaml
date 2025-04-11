@@ -35,3 +35,8 @@ jobs:
       run: |
         # Copia i file comuni nella rom
         chmod +x script/system/common.sh && ./script/system/common.sh
+
+    - name: Fix
+      run: |
+        # Esegui i fix
+        chmod +x script/system/fix.sh && ./script/system/fix.sh
