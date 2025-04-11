@@ -30,3 +30,8 @@ jobs:
       run: |
         # Modifica i build.prop
         chmod +x script/system/prop.sh && ./script/system/prop.sh
+
+    - name: Common
+      run: |
+        # Copia i file comuni nella rom
+        chmod +x script/system/common.sh && ./script/system/common.sh
