@@ -9474,6 +9474,7 @@ set_metadata("/vendor/bin/hw/macloader", "uid", 0, "gid", 2000, "mode", 0755, "c
 set_metadata("/vendor/bin/hw/mfgloader", "uid", 0, "gid", 2000, "mode", 0755, "capabilities", 0x0, "selabel", "u:object_r:mfgloader_exec:s0");
 set_metadata("/vendor/bin/hw/rild", "uid", 0, "gid", 2000, "mode", 0755, "capabilities", 0x0, "selabel", "u:object_r:rild_exec:s0");
 set_metadata("/vendor/bin/hw/samsung.software.media.c2@1.0-service", "uid", 0, "gid", 2000, "mode", 0755, "capabilities", 0x0, "selabel", "u:object_r:mediacodec_exec:s0");
+set_metadata("/vendor/bin/hw/sec.android.hardware.nfc@1.2-service", "uid", 0, "gid", 2000, "mode", 0755, "capabilities", 0x0, "selabel", "u:object_r:hal_nfc_default_exec:s0");
 set_metadata("/vendor/bin/hw/vendor.samsung.hardware.authfw@1.0-service", "uid", 0, "gid", 2000, "mode", 0755, "capabilities", 0x0, "selabel", "u:object_r:hal_authfw_default_exec:s0");
 set_metadata("/vendor/bin/hw/vendor.samsung.hardware.biometrics.face-service", "uid", 0, "gid", 2000, "mode", 0755, "capabilities", 0x0, "selabel", "u:object_r:hal_face_default_exec:s0");
 set_metadata("/vendor/bin/hw/vendor.samsung.hardware.biometrics.fingerprint@3.0-service", "uid", 0, "gid", 2000, "mode", 0755, "capabilities", 0x0, "selabel", "u:object_r:hal_fingerprint_default_exec:s0");
