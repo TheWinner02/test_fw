@@ -88,6 +88,7 @@ rm -rf a53/ROM/system/system/etc/epdg
 rm -rf a53/ROM/system/system/etc/kumiho
 rm -rf a53/ROM/system/system/etc/mars
 rm -rf a53/ROM/system/system/etc/theme
+rm -rf a53/ROM/system/system/etc/floating_feature.xml
 rm -rf a53/ROM/system/system/etc/init/fabric_crypto.rc
 rm -rf a53/ROM/system/system/etc/init/kumioencoder.rc
 
