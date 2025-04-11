@@ -55,5 +55,5 @@ jobs:
 
     - name: Upload firmware files to SourceForge
       run: |
-          scp A53_Port.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
+          scp A53_Port.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/ && rm -rf a53/ROM/A53_Port.zip
           
