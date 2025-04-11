@@ -42,6 +42,7 @@ rm -rf a53/ROM/system/system/app/MAPSAgent
 rm -rf a53/ROM/system/system/app/MDMApp
 rm -rf a53/ROM/system/system/app/MdxKitService
 rm -rf a53/ROM/system/system/app/MinusOnePage
+rm -rf a53/ROM/system/system/app/NfcNci/lib
 rm -rf a53/ROM/system/system/app/ParentalCare
 rm -rf a53/ROM/system/system/app/PlayAutoInstallConfig
 rm -rf a53/ROM/system/system/app/PrintSpooler
