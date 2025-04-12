@@ -14,7 +14,7 @@ jobs:
     - name: Scarica Firmware
       run: |
         # Usando curl per scaricare il firmware da una URL
-        curl -L https://download1588.mediafire.com/vfanrvvwh2qgLuRVZVYonMLyGsgsj_EZbb61pHhc5vF9XMp8ic_fWSvlXJEEWWPG35qqAHMrmnvpYO_Ci-Rt8FQLGsKBq-DNnlL7u2t1A2PqpJnRlr6TPQizZuKgB6QwbIjAixmiXF-Vu4NLMJqVDpmfYeQ33BO7DJtYUunf69Y_SA/9hswk9rt13x9km2/a53.zip -o a53/ROM/system.zip
+        curl -L https://download1588.mediafire.com/b9bfuygi624gR1M7oxd0SxSvcbVht2JLF8r9fld8WCF9_Uc_Qo1Yz79gHr18JXwe-7avp7GNxdT1fUKZumnziWXEZG1btQXyYla_gZMcsSBthJymLLOPQ0HZ1AVJQMWU9YrF6Wk1_toIIMEoGiGC_V9VwY1xIdDn-FnH4TjeHXvqqA/9hswk9rt13x9km2/a53.zip -o a53/ROM/system.zip
 
     - name: Estrai Firmware.zip
       run: |
