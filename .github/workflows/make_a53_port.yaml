@@ -44,7 +44,7 @@ jobs:
     - name: Comprimi ROM
       run: |
         # Comprimi la rom
-        zip -r -9 -FS A53_Port.zip a53/ROM && rm -rf a53/ROM/system
+        zip -r -9 -FS A53_Port.zip a53/ROM/ && rm -rf a53/ROM/system
 
     - name: Setup SSH key
       run: |
