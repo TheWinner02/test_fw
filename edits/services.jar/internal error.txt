@@ -2,7 +2,7 @@
 
 services.jar
 
-smali_classes3/com/android/server/wm/ActivityTaskManagerService$LocalService.smali
+\smali_classes3\com\android\server\wm\ActivityTaskManagerService$LocalService.smali
 
 Remove
 
