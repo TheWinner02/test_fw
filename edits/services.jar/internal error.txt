@@ -1,0 +1,17 @@
+# Fix Internal Error msg
+
+services.jar
+
+smali_classes3/com/android/server/wm/ActivityTaskManagerService$LocalService.smali
+
+Remove
+
+invoke-static {}, Landroid/os/Build;->isBuildConsistent()Z
+
+move-result v1
+
+Add
+
+const/4 v1, 0x1
+
+Done
