@@ -121,6 +121,7 @@ rm -rf a53/ROM/system/system/priv-app/BCService
 rm -rf a53/ROM/system/system/priv-app/BeaconManager
 rm -rf a53/ROM/system/system/priv-app/Bixby
 rm -rf a53/ROM/system/system/priv-app/BixbyVisionFramework3.5
+rm -rf a53/ROM/system/system/priv-app/BiometricSettings
 rm -rf a53/ROM/system/system/priv-app/BuiltInPrintService
 rm -rf a53/ROM/system/system/priv-app/CIDManager
 rm -rf a53/ROM/system/system/priv-app/Crane
