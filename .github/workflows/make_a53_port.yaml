@@ -44,7 +44,8 @@ jobs:
     - name: Comprimi ROM
       run: |
         # Comprimi la rom
-        zip -r -9 -FS A53_Port.zip a53/ROM/ && rm -rf a53/ROM/system
+        cd a53/ROM
+        zip -r -9 -FS A53_Port.zip device META-INF product system vendor RAMDisk.img && rm -rf a53/ROM/system
 
     - name: Setup SSH key
       run: |
@@ -55,5 +56,5 @@ jobs:
 
     - name: Upload firmware files to SourceForge
       run: |
-          scp A53_Port.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/ && rm -rf a53/ROM/A53_Port.zip
+          scp A53_Port.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/ && rm -rf A53_Port.zip
           
