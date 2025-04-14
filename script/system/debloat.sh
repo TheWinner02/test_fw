@@ -93,6 +93,21 @@ rm -rf a53/ROM/system/system/etc/floating_feature.xml
 rm -rf a53/ROM/system/system/etc/init/fabric_crypto.rc
 rm -rf a53/ROM/system/system/etc/init/kumioencoder.rc
 
+# System/lib Debloat
+
+rm -rf a53/ROM/system/system/lib/libofi*
+
+# System/lib64 Debloat
+
+rm -rf a53/ROM/system/system/lib64/libPortraitDistortionCorrection.arcsoft.so
+rm -rf a53/ROM/system/system/lib64/libimage_enhancement.arcsoft.so
+rm -rf a53/ROM/system/system/lib64/libGalleryDistortionCorrection.arcsoft.so
+rm -rf a53/ROM/system/system/lib64/libhumantracking.arcsoft.so
+rm -rf a53/ROM/system/system/lib64/libfacialrestoration.arcsoft.so
+rm -rf a53/ROM/system/system/lib64/libGalleryDistortionDetector.arcsoft.so
+rm -rf a53/ROM/system/system/lib64/libkumiho*
+rm -rf a53/ROM/system/system/lib64/libofi*
+
 # System/Priv-App Debloat
 
 rm -rf a53/ROM/system/system/priv-app/AdaptSound_U
