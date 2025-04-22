@@ -1,0 +1,60 @@
+name: S23 FE Port Universal7885
+
+on:  
+  workflow_dispatch:  # Permette di eseguire manualmente il workflow
+
+jobs:
+  build_s23fe_port:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Scarica Firmware
+      run: |
+        # Usando curl per scaricare il firmware da una URL
+        curl -L https://download1588.mediafire.com/k4lbz48yhctgDEPbmmyhyxdfySIAwVR9Kp9Mof8SAP8lOxRK-lQrtkswCzNy-ysxfr-zLkbb6Z3WV9hn5C8JZfm_3jcUVUhd_xBZ_cr6kxNmiVzWULziM3iKnqRJFqOIHUZF8rh3LnKp68QnOddOVirnev9zGAchbFPhe_XTcWBxqw/9hswk9rt13x9km2/s23fe.zip -o s23fe/ROM/system.zip
+
+    - name: Estrai Firmware.zip
+      run: |
+        # Estrai il firmware se è in formato zip
+        unzip s23fe/ROM/system.zip -d s23fe/ROM/ && rm -rf s23fe/ROM/system.zip
+
+    - name: Debloat
+      run: |
+        # Esegui il debloat
+        chmod +x script/system/debloat.sh && ./script/system/debloat.sh
+
+    - name: Prop
+      run: |
+        # Modifica i build.prop
+        chmod +x script/system/prop.sh && ./script/system/prop.sh
+
+    - name: Common
+      run: |
+        # Copia i file comuni nella rom
+        chmod +x script/system/common.sh && ./script/system/common.sh
+
+    - name: Fix
+      run: |
+        # Esegui i fix
+        chmod +x script/system/fix.sh && ./script/system/fix.sh
+
+    - name: Comprimi ROM
+      run: |
+        # Comprimi la rom
+        cd s23fe/ROM
+        zip -r -9 -FS s23fe_Port.zip device META-INF product system vendor RAMDisk.img && rm -rf s23fe/ROM/system
+
+    - name: Setup SSH key
+      run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
+
+    - name: Upload firmware files to SourceForge
+      run: |
+          scp s23fe/ROM/s23fe_Port.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/ && rm -rf s23fe_Port.zip
+          
