@@ -4,7 +4,7 @@ on:
   workflow_dispatch:  # Permette di eseguire manualmente il workflow
 
 jobs:
-  download_firmware:
+  build_a53_port:
     runs-on: ubuntu-latest
 
     steps:
