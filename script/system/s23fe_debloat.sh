@@ -155,7 +155,8 @@ rm -rf s23fe/ROM/system/system/priv-app/DynamicSystemInstallationService
 rm -rf s23fe/ROM/system/system/priv-app/EasySetup
 rm -rf s23fe/ROM/system/system/priv-app/EmergencySOS
 rm -rf s23fe/ROM/system/system/priv-app/EpdgService
-rm -rf s23fe/ROM/system/system/priv-app/EsimClient
+rm -rf s23fe/ROM/system/system/priv-app/Esim*
+rm -rf s23fe/ROM/system/system/priv-app/Euicc*
 rm -rf s23fe/ROM/system/system/priv-app/FacAtFunction
 rm -rf s23fe/ROM/system/system/priv-app/FactoryTestProvider
 rm -rf s23fe/ROM/system/system/priv-app/FBInstaller_NS
@@ -165,6 +166,7 @@ rm -rf s23fe/ROM/system/system/priv-app/FotaAgent
 rm -rf s23fe/ROM/system/system/priv-app/GalleryWidget
 rm -rf s23fe/ROM/system/system/priv-app/Game*
 rm -rf s23fe/ROM/system/system/priv-app/GpuWatchApp
+rm -rf s23fe/ROM/system/system/priv-app/Hash*
 rm -rf s23fe/ROM/system/system/priv-app/HdmApk
 rm -rf s23fe/ROM/system/system/priv-app/HwModuleTest
 rm -rf s23fe/ROM/system/system/priv-app/IAFDManagerService
@@ -181,26 +183,31 @@ rm -rf s23fe/ROM/system/system/priv-app/knoxvpnproxyhandler
 rm -rf s23fe/ROM/system/system/priv-app/KnoxZtFramework
 rm -rf s23fe/ROM/system/system/priv-app/KPECore
 rm -rf s23fe/ROM/system/system/priv-app/LinkToWindowsService
+rm -rf s23fe/ROM/system/system/priv-app/MediaSearch
 rm -rf s23fe/ROM/system/system/priv-app/MobileWips
 rm -rf s23fe/ROM/system/system/priv-app/OdaService
 rm -rf s23fe/ROM/system/system/priv-app/OMCAgent5
 rm -rf s23fe/ROM/system/system/priv-app/OneDrive_Samsung_v3
 rm -rf s23fe/ROM/system/system/priv-app/ONS
 rm -rf s23fe/ROM/system/system/priv-app/PaymentFramework
+rm -rf s23fe/ROM/system/system/priv-app/Pet*
 rm -rf s23fe/ROM/system/system/priv-app/PhoneErrService
 rm -rf s23fe/ROM/system/system/priv-app/PhotoRemasterService
-rm -rf s23fe/ROM/system/system/priv-app/RubinVersion34
+rm -rf s23fe/ROM/system/system/priv-app/RubinVersion*
 rm -rf s23fe/ROM/system/system/priv-app/SamsungBilling
 rm -rf s23fe/ROM/system/system/priv-app/SamsungCamera
+rm -rf s23fe/ROM/system/system/priv-app/SamsungCar*
 rm -rf s23fe/ROM/system/system/priv-app/SamsungCore*
 rm -rf s23fe/ROM/system/system/priv-app/SamsungExperienceService
 rm -rf s23fe/ROM/system/system/priv-app/SamsungIntelliVoiceServices
 rm -rf s23fe/ROM/system/system/priv-app/SamsungMagnifier3
 rm -rf s23fe/ROM/system/system/priv-app/SamsungPass
+rm -rf s23fe/ROM/system/system/priv-app/SCamera*
 rm -rf s23fe/ROM/system/system/priv-app/SCPMAgent
 rm -rf s23fe/ROM/system/system/priv-app/SDMConfig
 rm -rf s23fe/ROM/system/system/priv-app/sec_camerax_service
 rm -rf s23fe/ROM/system/system/priv-app/SecAppSeparation
+rm -rf s23fe/ROM/system/system/priv-app/SecFactoryPhoneTest
 rm -rf s23fe/ROM/system/system/priv-app/SecureFolder
 rm -rf s23fe/ROM/system/system/priv-app/SEMFactoryApp
 rm -rf s23fe/ROM/system/system/priv-app/SendHelpMessage
@@ -213,6 +220,7 @@ rm -rf s23fe/ROM/system/system/priv-app/SmartSwitch*
 rm -rf s23fe/ROM/system/system/priv-app/SmartThingsKit
 rm -rf s23fe/ROM/system/system/priv-app/SOAgent7
 rm -rf s23fe/ROM/system/system/priv-app/SPPPushClient
+rm -rf s23fe/ROM/system/system/priv-app/Ssu*
 rm -rf s23fe/ROM/system/system/priv-app/StickerFaceARAvatar
 rm -rf s23fe/ROM/system/system/priv-app/StoryService
 rm -rf s23fe/ROM/system/system/priv-app/SumeNNService
@@ -220,6 +228,8 @@ rm -rf s23fe/ROM/system/system/priv-app/SVCAgent
 rm -rf s23fe/ROM/system/system/priv-app/SVoiceIME
 rm -rf s23fe/ROM/system/system/priv-app/TalkbackSE
 rm -rf s23fe/ROM/system/system/priv-app/Upday
+rm -rf s23fe/ROM/system/system/priv-app/VideoScan
+rm -rf s23fe/ROM/system/system/priv-app/wallpaper-res
 rm -rf s23fe/ROM/system/system/priv-app/YourPhone_P1_5
 
 # System/SystemExt/Apex Debloat
