@@ -103,6 +103,17 @@ rm -rf s23fe/ROM/system/system/lib/libofi*
 
 # System/lib64 Debloat
 
+rm -rf s23fe/ROM/system/system/lib64/lib_pet*
+rm -rf s23fe/ROM/system/system/lib64/libacz_hhdr.arcsoft.so
+rm -rf s23fe/ROM/system/system/lib64/libae_bracket_hdr.arcsoft.so
+rm -rf s23fe/ROM/system/system/lib64/libaiclearzoom_raw.arcsoft.so
+rm -rf s23fe/ROM/system/system/lib64/libarcsoft_dualcam*
+rm -rf s23fe/ROM/system/system/lib64/libarcsoft_single_cam_glasses_seg.so
+rm -rf s23fe/ROM/system/system/lib64/libDocShadowRemoval.arcsoft.so
+rm -rf s23fe/ROM/system/system/lib64/libdualcam*
+rm -rf s23fe/ROM/system/system/lib64/libFaceRecognition.arcsoft.so
+rm -rf s23fe/ROM/system/system/lib64/libFacialAttributeDetection.arcsoft.so
+rm -rf s23fe/ROM/system/system/lib64/libFacialStickerEngine.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libPortraitDistortionCorrection.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libimage_enhancement.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libGalleryDistortionCorrection.arcsoft.so
@@ -110,7 +121,10 @@ rm -rf s23fe/ROM/system/system/lib64/libhumantracking.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libfacialrestoration.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libGalleryDistortionDetector.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libkumiho*
+rm -rf s23fe/ROM/system/system/lib64/libMultiFrameProcessing30*
 rm -rf s23fe/ROM/system/system/lib64/libofi*
+rm -rf s23fe/ROM/system/system/lib64/libPet*
+rm -rf s23fe/ROM/system/system/lib64/libSuperresolution*
 
 # System/Priv-App Debloat
 
