@@ -98,6 +98,7 @@ rm -rf s23fe/ROM/system/system/etc/init/kumioencoder.rc
 
 # System/lib Debloat
 
+rm -rf s23fe/ROM/system/system/lib/libface_landmark.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib/libofi*
 
 # System/lib64 Debloat
