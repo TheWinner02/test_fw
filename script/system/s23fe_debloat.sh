@@ -129,7 +129,7 @@ rm -rf s23fe/ROM/system/system/lib64/libSuperresolution*
 
 # System/Priv-App Debloat
 
-rm -rf s23fe/ROM/system/system/priv-app/AdaptSound_U
+rm -rf s23fe/ROM/system/system/priv-app/AdaptSound*
 rm -rf s23fe/ROM/system/system/priv-app/AppUpdateCenter
 rm -rf s23fe/ROM/system/system/priv-app/AREmoji
 rm -rf s23fe/ROM/system/system/priv-app/AREmojiEditor
@@ -138,7 +138,7 @@ rm -rf s23fe/ROM/system/system/priv-app/AutoDoodle
 rm -rf s23fe/ROM/system/system/priv-app/AvatarEmojiSticker
 rm -rf s23fe/ROM/system/system/priv-app/BCService
 rm -rf s23fe/ROM/system/system/priv-app/BeaconManager
-rm -rf s23fe/ROM/system/system/priv-app/Bixby
+rm -rf s23fe/ROM/system/system/priv-app/Bixby*
 rm -rf s23fe/ROM/system/system/priv-app/BixbyVisionFramework3.5
 rm -rf s23fe/ROM/system/system/priv-app/BiometricSettings
 rm -rf s23fe/ROM/system/system/priv-app/BuiltInPrintService
@@ -146,6 +146,7 @@ rm -rf s23fe/ROM/system/system/priv-app/CIDManager
 rm -rf s23fe/ROM/system/system/priv-app/Crane
 rm -rf s23fe/ROM/system/system/priv-app/DeviceBasedServiceConsent
 rm -rf s23fe/ROM/system/system/priv-app/DeviceQualityAgent31
+rm -rf s23fe/ROM/system/system/priv-app/DigitalKey
 rm -rf s23fe/ROM/system/system/priv-app/DiagMonAgent91
 rm -rf s23fe/ROM/system/system/priv-app/DigitalWellbeing
 rm -rf s23fe/ROM/system/system/priv-app/DualOutFocusViewer_S
