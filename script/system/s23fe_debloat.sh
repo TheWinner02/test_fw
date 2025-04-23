@@ -111,6 +111,7 @@ rm -rf s23fe/ROM/system/system/lib64/libarcsoft_dualcam*
 rm -rf s23fe/ROM/system/system/lib64/libarcsoft_single_cam_glasses_seg.so
 rm -rf s23fe/ROM/system/system/lib64/libDocShadowRemoval.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libdualcam*
+rm -rf s23fe/ROM/system/system/lib64/libface_landmark.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libFaceRecognition.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libFacialAttributeDetection.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libFacialStickerEngine.arcsoft.so
