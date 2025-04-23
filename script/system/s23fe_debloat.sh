@@ -64,6 +64,7 @@ rm -rf s23fe/ROM/system/system/app/UnifiedWFC
 rm -rf s23fe/ROM/system/system/app/UniversalMDMClient
 rm -rf s23fe/ROM/system/system/app/VideoEditorLite_Dream_N
 rm -rf s23fe/ROM/system/system/app/VisionIntelligence3.7
+rm -rf s23fe/ROM/system/system/app/VisualCloudCore
 rm -rf s23fe/ROM/system/system/app/VoiceAccess
 rm -rf s23fe/ROM/system/system/app/VTCameraSetting
 rm -rf s23fe/ROM/system/system/app/WebManual
@@ -85,9 +86,11 @@ rm -rf s23fe/ROM/system/system/cameradata/camera-feature.xml
 # System/Etc Debloat
 
 rm -rf s23fe/ROM/system/system/etc/ailasso
+rm -rf s23fe/ROM/system/system/etc/ardoodle
 rm -rf s23fe/ROM/system/system/etc/epdg
 rm -rf s23fe/ROM/system/system/etc/kumiho
 rm -rf s23fe/ROM/system/system/etc/mars
+rm -rf s23fe/ROM/system/system/etc/mediasearch
 rm -rf s23fe/ROM/system/system/etc/theme
 rm -rf s23fe/ROM/system/system/etc/floating_feature.xml
 rm -rf s23fe/ROM/system/system/etc/init/fabric_crypto.rc
