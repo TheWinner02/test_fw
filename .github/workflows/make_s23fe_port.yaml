@@ -14,7 +14,7 @@ jobs:
     - name: Scarica Firmware
       run: |
         # Usando curl per scaricare il firmware da una URL
-        curl -L https://download1588.mediafire.com/k4lbz48yhctgDEPbmmyhyxdfySIAwVR9Kp9Mof8SAP8lOxRK-lQrtkswCzNy-ysxfr-zLkbb6Z3WV9hn5C8JZfm_3jcUVUhd_xBZ_cr6kxNmiVzWULziM3iKnqRJFqOIHUZF8rh3LnKp68QnOddOVirnev9zGAchbFPhe_XTcWBxqw/9hswk9rt13x9km2/s23fe.zip -o s23fe/ROM/system.zip
+        curl -L https://download1527.mediafire.com/bu719hbfd4ig6euBZ_xwXxMmhSmLOX9zB-NN9id3YlKsNDjCWlY_n96T-rXZ5niePZrbbFaRe1WiSmho_4UCJJb999j4IPLM2IePUGX2gVxDGBwbfJwArkQ8_JXUFw3sm_iVjouBv2px2Syz6Zf2gKVHPVkF1SU3oeS5MafcJPskOA/jw2btnw1w8n45x2/S23FE_Port.zip -o s23fe/ROM/system.zip
 
     - name: Estrai Firmware.zip
       run: |
