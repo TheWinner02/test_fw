@@ -96,6 +96,11 @@ rm -rf s23fe/ROM/system/system/etc/floating_feature.xml
 rm -rf s23fe/ROM/system/system/etc/init/fabric_crypto.rc
 rm -rf s23fe/ROM/system/system/etc/init/kumioencoder.rc
 
+# System/Framework Debloat
+
+rm -rf s23fe/ROM/system/system/framework/arm*
+rm -rf s23fe/ROM/system/system/framework/oat
+
 # System/lib Debloat
 
 rm -rf s23fe/ROM/system/system/lib/libface_landmark.arcsoft.so
