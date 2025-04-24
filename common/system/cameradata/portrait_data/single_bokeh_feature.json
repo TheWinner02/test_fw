@@ -1,16 +1,16 @@
 {
-    "deviceName": "exynos8825_common",
+    "deviceName": "default",
 
     "HumanAwareEngine": {
         "Perf_mode_preview": "PERFMODE_HIGH",
-        "Perf_mode_capture": "PERFMODE_LOW",
-        "Perf_mode_SDK": "PERFMODE_LOW",
-        "bloom_ev_tuning": "true"
+        "Perf_mode_capture": "PERFMODE_HIGH",
+        "Perf_mode_SDK": "PERFMODE_HIGH",
+        "bloom_ev_tuning": "false"
     },
 
     "BeautyEngine": {
-        "mode_preview": "BEAUTY_SINGLEBLUR_PREVIEW",
-        "mode_capture": "BEAUTY_SINGLEBLUR_CAPTURE"
+        "mode_preview": "BEAUTY_SINGLEBLUR_FD",
+        "mode_capture": "BEAUTY_SINGLEBLUR_FD"
     },
 
     "RelightingEngine": {
@@ -19,19 +19,19 @@
     },
 
     "LD_FD_engine": {
-        "mode_preview": "default",
+        "mode_preview": null,
         "mode_capture": "default"
     },
     
     "capture_segmentation": {
-        "Weightfile": "/system/cameradata/portrait_data/SRIB_HumanInsSeg_FP16_V300.snf",
-        "Version": "300",
+        "Weightfile": "/system/cameradata/portrait_data/SRIB_HumanInsSeg_FP16_V007.snf",
+        "Version": "007",
         "ComputeUnit": "COMPUTE_GPU",
-        "ExecutionDataType": "FLOAT16",
-        "ModelType": "MODEL_TYPE_INSTANCE_CAPTURE",
+        "ExecutionDataType": "QASYMM8",
+        "ModelType": "MODEL_TYPE_OBJ_INSTANCE_CAPTURE",
         "ModelFormat": "SNF",
         "Encryption": "false",
-        "input_size": [[768, 768], [768, 768], [768, 768], [768, 768]]
+        "input_size": [[384, 384], [384, 384], [384, 384], [384, 384]]
     },
     "capture_depth": {
         "Weightfile": null,
@@ -54,14 +54,14 @@
         "input_size": null
     },
     "preview_1st_segmentation": {
-        "Weightfile": "/system/cameradata/portrait_data/SRIB_HumanSegVideoLite_INT8_V101_ex8825_enn2014b.nnc",
-        "Version": "101",
-        "ComputeUnit": "COMPUTE_NPU",
+        "Weightfile": "/system/cameradata/portrait_data/SRIB_HumanSegLite_INT8_V004.snf",
+        "Version": "004",
+        "ComputeUnit": "COMPUTE_GPU",
         "ExecutionDataType": "QASYMM8",
-        "ModelType": "MODEL_TYPE_SEM_SEG_VIDEO",
-        "ModelFormat": "EDEN",
+        "ModelType": "MODEL_TYPE_SEG_LIVE",
+        "ModelFormat": "SNF",
         "Encryption": "false",
-        "input_size": [[288, 288], [288, 288], [288, 288], [288, 288]],
-        "effects_supported": [0, 6, 10, 11, 12, 13, 14, 15]
+        "input_size": [[224, 224], [224, 224], [224, 224], [224, 224]],
+        "effects_supported": [0, 1, 2, 6, 10, 11, 12, 13, 14, 15]
     }
 }
