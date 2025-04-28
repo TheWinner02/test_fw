@@ -112,6 +112,7 @@ rm -rf s23fe/ROM/system/system/lib64/lib_pet*
 rm -rf s23fe/ROM/system/system/lib64/libacz_hhdr.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libae_bracket_hdr.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libaiclearzoom_raw.arcsoft.so
+rm -rf s23fe/ROM/system/system/lib64/libarcsoft_*
 rm -rf s23fe/ROM/system/system/lib64/libarcsoft_dualcam*
 rm -rf s23fe/ROM/system/system/lib64/libarcsoft_single_cam_glasses_seg.so
 rm -rf s23fe/ROM/system/system/lib64/libDocShadowRemoval.arcsoft.so
