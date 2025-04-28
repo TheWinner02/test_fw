@@ -176,7 +176,8 @@ rm -rf s23fe/ROM/system/system/priv-app/Game*
 rm -rf s23fe/ROM/system/system/priv-app/GpuWatchApp
 rm -rf s23fe/ROM/system/system/priv-app/Hash*
 rm -rf s23fe/ROM/system/system/priv-app/HdmApk
-rm -rf s23fe/ROM/system/system/priv-app/HwModuleTest
+rm -rf s23fe/ROM/system/system/priv-app/Hw*
+rm -rf s23fe/ROM/system/system/priv-app/HW*
 rm -rf s23fe/ROM/system/system/priv-app/IAFDManagerService
 rm -rf s23fe/ROM/system/system/priv-app/IntelligentDynamicFpsService
 rm -rf s23fe/ROM/system/system/priv-app/IpsGeofence
