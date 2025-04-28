@@ -131,6 +131,7 @@ rm -rf s23fe/ROM/system/system/lib64/libMultiFrameProcessing30*
 rm -rf s23fe/ROM/system/system/lib64/libofi*
 rm -rf s23fe/ROM/system/system/lib64/libPet*
 rm -rf s23fe/ROM/system/system/lib64/libSuperresolution*
+rm -rf s23fe/ROM/system/system/lib64/libsuperresolution*
 
 # System/Priv-App Debloat
 
