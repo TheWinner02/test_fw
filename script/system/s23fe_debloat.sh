@@ -127,6 +127,7 @@ rm -rf s23fe/ROM/system/system/lib64/libGalleryDistortionCorrection.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libhumantracking.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libfacialrestoration.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libGalleryDistortionDetector.arcsoft.so
+rm -rf s23fe/ROM/system/system/lib64/libhighres_enhancement.arcsoft.so
 rm -rf s23fe/ROM/system/system/lib64/libkumiho*
 rm -rf s23fe/ROM/system/system/lib64/libMultiFrameProcessing30*
 rm -rf s23fe/ROM/system/system/lib64/libofi*
