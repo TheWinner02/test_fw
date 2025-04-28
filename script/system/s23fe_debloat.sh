@@ -152,6 +152,7 @@ rm -rf s23fe/ROM/system/system/priv-app/BiometricSettings
 rm -rf s23fe/ROM/system/system/priv-app/BuiltInPrintService
 rm -rf s23fe/ROM/system/system/priv-app/CIDManager
 rm -rf s23fe/ROM/system/system/priv-app/Crane
+rm -rf s23fe/ROM/system/system/priv-app/DevGPU*
 rm -rf s23fe/ROM/system/system/priv-app/DeviceBasedServiceConsent
 rm -rf s23fe/ROM/system/system/priv-app/DeviceQualityAgent31
 rm -rf s23fe/ROM/system/system/priv-app/DigitalKey
