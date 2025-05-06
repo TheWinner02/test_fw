@@ -1,0 +1,17 @@
+# Support edited apk
+
+services.jar
+
+search getMinimumSignatureSchemeVersionForTargetSdk
+
+Remove
+
+#invoke-static {p0}, Landroid/util/apk/ApkSignatureVerifier;->getMinimumSignatureSchemeVersionForTargetSdk(I)I
+
+#move-result p0
+
+Add
+
+const/4 p#0, 0x0
+
+Done
