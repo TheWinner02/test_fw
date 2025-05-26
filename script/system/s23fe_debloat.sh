@@ -64,7 +64,6 @@ rm -rf s23fe/ROM/system/system/app/UnifiedWFC
 rm -rf s23fe/ROM/system/system/app/UniversalMDMClient
 rm -rf s23fe/ROM/system/system/app/VideoEditorLite_Dream_N
 rm -rf s23fe/ROM/system/system/app/VisionIntelligence3.7
-rm -rf s23fe/ROM/system/system/app/VisualCloudCore
 rm -rf s23fe/ROM/system/system/app/VoiceAccess
 rm -rf s23fe/ROM/system/system/app/VTCameraSetting
 rm -rf s23fe/ROM/system/system/app/WebManual
