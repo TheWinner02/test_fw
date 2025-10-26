@@ -1,94 +1,90 @@
-name: Estrai Partizioni da Firmware Samsung
+name: Download e Estrai Firmware Samsung
 
 on:
   workflow_dispatch:
     inputs:
       firmware_url:
-        description: "🔗 Inserisci il link di download diretto del firmware (.tar.md5.zip)"
-        required: true
-        type: string
-      base_name:
-        description: "📁 Inserisci il nome base per i file di output (es. A53, S23FE)"
+        description: "Inserisci l'URL diretto del firmware (.zip o .tar.md5)"
         required: true
         type: string
 
 jobs:
-  extract_firmware:
-    runs-on: ubuntu-24.04
+  estrai_firmware:
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Installa Dipendenze Necessarie
+    - name: Installa dipendenze necessarie
       run: |
         sudo apt update
-        sudo apt install -y unzip lz4 python3 zip wget android-sdk-libsparse-utils
-        echo "📦 Installazione di lpunpack precompilato..."
-        wget -q https://github.com/erfanoabdi/LPTools/releases/download/2024.01/lpunpack -O /usr/local/bin/lpunpack
-        chmod +x /usr/local/bin/lpunpack
-        lpunpack --help || echo "✅ lpunpack installato correttamente"
+        DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
+          unzip lz4 android-sdk-libsparse-utils attr ccache clang ffmpeg golang \
+          libbrotli-dev libgtest-dev libprotobuf-dev libunwind-dev libpcre2-dev \
+          libzstd-dev lld protobuf-compiler webp wget git
 
     - name: Scarica Firmware
       run: |
-        rm -rf firmware
+        rm -rf firmware extracted
         mkdir firmware
-        echo "📦 Scarico firmware da:"
-        echo "${{ github.event.inputs.firmware_url }}"
-        curl -L "${{ github.event.inputs.firmware_url }}" -o firmware.zip
+        echo "📥 Download del firmware da: ${{ github.event.inputs.firmware_url }}"
+        curl -L "${{ github.event.inputs.firmware_url }}" -o firmware/firmware.zip
 
     - name: Estrai firmware.zip
       run: |
-        unzip -q firmware.zip -d firmware
-        rm firmware.zip
+        unzip firmware/firmware.zip -d firmware
+        rm -f firmware/firmware.zip
+        ls firmware
 
-    - name: Estrai tutti i file .img.lz4 dal TAR
+    - name: Estrai file .tar.md5
       run: |
         cd firmware
-        for f in AP*.tar.md5; do
-          echo "📦 Estrazione da $f"
-          tar -xf "$f" --wildcards '*.img.lz4' || true
+        for f in *.tar.md5; do
+          echo "Estrazione di $f"
+          tar -xf "$f"
         done
-        rm -f AP*.tar.md5
-        ls -1 *.lz4 || echo "⚠️ Nessun file .lz4 trovato"
+        rm -f *.tar.md5
+        ls
 
-    - name: Decomprimi tutti i file .lz4
+    - name: Estrai super.img.lz4
       run: |
         cd firmware
-        for f in *.lz4; do
-          base=$(basename "$f" .lz4)
-          echo "🧩 Decomprimo $f -> $base"
-          lz4 -d "$f" "$base" || true
-          rm -f "$f"
-        done
-        ls -lh *.img || echo "⚠️ Nessun file .img estratto"
+        if ls super.img.lz4 1> /dev/null 2>&1; then
+          lz4 -d super.img.lz4 super.img.sparse
+          rm -f super.img.lz4
+        fi
+        mv super.img.sparse ../super.img.sparse
 
-    - name: Suddividi super.img in partizioni
+    - name: Converti sparse in raw
+      run: |
+        simg2img super.img.sparse super.img
+        rm -f super.img.sparse
+
+    - name: Installa lpunpack da mirror GitHub
+      run: |
+        git clone https://github.com/Exynos-nibba/lpunpack-lpmake-mirror.git
+        sudo mv lpunpack-lpmake-mirror/lpunpack /usr/local/bin/lpunpack
+        sudo chmod +x /usr/local/bin/lpunpack
+
+    - name: Estrai partizioni da super.img
       run: |
         mkdir extracted
-        if [ -f firmware/super.img ]; then
-          echo "📖 Suddivisione super.img..."
-          lpunpack firmware/super.img extracted/ || echo "⚠️ Impossibile estrarre super.img"
-        else
-          echo "⚠️ Nessun super.img trovato, salto step."
-        fi
-        ls -lh extracted || true
+        lpunpack super.img extracted/
+        ls extracted
 
-    - name: Comprimi Tutto in ZIP
+    - name: Comprimi partizioni estratte
       run: |
-        cd firmware
-        cp -r ../extracted . || true
-        zip -r "../${{ github.event.inputs.base_name }}_estratto.zip" .
-        cd ..
-        ls -lh "${{ github.event.inputs.base_name }}_estratto.zip"
+        zip -r -9 firmware_parts.zip extracted
+        ls -lh firmware_parts.zip
 
-    - name: Setup SSH per SourceForge
+    - name: Setup SSH key
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
 
-    - name: Upload su SourceForge
+    - name: Upload partizioni a SourceForge
       run: |
-        scp "${{ github.event.inputs.base_name }}_estratto.zip" thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
+        scp firmware_parts.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
