@@ -1,60 +1,78 @@
-name: Download e Estrai Firmware Samsung
+name: Estrai Partizioni da Firmware Samsung
 
-on:  
-  workflow_dispatch:  # Permette di eseguire manualmente il workflow
+on:
+  workflow_dispatch:
+    inputs:
+      firmware_url:
+        description: "🔗 Inserisci il link di download diretto del firmware (.tar.md5.zip)"
+        required: true
+        type: string
+      base_name:
+        description: "📁 Inserisci il nome base per i file di output (es. A53, S23FE)"
+        required: true
+        type: string
 
 jobs:
-  download_firmware:
+  extract_firmware:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+
+    - name: Installa Dipendenze Necessarie
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y unzip lz4 python3 android-sdk-libsparse-utils git
+        git clone https://android.googlesource.com/platform/system/core.git
+        sudo cp core/fs_mgr/libsnapshot/lpunpack /usr/local/bin/ || true
+        sudo chmod +x /usr/local/bin/lpunpack
 
     - name: Scarica Firmware
       run: |
-        # Usando curl per scaricare il firmware da una URL
-        rm -rf a53 common edits fix s21 s23fe script && curl -L https://dl.samfwpremium.cloud/27ad7f2a1ab7a79be418e5a759d97925Ph63D2AZjRxCT6CBIcs-81yEIcrV6htNg5YjRYEK-aznZ9Hq1o70vZ6wxyL_PJxkMKSoEQKy9iq67S-P5GRgv0vD1R40wRp55oziwPLWYYnzHp89zgTqQMA4uFg9hOzZ0qmblgAOoSshwsa_As5NEb_m0K60PZ_elwCbK6TjN5LRWIDPn5EDz_6kO1arHkq9j5aP9v_VkdAccebh2EPcCYz9nxGJtz7qr0ZWluUiYOhcpw_K9ZJhc3pw_G1tt7l-rOBiZOUVq4qGT9NYe3f1X7eQTAydXlv4omQWWO5rucB_4clSMInZEK2dWqQaHROSB4gapZCcatHSrsMKkKs0va2z_iK3BCSAHlp4HurF-pvhkAQS8QYt6amjgNkGQGzMTUvTRYmcIJ7tKC1QJBByEQu18Os1_DMz8qRSAJmzIso6FTyrWjjrYm75-cMzMXmGrH-iINK25TrHKdggXtM_rvkPk6OLOMPIb0l-3W_oYJXiACJutNG8Ic-Ve6XATPgNq5yU1XBp0oyas5ICBirw4Q1lWXVAK8Faa8S2hSGRJaTpaGug3O0-43OnFcnYx77Rt7BsxdFTYeRgk6Q_6R7b0he2PSdNNUtPZiuUoyXzZR_z_4UcMfosOgMbasyZ3tFJUGz54-Paite3YJjWufJH2wKubSqI6Tz273CXyJPO6XjmUf2oktiAekIFOReBtEGz-GhpdvrxB-WOimZGCUxxccQAzd2aRMKBO8O6dmJaOKSAICODAB-sVLw5-2N5IiWRtLx90qVFQIcLoeKjxJ_IFwZE0epG6qUl4pEZ_M-5qo6PzpSYf__J2KNM71LLKFbg4AEyHSxgHeKVLjPAClNO8UQrPyN184nAmLzZMrZSP0GPLlk0NUCUpviI4AxG3eshU8IQmDL0FjGFGeQqoSz30It5T87sTfBz_uwQMhX_xVdTsff1yuIGVmxCvXIwT5rJoiSuqhMqyRzfQfeuS3qCsTAMOKEai9Aj8EpMNf7o_bRFZDnuHeeV2Xjjr8rfIePNLhW-I8A-bFDhT80EvwlH12DHSE0kYZfLT35BCv1IGLR7PFw-LQ-5V8k5oXc8CReaumR-Sqef03GWmiJ_r0nxQw?file_name=AP_A536BXXSEEYCB_A536BXXSEEYCB_MQB94333126_REV00_user_low_ship_MULTI_CERT_meta_OS14.tar.md5.zip -o firmware.zip
-
-    - name: Estrai Firmware.zip
-      run: |
-        # Estrai il firmware se è in formato zip
-        unzip firmware.zip -d firmware && rm -rf firmware.zip
-
-    - name: Estrai md5
-      run: |
-        # Estrai il firmware se è in formato md5
-        tar -xf firmware/AP*.tar.md5 super.img.lz4 && rm -rf firmware/AP*.tar.md5
         rm -rf firmware
+        mkdir firmware
+        echo "📦 Scarico firmware da:"
+        echo "${{ github.event.inputs.firmware_url }}"
+        curl -L "${{ github.event.inputs.firmware_url }}" -o firmware.zip
 
-    - name: Estrai lz4
+    - name: Estrai firmware.zip
       run: |
-        # Estrai il firmware se è in formato lz4
-        lz4 -d -q --rm super.img.lz4 super.img.sparse
+        unzip -q firmware.zip -d firmware
+        rm firmware.zip
 
-    - name: Installa simg2img
+    - name: Estrai super.img.lz4 dal TAR
       run: |
-        # Installa simg2img
-        sudo apt-get update && sudo apt-get install android-sdk-libsparse-utils
+        cd firmware
+        tar -xf AP*.tar.md5 super.img.lz4 || echo "⚠️ Nessun super.img.lz4 trovato!"
+        rm -f AP*.tar.md5
 
-    - name: Converti Sparse in Raw
+    - name: Decomprimi super.img.lz4
       run: |
-        # Converti sparse in raw
-        simg2img super.img.sparse super.img && rm -rf super.img.sparse
-        
-    - name: Comprimi Firmware
-      run: |
-        # Comprimi il firmware
-        zip -r -9 -FS -m firmware.zip super.img
+        cd firmware
+        lz4 -d super.img.lz4 super.img || echo "⚠️ super.img.lz4 non trovato o già estratto"
+        rm -f super.img.lz4 || true
 
-    - name: Setup SSH key
+    - name: Suddividi super.img in partizioni
       run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
+        mkdir extracted
+        lpunpack firmware/super.img extracted/ || echo "⚠️ Impossibile estrarre super.img"
+        ls -lh extracted || true
 
-    - name: Upload firmware files to SourceForge
+    - name: Comprimi Partizioni in ZIP
       run: |
-          scp firmware.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
-          
+        cd extracted
+        zip -r "../${{ github.event.inputs.base_name }}_partizioni.zip" .
+        cd ..
+        ls -lh "${{ github.event.inputs.base_name }}_partizioni.zip"
+
+    - name: Setup SSH per SourceForge
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
+
+    - name: Upload su SourceForge
+      run: |
+        scp "${{ github.event.inputs.base_name }}_partizioni.zip" thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
