@@ -23,10 +23,16 @@ jobs:
     - name: Installa Dipendenze Necessarie
       run: |
         sudo apt-get update
-        sudo apt-get install -y unzip lz4 python3 android-sdk-libsparse-utils git
-        git clone https://android.googlesource.com/platform/system/core.git
-        sudo cp core/fs_mgr/libsnapshot/lpunpack /usr/local/bin/ || true
-        sudo chmod +x /usr/local/bin/lpunpack
+        sudo apt-get install -y unzip lz4 python3 android-sdk-libsparse-utils wget zip
+        # Installa lpunpack (tentativo 1: pacchetto ufficiale)
+        sudo apt-get install -y android-sdk-lpunpack || true
+        # Se non esiste nel repo, scarica binario precompilato
+        if ! command -v lpunpack &>/dev/null; then
+          echo "⚙️ Installazione manuale di lpunpack..."
+          wget -q https://github.com/erfanoabdi/LPTools/releases/download/2024.01/lpunpack -O /usr/local/bin/lpunpack
+          sudo chmod +x /usr/local/bin/lpunpack
+        fi
+        lpunpack --help || echo "✅ lpunpack installato correttamente"
 
     - name: Scarica Firmware
       run: |
@@ -41,22 +47,36 @@ jobs:
         unzip -q firmware.zip -d firmware
         rm firmware.zip
 
-    - name: Estrai super.img.lz4 dal TAR
+    - name: Estrai super.img.lz4 (e altri img) dal TAR
       run: |
         cd firmware
-        tar -xf AP*.tar.md5 super.img.lz4 || echo "⚠️ Nessun super.img.lz4 trovato!"
+        for f in AP*.tar.md5; do
+          echo "📦 Estrazione da $f"
+          tar -xf "$f" --wildcards '*.img.lz4' || true
+        done
         rm -f AP*.tar.md5
+        ls -1 *.lz4 || echo "⚠️ Nessun file .lz4 trovato"
 
-    - name: Decomprimi super.img.lz4
+    - name: Decomprimi tutti i file .lz4
       run: |
         cd firmware
-        lz4 -d super.img.lz4 super.img || echo "⚠️ super.img.lz4 non trovato o già estratto"
-        rm -f super.img.lz4 || true
+        for f in *.lz4; do
+          base=$(basename "$f" .lz4)
+          echo "🧩 Decomprimo $f -> $base"
+          lz4 -d "$f" "$base" || true
+          rm -f "$f"
+        done
+        ls -lh *.img || echo "⚠️ Nessun file .img estratto"
 
     - name: Suddividi super.img in partizioni
       run: |
         mkdir extracted
-        lpunpack firmware/super.img extracted/ || echo "⚠️ Impossibile estrarre super.img"
+        if [ -f firmware/super.img ]; then
+          echo "📖 Suddivisione super.img..."
+          lpunpack firmware/super.img extracted/ || echo "⚠️ Impossibile estrarre super.img"
+        else
+          echo "⚠️ Nessun super.img trovato, salto step."
+        fi
         ls -lh extracted || true
 
     - name: Comprimi Partizioni in ZIP
