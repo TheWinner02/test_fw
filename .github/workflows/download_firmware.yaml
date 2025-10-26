@@ -14,7 +14,7 @@ on:
 
 jobs:
   extract_firmware:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Checkout Repository
@@ -22,16 +22,11 @@ jobs:
 
     - name: Installa Dipendenze Necessarie
       run: |
-        sudo apt-get update
-        sudo apt-get install -y unzip lz4 python3 android-sdk-libsparse-utils wget zip
-        # Installa lpunpack (tentativo 1: pacchetto ufficiale)
-        sudo apt-get install -y android-sdk-lpunpack || true
-        # Se non esiste nel repo, scarica binario precompilato
-        if ! command -v lpunpack &>/dev/null; then
-          echo "⚙️ Installazione manuale di lpunpack..."
-          wget -q https://github.com/erfanoabdi/LPTools/releases/download/2024.01/lpunpack -O /usr/local/bin/lpunpack
-          sudo chmod +x /usr/local/bin/lpunpack
-        fi
+        sudo apt update
+        sudo apt install -y unzip lz4 python3 zip wget android-sdk-libsparse-utils
+        echo "📦 Installazione di lpunpack precompilato..."
+        wget -q https://github.com/erfanoabdi/LPTools/releases/download/2024.01/lpunpack -O /usr/local/bin/lpunpack
+        chmod +x /usr/local/bin/lpunpack
         lpunpack --help || echo "✅ lpunpack installato correttamente"
 
     - name: Scarica Firmware
@@ -47,7 +42,7 @@ jobs:
         unzip -q firmware.zip -d firmware
         rm firmware.zip
 
-    - name: Estrai super.img.lz4 (e altri img) dal TAR
+    - name: Estrai tutti i file .img.lz4 dal TAR
       run: |
         cd firmware
         for f in AP*.tar.md5; do
@@ -79,12 +74,13 @@ jobs:
         fi
         ls -lh extracted || true
 
-    - name: Comprimi Partizioni in ZIP
+    - name: Comprimi Tutto in ZIP
       run: |
-        cd extracted
-        zip -r "../${{ github.event.inputs.base_name }}_partizioni.zip" .
+        cd firmware
+        cp -r ../extracted . || true
+        zip -r "../${{ github.event.inputs.base_name }}_estratto.zip" .
         cd ..
-        ls -lh "${{ github.event.inputs.base_name }}_partizioni.zip"
+        ls -lh "${{ github.event.inputs.base_name }}_estratto.zip"
 
     - name: Setup SSH per SourceForge
       run: |
@@ -95,4 +91,4 @@ jobs:
 
     - name: Upload su SourceForge
       run: |
-        scp "${{ github.event.inputs.base_name }}_partizioni.zip" thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
+        scp "${{ github.event.inputs.base_name }}_estratto.zip" thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
