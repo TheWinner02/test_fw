@@ -1,4 +1,4 @@
-name: Download e Estrai Firmware Samsung
+name: Download e Estrai Firmware Samsung (ottimizzato)
 
 on:
   workflow_dispatch:
@@ -23,60 +23,77 @@ jobs:
           unzip lz4 android-sdk-libsparse-utils attr ccache clang ffmpeg golang \
           libbrotli-dev libgtest-dev libprotobuf-dev libunwind-dev libpcre2-dev \
           libzstd-dev lld protobuf-compiler webp wget git
+        echo "✅ Dipendenze installate"
 
     - name: Scarica Firmware
       run: |
-        rm -rf firmware extracted
-        mkdir firmware
+        mkdir -p firmware
         echo "📥 Download del firmware da: ${{ github.event.inputs.firmware_url }}"
         curl -L "${{ github.event.inputs.firmware_url }}" -o firmware/firmware.zip
+        ls -lh firmware
 
     - name: Estrai firmware.zip
       run: |
         unzip firmware/firmware.zip -d firmware
         rm -f firmware/firmware.zip
+        echo "✅ Estrazione completata"
         ls firmware
 
     - name: Estrai file .tar.md5
       run: |
         cd firmware
         for f in *.tar.md5; do
-          echo "Estrazione di $f"
+          echo "📦 Estrazione di $f"
           tar -xf "$f"
+          rm -f "$f"
         done
-        rm -f *.tar.md5
-        ls
+        echo "✅ File .tar.md5 rimossi"
+        ls -lh
 
     - name: Estrai super.img.lz4
       run: |
         cd firmware
         if ls super.img.lz4 1> /dev/null 2>&1; then
+          echo "🔹 Decompressione super.img.lz4"
           lz4 -d super.img.lz4 super.img.sparse
           rm -f super.img.lz4
         fi
         mv super.img.sparse ../super.img.sparse
+        cd ..
+        rm -rf firmware
+        echo "✅ super.img.sparse pronto"
 
     - name: Converti sparse in raw
       run: |
+        echo "🔸 Conversione in formato RAW"
         simg2img super.img.sparse super.img
         rm -f super.img.sparse
+        echo "✅ super.img convertito"
 
-    - name: Installa lpunpack da mirror GitHub
+    - name: Installa lpunpack (mirror GitHub)
       run: |
-        git clone https://github.com/Exynos-nibba/lpunpack-lpmake-mirror.git
+        git clone --depth=1 https://github.com/Exynos-nibba/lpunpack-lpmake-mirror.git
         sudo mv lpunpack-lpmake-mirror/lpunpack /usr/local/bin/lpunpack
         sudo chmod +x /usr/local/bin/lpunpack
+        rm -rf lpunpack-lpmake-mirror
+        echo "✅ lpunpack installato"
 
     - name: Estrai partizioni da super.img
       run: |
         mkdir extracted
+        echo "📂 Estrazione partizioni da super.img..."
         lpunpack super.img extracted/
-        ls extracted
+        rm -f super.img
+        echo "✅ Estrazione completata"
+        ls -lh extracted
 
     - name: Comprimi partizioni estratte
       run: |
+        echo "🗜️  Compressione finale..."
         zip -r -9 firmware_parts.zip extracted
+        rm -rf extracted
         ls -lh firmware_parts.zip
+        echo "✅ File finale pronto"
 
     - name: Setup SSH key
       run: |
@@ -84,7 +101,9 @@ jobs:
         echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
+        echo "🔐 Chiave SSH configurata"
 
-    - name: Upload partizioni a SourceForge
+    - name: Upload su SourceForge
       run: |
         scp firmware_parts.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
+        echo "✅ Upload completato su SourceForge"
