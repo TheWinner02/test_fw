@@ -114,7 +114,7 @@ jobs:
         echo "📂 Estrazione di system.img da super.img..."
         mkdir extracted
         python3 lpunpack/lpunpack.py -p system super.img extracted/
-        rm -f super.imf
+        rm -f super.img
         chmod +x
         ls -lh extracted
         monitor_spazio
