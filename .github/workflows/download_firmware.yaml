@@ -112,8 +112,7 @@ jobs:
     - name: 🗂️ Estrai partizioni da super.img
       run: |
         echo "📂 Estrazione di system.img da super.img..."
-        mkdir extracted
-        python3 lpunpack/lpunpack.py -p system super.img extracted/
+        python3 lpunpack/lpunpack.py -p system super.img
         rm -f super.img
         ls -lh extracted
         monitor_spazio
