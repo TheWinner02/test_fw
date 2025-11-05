@@ -1,4 +1,4 @@
-name: Download e Estrai Firmware Samsung (spazio ottimizzato + monitoraggio)
+name: Download, Estrai e Converti Firmware Samsung (EXT4 → new.dat)
 
 on:
   workflow_dispatch:
@@ -13,139 +13,168 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
+    - name: 📦 Checkout Repository
       uses: actions/checkout@v4
 
-    # 🧹 LIBERA SPAZIO SU DISCO
-    - name: Free disk space (1/3)
+    # 🧹 PULIZIA E SPAZIO
+    - name: 🔧 Libera spazio su disco
       run: |
+        echo "🧹 Rimozione pacchetti non necessari..."
         sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
-        sudo docker image prune --all --force
-        sudo docker builder prune -a
+        sudo docker system prune -a -f
+        sudo apt clean
         df -h /
 
-    - name: Free disk space (2/3)
-      uses: jlumbroso/free-disk-space@main
-      with:
-        tool-cache: true
-
-    - name: Free disk space (3/3)
-      uses: rokibhasansagar/slimhub_actions@main
-      with:
-        retain: 'compiler_cmake'
-
-    # 🔧 FUNZIONE PER MONITORARE E CONTROLLARE LO SPAZIO
-    - name: Definisci funzione monitor_spazio
+    - name: 📊 Crea funzione monitor_spazio
       run: |
         echo '#!/bin/bash
         FREE=$(df --output=avail -BG / | tail -1 | sed "s/G//")
         echo "📊 Spazio libero: ${FREE} GB"
-        if [ "$FREE" -lt 1 ]; then
-          echo "❌ ERRORE: spazio insufficiente (<1 GB)"
+        if [ "$FREE" -lt 2 ]; then
+          echo "❌ ERRORE: spazio insufficiente (<2 GB)"
           exit 1
         fi' | sudo tee /usr/local/bin/monitor_spazio > /dev/null
         sudo chmod +x /usr/local/bin/monitor_spazio
 
     # ⚙️ INSTALLAZIONE DIPENDENZE
-    - name: Installa dipendenze necessarie
+    - name: ⚙️ Installa dipendenze necessarie
       run: |
         sudo apt update
         DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
-          unzip lz4 android-sdk-libsparse-utils attr ccache clang ffmpeg golang \
-          libbrotli-dev libgtest-dev libprotobuf-dev libunwind-dev libpcre2-dev \
-          libzstd-dev lld protobuf-compiler webp wget git
+          unzip lz4 android-sdk-libsparse-utils attr zip wget git tar e2fsprogs python3
         monitor_spazio
 
     # 📥 DOWNLOAD FIRMWARE
-    - name: Scarica Firmware
+    - name: 📥 Scarica firmware
       run: |
         mkdir -p firmware
-        echo "📥 Download del firmware da: ${{ github.event.inputs.firmware_url }}"
-        curl -L "${{ github.event.inputs.firmware_url }}" -o firmware/firmware.zip
+        echo "➡️ Download del firmware da: ${{ github.event.inputs.firmware_url }}"
+        curl -L "${{ github.event.inputs.firmware_url }}" -o firmware/firmware.zip --progress-bar
         ls -lh firmware
         monitor_spazio
 
-    # 📦 ESTRAZIONE ZIP
-    - name: Estrai firmware.zip
+    # 📦 ESTRAZIONE ZIP/TAR.MD5
+    - name: 📦 Estrai archivio principale
       run: |
-        unzip firmware/firmware.zip -d firmware
-        rm -f firmware/firmware.zip
-        echo "✅ Estrazione completata"
-        ls firmware
+        cd firmware
+        if file firmware.zip | grep -q "gzip compressed"; then
+          echo "📦 File TAR.MD5 rilevato, estrazione..."
+          tar -xf firmware.zip
+        else
+          echo "📦 File ZIP rilevato, estrazione..."
+          unzip firmware.zip
+        fi
+        rm -f firmware.zip
+        echo "✅ Estrazione completat"
         monitor_spazio
 
-    # 🔧 ESTRAZIONE TAR.MD5
-    - name: Estrai file .tar.md5
+    - name: 🔹 Estrai file .tar.md5
       run: |
         cd firmware
         for f in *.tar.md5; do
-          echo "📦 Estrazione di $f"
+          echo "📂 Estrazione di $f"
           tar -xf "$f"
           rm -f "$f"
         done
-        echo "✅ File .tar.md5 rimossi"
-        ls -lh
+        echo "✅ Tutti i file TAR.MD5 estratti"
         monitor_spazio
 
-    # 🔹 DECOMPRESSIONE SUPER.IMG.LZ4
-    - name: Estrai super.img.lz4
+    # 🔸 DECOMPRESSIONE SUPER.IMG.LZ4
+    - name: 🔸 Decomprimi super.img.lz4
       run: |
         cd firmware
-        if ls super.img.lz4 1> /dev/null 2>&1; then
+        if [ -f super.img.lz4 ]; then
           echo "🔹 Decompressione super.img.lz4"
           lz4 -d super.img.lz4 super.img.sparse
           rm -f super.img.lz4
         fi
-        mv super.img.sparse ../super.img.sparse
+        mv super.img.sparse ../super.img.sparse || true
         cd ..
         rm -rf firmware
         monitor_spazio
 
-    # 🔸 CONVERSIONE IN RAW
-    - name: Converti sparse in raw
+    # 🔁 CONVERSIONE SPARSE → RAW
+    - name: 🔁 Converti sparse in raw
       run: |
-        echo "🔸 Conversione in formato RAW"
+        echo "🔁 Conversione super.img.sparse → super.img"
         simg2img super.img.sparse super.img
         rm -f super.img.sparse
+        ls -lh super.img
         monitor_spazio
 
-    # 🧰 INSTALLAZIONE LPUNPACK
-    - name: Installa lpunpack (mirror GitHub)
+    # 🧰 LPUNPACK
+    - name: 🧰 Scarica e prepara lpunpack
       run: |
         git clone https://github.com/unix3dgforce/lpunpack.git
-        cd lpunpack
         monitor_spazio
 
     # 🗂️ ESTRAZIONE PARTIZIONI
-    - name: Estrai partizioni da super.img
+    - name: 🗂️ Estrai partizioni da super.img
       run: |
-        echo "📂 Estrazione partizioni da super.img..."
-        python3 lpunpack.py -p system super.img ..
-        rm -f ../super.img
-        echo "✅ Estrazione completata"
+        echo "📂 Estrazione di system.img da super.img..."
+        mkdir extracted
+        python3 lpunpack/lpunpack.py -p system super.img extracted/
+        rm -f super.imf
+        chmod +x
         ls -lh extracted
         monitor_spazio
 
-    # 🗜️ COMPRESSIONE FINALE
-    - name: Comprimi partizioni estratte
+    # 🧱 CREAZIONE IMMAGINE EXT4 DA CARTELLA SYSTEM
+    - name: 🧱 Crea immagine EXT4 da 4GB
+      run: |        git clone https://github.com/erfanoabdi/img2sdat.git
+        cd img2sdat
+        echo "🧱 Creazione immagine ext4 (4GB)..."
+        cd extracted
+        mkdir -p build
+        sudo dd if=/dev/zero of=build/system_ext4.img bs=1M count=4096
+        sudo mkfs.ext4 -L system build/system_ext4.img
+        mkdir mnt
+        sudo mount -o loop build/system_ext4.img mnt
+        sudo cp -a system/* mnt/
+        sudo umount mnt
+        rm -rf mnt
+        ls -lh build/system_ext4.img
+        monitor_spazio
+
+    # 🔹 CONVERSIONE EXT4 → SPARSE
+    - name: 🔹 Converte immagine EXT4 in sparse
       run: |
-        echo "🗜️ Compressione finale..."
-        zip -r -9 firmware_parts.zip extracted
-        rm -rf extracted
+        echo "🔹 Conversione in immagine sparse..."
+        cd extracted/build
+        img2simg system_ext4.img system_sparse.img
+        ls -lh system_sparse.img
+        monitor_spazio
+
+    # 🔸 CONVERSIONE SPARSE → NEW.DAT
+    - name: 🔸 Converti sparse in system.new.dat
+      run: |
+        echo "🔸 Clona tool img2sdat (Python 3 compatibile)"
+        cd ../../
+        git clone https://github.com/erfanoabdi/img2sdat.git
+        cd img2sdat
+        mkdir -p ../output
+        python3 img2sdat.py ../extracted/build/system_sparse.img -o ../output -v 4
+        echo "✅ Conversione completata"
+        ls -lh ../output
+        monitor_spazio
+
+    # 🗜️ COMPRESSIONE OUTPUT
+    - name: 🗜️ Comprimi risultati finali
+      run: |
+        echo "🗜️ Compressione file OTA..."
+        cd output
+        zip -9 ../firmware_parts.zip *
+        cd ..
         ls -lh firmware_parts.zip
         monitor_spazio
 
-    # 🔐 UPLOAD SU SOURCEFORGE
-    - name: Setup SSH key
+    # ☁️ UPLOAD SU SOURCEFORGE
+    - name: 🔐 Configura SSH e carica su SourceForge
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
-        monitor_spazio
-
-    - name: Upload su SourceForge
-      run: |
         scp firmware_parts.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
         echo "✅ Upload completato su SourceForge"
         monitor_spazio
