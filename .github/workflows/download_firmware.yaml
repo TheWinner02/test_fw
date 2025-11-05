@@ -115,56 +115,14 @@ jobs:
         mkdir extracted
         python3 lpunpack/lpunpack.py -p system super.img extracted/
         rm -f super.img
-        chmod +x
         ls -lh extracted
-        monitor_spazio
-
-    # 🧱 CREAZIONE IMMAGINE EXT4 DA CARTELLA SYSTEM
-    - name: 🧱 Crea immagine EXT4 da 4GB
-      run: |        git clone https://github.com/erfanoabdi/img2sdat.git
-        cd img2sdat
-        echo "🧱 Creazione immagine ext4 (4GB)..."
-        cd extracted
-        mkdir -p build
-        sudo dd if=/dev/zero of=build/system_ext4.img bs=1M count=4096
-        sudo mkfs.ext4 -L system build/system_ext4.img
-        mkdir mnt
-        sudo mount -o loop build/system_ext4.img mnt
-        sudo cp -a system/* mnt/
-        sudo umount mnt
-        rm -rf mnt
-        ls -lh build/system_ext4.img
-        monitor_spazio
-
-    # 🔹 CONVERSIONE EXT4 → SPARSE
-    - name: 🔹 Converte immagine EXT4 in sparse
-      run: |
-        echo "🔹 Conversione in immagine sparse..."
-        cd extracted/build
-        img2simg system_ext4.img system_sparse.img
-        ls -lh system_sparse.img
-        monitor_spazio
-
-    # 🔸 CONVERSIONE SPARSE → NEW.DAT
-    - name: 🔸 Converti sparse in system.new.dat
-      run: |
-        echo "🔸 Clona tool img2sdat (Python 3 compatibile)"
-        cd ../../
-        git clone https://github.com/erfanoabdi/img2sdat.git
-        cd img2sdat
-        mkdir -p ../output
-        python3 img2sdat.py ../extracted/build/system_sparse.img -o ../output -v 4
-        echo "✅ Conversione completata"
-        ls -lh ../output
         monitor_spazio
 
     # 🗜️ COMPRESSIONE OUTPUT
     - name: 🗜️ Comprimi risultati finali
       run: |
-        echo "🗜️ Compressione file OTA..."
-        cd output
-        zip -9 ../firmware_parts.zip *
-        cd ..
+        echo "🗜️ Compressione file..."
+        zip -9 firmware_parts.zip system.img
         ls -lh firmware_parts.zip
         monitor_spazio
 
