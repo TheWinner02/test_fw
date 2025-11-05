@@ -115,7 +115,7 @@ jobs:
         echo "📂 Estrazione di system.img da super.img..."
         python3 lpunpack/lpunpack.py -p system super.img out/
         rm -f super.img
-        ls -lh extracted
+        ls -lh out
         monitor_spazio
 
     # 🗜️ COMPRESSIONE OUTPUT
