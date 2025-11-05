@@ -112,19 +112,16 @@ jobs:
     # 🧰 INSTALLAZIONE LPUNPACK
     - name: Installa lpunpack (mirror GitHub)
       run: |
-        git clone --depth=1 https://github.com/Exynos-nibba/lpunpack-lpmake-mirror.git
-        sudo mv lpunpack-lpmake-mirror/lpunpack /usr/local/bin/lpunpack
-        sudo chmod +x /usr/local/bin/lpunpack
-        rm -rf lpunpack-lpmake-mirror
+        git clone https://github.com/unix3dgforce/lpunpack.git
+        cd lpunpack
         monitor_spazio
 
     # 🗂️ ESTRAZIONE PARTIZIONI
     - name: Estrai partizioni da super.img
       run: |
-        mkdir extracted
         echo "📂 Estrazione partizioni da super.img..."
-        lpunpack super.img extracted/
-        rm -f super.img
+        python3 lpunpack.py -p system super.img ..
+        rm -f ../super.img
         echo "✅ Estrazione completata"
         ls -lh extracted
         monitor_spazio
