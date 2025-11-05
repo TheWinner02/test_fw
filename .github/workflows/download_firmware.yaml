@@ -1,4 +1,4 @@
-name: Download, Estrai e Converti Firmware Samsung (EXT4 → new.dat)
+name: Download, Estrai e Converti Firmware Samsung
 
 on:
   workflow_dispatch:
@@ -65,7 +65,7 @@ jobs:
           unzip firmware.zip
         fi
         rm -f firmware.zip
-        echo "✅ Estrazione completat"
+        echo "✅ Estrazione completata"
         monitor_spazio
 
     - name: 🔹 Estrai file .tar.md5
@@ -122,7 +122,9 @@ jobs:
     - name: 🗜️ Comprimi risultati finali
       run: |
         echo "🗜️ Compressione file..."
-        zip -9 firmware_parts.zip out/system.img
+        cd out
+        zip -9 ../firmware_parts.zip system.img
+        cd ..
         ls -lh firmware_parts.zip
         monitor_spazio
 
