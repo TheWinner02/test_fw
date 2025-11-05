@@ -1,5 +1,0 @@
-<config>
-    <!-- Starting from Android P and above, this system feature is required for
-         getting Google Turbo play store updates. -->
-    <feature name="com.google.android.feature.TURBO_PRELOAD" />
-</config>

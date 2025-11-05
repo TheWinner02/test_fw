@@ -1,1 +1,0 @@
-# this folder contain all files for build a53 port for universal7885

@@ -1,1 +1,0 @@
-# this folder contain all files for build s23 fe port for universal7885
