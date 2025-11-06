@@ -41,7 +41,7 @@ jobs:
       run: |
         sudo apt update
         DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
-          unzip lz4 android-sdk-libsparse-utils attr zip wget git tar f2fs-tools erofs-utils e2fsprogs python3 brotli
+          unzip lz4 android-sdk-libsparse-utils attr zip wget git tar f2fs-tools erofs-utils e2fsprogs python3 brotli rsync
         monitor_spazio
 
     # 📥 DOWNLOAD FIRMWARE
