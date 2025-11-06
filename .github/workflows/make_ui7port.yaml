@@ -7,6 +7,11 @@ on:
         description: "Inserisci l'URL diretto del firmware EXYNOS (.zip o .tar.md5)"
         required: true
         type: string
+      fs_type:
+        description: "Specifica il tipo di filesystem (ext4, f2fs o erofs)"
+        required: true
+        default: "ext4"
+        type: string
 
 jobs:
   OneUI7_Auto_Port_Universal7885:
@@ -115,23 +120,11 @@ jobs:
         ls -lh out
         monitor_spazio
 
-    # 🔍 RILEVA FILESYSTEM
-    - name: 🔍 Rileva tipo di filesystem (system.img)
-      id: detect
-      run: |
-        cd ACK/out
-        echo "🔍 Rilevamento filesystem..."
-        TYPE=$(file system.img | grep -oE 'ext4|f2fs|erofs' || echo "unknown")
-        echo "📦 Tipo rilevato: $TYPE"
-        echo "type=$TYPE" >> $GITHUB_OUTPUT
-        cd ../..
-        monitor_spazio
-
-    # 🧩 MONTA SYSTEM E PRODUCT IN BASE AL TIPO
+    # 🧩 MONTA SYSTEM E PRODUCT USANDO FS_TYPE
     - name: 🧩 Monta system.img e product.img
       run: |
         cd ACK
-        TYPE="${{ steps.detect.outputs.type }}"
+        TYPE="${{ github.event.inputs.fs_type }}"
         echo "⚙️ Montaggio filesystem ($TYPE)..."
         mkdir -p system_mount system_modified product_mount product_modified
 
