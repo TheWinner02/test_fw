@@ -113,10 +113,6 @@ jobs:
         ls -lh out
         monitor_spazio
 
-    #########################################################################
-    # ⚙️ NUOVA SEZIONE: RICOMPILE SYSTEM.IMG RAW → SYSTEM.NEW.DAT.BR
-    #########################################################################
-
     - name: ⚙️ Rileva filesystem di system.img
       id: detect
       run: |
@@ -139,7 +135,8 @@ jobs:
         fi
 
         echo "📂 Copia contenuto di system.img..."
-        sudo cp -a system_mount/* system_modified/ && sudo cp -a product_mount/* product_modified/
+        sudo rsync -aHAX system_mount/* system_modified/ && sudo rsync -aHAX product_mount/* product_modified/
+        sudo sync
         sudo umount system_mount product_mount
         sudo rm -f out/*
         echo "✅ Contenuto estratto in system_modified/"
@@ -165,7 +162,8 @@ jobs:
         sudo mkdir -p /mnt/system
         sudo mount -o loop out/system.img /mnt/system
         echo "📂 Copia file in system..."
-        sudo cp -a system_modified/* /mnt/system/
+        sudo rsync -aHAX system_modified/* /mnt/system/
+        sudo sync
         sudo umount /mnt/system
         sudo rm -rf /mnt/system && sudo rm -rf system_modified
 
@@ -181,8 +179,21 @@ jobs:
       run: |
         git clone https://github.com/xpirt/img2sdat.git
         cd img2sdat
-        python3 img2sdat.py ../out/system_sparse.img -o ../ -v 4
-        ls -lh system.new.dat
+        python3 img2sdat.py ../out/system_sparse.img -o ../out -v 4
+        sudo rm -f ../out/system_sparse.img && cd ..
+        ls -lh out/system.new.dat
+        monitor_spazio
+        
+    # 🗜️ COMPRESSIONE OUTPUT
+    - name: 🗜️ Comprimi risultati finali
+      run: |
+        echo "🗜️ Compressione file..."
+        mkdir out/product
+        sudo rsync -aHAX product_modified/* out/product/ && sudo rm -rf product_modified
+        cd out
+        zip -9 ../Port.zip *
+        cd .. && sudo rm -rf out
+        ls -lh Port.zip
         monitor_spazio
 
     # ☁️ UPLOAD SU SOURCEFORGE
@@ -192,6 +203,6 @@ jobs:
         echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
-        scp out/system.new.dat.br thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
+        scp Port.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
         echo "✅ Upload completato su SourceForge"
         monitor_spazio
