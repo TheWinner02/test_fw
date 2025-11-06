@@ -41,56 +41,51 @@ jobs:
       run: |
         sudo apt update
         DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
-          unzip lz4 android-sdk-libsparse-utils attr zip wget git tar f2fs-tools erofs-utils e2fsprogs python3
+          unzip lz4 android-sdk-libsparse-utils attr zip wget git tar f2fs-tools erofs-utils e2fsprogs python3 brotli
         monitor_spazio
 
     # 📥 DOWNLOAD FIRMWARE
     - name: 📥 Scarica firmware
       run: |
-        mkdir -p firmware
+        mkdir -p ACK
         echo "➡️ Download del firmware da: ${{ github.event.inputs.firmware_url }}"
-        curl -L "${{ github.event.inputs.firmware_url }}" -o firmware/firmware.zip --progress-bar
-        ls -lh firmware
+        curl -L "${{ github.event.inputs.firmware_url }}" -o ACK/base.zip --progress-bar
+        ls -lh ACK
         monitor_spazio
 
     # 📦 ESTRAZIONE ZIP/TAR.MD5
     - name: 📦 Estrai archivio principale
       run: |
-        cd firmware
-        if file firmware.zip | grep -q "gzip compressed"; then
+        cd ACK
+        if file base.zip | grep -q "gzip compressed"; then
           echo "📦 File TAR.MD5 rilevato, estrazione..."
-          tar -xf firmware.zip
+          tar -xf base.zip
         else
           echo "📦 File ZIP rilevato, estrazione..."
-          unzip firmware.zip
+          unzip base.zip
         fi
-        rm -f firmware.zip
+        rm -f base.zip
         echo "✅ Estrazione completata"
         monitor_spazio
 
     - name: 🔹 Estrai file .tar.md5
       run: |
-        cd firmware
         for f in *.tar.md5; do
           echo "📂 Estrazione di $f"
-          tar -xf "$f"
+          tar -xf "$f" -wildcards super.*.*
           rm -f "$f"
         done
-        echo "✅ Tutti i file TAR.MD5 estratti"
+        echo "✅ File TAR.MD5 estratti"
         monitor_spazio
 
     # 🔸 DECOMPRESSIONE SUPER.IMG.LZ4
     - name: 🔸 Decomprimi super.img.lz4
       run: |
-        cd firmware
         if [ -f super.img.lz4 ]; then
           echo "🔹 Decompressione super.img.lz4"
           lz4 -d super.img.lz4 super.img.sparse
           rm -f super.img.lz4
         fi
-        mv super.img.sparse ../super.img.sparse || true
-        cd ..
-        rm -rf firmware
         monitor_spazio
 
     # 🔁 CONVERSIONE SPARSE → RAW
@@ -112,20 +107,82 @@ jobs:
     - name: 🗂️ Estrai partizioni da super.img
       run: |
         mkdir out
-        echo "📂 Estrazione di system.img da super.img..."
-        python3 lpunpack/lpunpack.py -p system super.img out/
+        echo "📂 Estrazione da super.img..."
+        python3 lpunpack/lpunpack.py -p product,system super.img out/
         rm -f super.img
         ls -lh out
         monitor_spazio
 
-    # 🗜️ COMPRESSIONE OUTPUT
-    - name: 🗜️ Comprimi risultati finali
+    #########################################################################
+    # ⚙️ NUOVA SEZIONE: RICOMPILE SYSTEM.IMG RAW → SYSTEM.NEW.DAT.BR
+    #########################################################################
+
+    - name: ⚙️ Rileva filesystem di system.img
+      id: detect
       run: |
-        echo "🗜️ Compressione file..."
-        cd out
-        zip -9 ../firmware_parts.zip system.img
-        cd ..
-        ls -lh firmware_parts.zip
+        TYPE=$(file out/system.img | grep -oE 'ext4|f2fs|erofs' || true)
+        echo "✅ Filesystem rilevato: $TYPE"
+        echo "type=$TYPE" >> $GITHUB_OUTPUT
+        monitor_spazio
+
+    - name: 🧩 Monta e modifica system.img
+      run: |
+        TYPE=${{ steps.detect.outputs.type }}
+        mkdir system_mount system_modified && mkdir product_mount product_modified 
+
+        if [ "$TYPE" = "ext4" ]; then
+          sudo mount -o loop out/system.img system_mount && sudo mount -o loop out/product.img product_mount
+        elif [ "$TYPE" = "f2fs" ]; then
+          sudo mount -t f2fs -o loop out/system.img system_mount && sudo mount -t f2fs -o loop out/product.img product_mount
+        elif [ "$TYPE" = "erofs" ]; then
+          sudo mount -t erofs -o loop out/system.img system_mount && sudo mount -t erofs -o loop out/product.img product_mount
+        fi
+
+        echo "📂 Copia contenuto di system.img..."
+        sudo cp -a system_mount/* system_modified/ && sudo cp -a product_mount/* product_modified/
+        sudo umount system_mount product_mount
+        sudo rm -f out/*
+        echo "✅ Contenuto estratto in system_modified/"
+        monitor_spazio
+
+    - name: 📁 Applica correzzioni
+      run: |
+        echo "⚙️ OneUI 7.0 Port AutoBuild..."
+        chmod +x ../script/system/ui7_debloat.sh
+        sudo bash ../script/system/ui7_debloat.sh
+        
+    - name: 🏗️ Compressione system.img
+      run: |
+        echo "⚙️ Ricompilazione filesystem: $TYPE"
+        
+        # 🔹 Crea file vuoto da 4GB
+        dd if=/dev/zero of=out/system.img bs=1M count=4096 status=progress
+
+        # 🔹 Format ext4 con label system
+        mkfs.ext4 -F -L system out/system.img
+
+        # 🔹 Monta e copia i file dentro
+        sudo mkdir -p /mnt/system
+        sudo mount -o loop out/system.img /mnt/system
+        echo "📂 Copia file in system..."
+        sudo cp -a system_modified/* /mnt/system/
+        sudo umount /mnt/system
+        sudo rm -rf /mnt/system && sudo rm -rf system_modified
+
+        # 🔹 Converte in immagine sparse
+        echo "🔁 Conversione in sparse image..."
+        img2simg out/system.img out/system_sparse.img
+        echo "✅ Ricompilazione completata"
+        sudo rm -f out/system.img
+        ls -lh out/system_sparse.img
+        monitor_spazio
+
+    - name: 🔄 Converti system_sparse.img → .new.dat
+      run: |
+        git clone https://github.com/xpirt/img2sdat.git
+        cd img2sdat
+        python3 img2sdat.py ../out/system_sparse.img -o ../ -v 4
+        ls -lh system.new.dat
         monitor_spazio
 
     # ☁️ UPLOAD SU SOURCEFORGE
@@ -135,6 +192,6 @@ jobs:
         echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
-        scp firmware_parts.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
+        scp out/system.new.dat.br thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
         echo "✅ Upload completato su SourceForge"
         monitor_spazio
