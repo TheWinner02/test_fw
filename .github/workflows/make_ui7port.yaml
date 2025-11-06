@@ -9,7 +9,7 @@ on:
         type: string
 
 jobs:
-  estrai_firmware:
+ OneUI7_Auto_Port_Universal7885:
     runs-on: ubuntu-latest
 
     steps:
@@ -70,13 +70,11 @@ jobs:
 
     - name: 🔹 Estrai file .tar.md5
       run: |
-        for f in *.tar.md5; do
-          echo "📂 Estrazione di $f"
-          tar -xf "$f" -wildcards super.*.*
-          rm -f "$f"
-        done
-        echo "✅ File TAR.MD5 estratti"
-        monitor_spazio
+          echo "📂 Estrazione di .tar.md5"
+          tar --wildcards -xf *.tar.md5 'super.*.*'
+          rm -f *.tar.md5
+          echo "✅ File TAR.MD5 estratti"
+          monitor_spazio
 
     # 🔸 DECOMPRESSIONE SUPER.IMG.LZ4
     - name: 🔸 Decomprimi super.img.lz4
