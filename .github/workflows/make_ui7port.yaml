@@ -120,53 +120,38 @@ jobs:
         ls -lh out
         monitor_spazio
 
-    # 🧩 MONTA SYSTEM E PRODUCT USANDO FS_TYPE
+    # 🧩 MONTA SYSTEM E PRODUCT IN BASE AL TIPO (fallback su EXT4)
     - name: 🧩 Monta system.img e product.img
       run: |
         cd ACK
-        TYPE="${{ github.event.inputs.fs_type }}"
-        echo "⚙️ Montaggio filesystem ($TYPE)..."
+        TYPE="${{ steps.detect.outputs.type }}"
+        echo "⚙️ Tipo rilevato: $TYPE"
+        echo "⚙️ Montaggio (forzato in ext4/fuse se necessario)..."
         mkdir -p system_mount system_modified product_mount product_modified
 
-        case "$TYPE" in
-          ext4)
-            echo "🔹 Montaggio EXT4..."
-            sudo mount -t ext4 -o loop out/system.img system_mount
-            sudo mount -t ext4 -o loop out/product.img product_mount
-            ;;
-          f2fs)
-            echo "🔹 Montaggio F2FS..."
-            sudo mount -t f2fs -o loop out/system.img system_mount
-            sudo mount -t f2fs -o loop out/product.img product_mount
-            ;;
-          erofs)
-            echo "🔹 Montaggio EROFS tramite fuse..."
-            mkdir -p fuse_sys fuse_prod
-            erofsfuse out/system.img fuse_sys
-            erofsfuse out/product.img fuse_prod
-            sudo rsync -aHAX fuse_sys/ system_modified/
-            sudo rsync -aHAX fuse_prod/ product_modified/
-            fusermount -u fuse_sys || true
-            fusermount -u fuse_prod || true
-            rm -rf fuse_sys fuse_prod
-            ;;
-          *)
-            echo "⚠️ Tipo sconosciuto ($TYPE), provo mount automatico..."
-            sudo mount -o loop out/system.img system_mount || true
-            sudo mount -o loop out/product.img product_mount || true
-            ;;
-        esac
-
-        if [ "$TYPE" != "erofs" ]; then
+        if [ "$TYPE" = "erofs" ]; then
+          echo "🔹 Montaggio EROFS tramite fuse..."
+          mkdir -p fuse_sys fuse_prod
+          erofsfuse out/system.img fuse_sys
+          erofsfuse out/product.img fuse_prod
+          sudo rsync -aHAX fuse_sys/ system_modified/
+          sudo rsync -aHAX fuse_prod/ product_modified/
+          fusermount -u fuse_sys || true
+          fusermount -u fuse_prod || true
+          rm -rf fuse_sys fuse_prod
+        else
+          echo "🔹 Montaggio EXT4 forzato (compatibilità GitHub Actions)..."
+          sudo mount -t ext4 -o loop out/system.img system_mount || true
+          sudo mount -t ext4 -o loop out/product.img product_mount || true
           echo "📂 Copia contenuto..."
           sudo rsync -aHAX system_mount/ system_modified/ || true
           sudo rsync -aHAX product_mount/ product_modified/ || true
+          echo "🧹 Smontaggio..."
+          sudo umount system_mount || true
+          sudo umount product_mount || true
+          sudo rm -rf system_mount product_mount
         fi
 
-        echo "🧹 Smontaggio..."
-        sudo umount system_mount || true
-        sudo umount product_mount || true
-        sudo rm -rf system_mount product_mount
         echo "✅ Contenuto estratto in system_modified/ e product_modified/"
         monitor_spazio
 
