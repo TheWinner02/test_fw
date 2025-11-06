@@ -121,39 +121,41 @@ jobs:
         monitor_spazio
 
     # 🧩 MONTA SYSTEM E PRODUCT IN BASE AL TIPO (fallback su EXT4)
-    - name: 🧩 Monta system.img e product.img
-      run: |
-        cd ACK
-        TYPE="${{ steps.detect.outputs.type }}"
-        echo "⚙️ Tipo rilevato: $TYPE"
-        echo "⚙️ Montaggio (forzato in ext4/fuse se necessario)..."
-        mkdir -p system_mount system_modified product_mount product_modified
+- name: 🧩 Monta system.img e product.img
+  run: |
+    cd ACK
+    TYPE="${{ steps.detect.outputs.type }}"
+    echo "⚙️ Tipo rilevato: $TYPE"
+    mkdir -p system_mount system_modified product_mount product_modified
 
-        if [ "$TYPE" = "erofs" ]; then
-          echo "🔹 Montaggio EROFS tramite fuse..."
-          mkdir -p fuse_sys fuse_prod
-          erofsfuse out/system.img fuse_sys
-          erofsfuse out/product.img fuse_prod
-          sudo rsync -aHAX fuse_sys/ system_modified/
-          sudo rsync -aHAX fuse_prod/ product_modified/
-          fusermount -u fuse_sys || true
-          fusermount -u fuse_prod || true
-          rm -rf fuse_sys fuse_prod
-        else
-          echo "🔹 Montaggio EXT4 forzato (compatibilità GitHub Actions)..."
-          sudo mount -t ext4 -o loop out/system.img system_mount || true
-          sudo mount -t ext4 -o loop out/product.img product_mount || true
-          echo "📂 Copia contenuto..."
-          sudo rsync -aHAX system_mount/ system_modified/ || true
-          sudo rsync -aHAX product_mount/ product_modified/ || true
-          echo "🧹 Smontaggio..."
-          sudo umount system_mount || true
-          sudo umount product_mount || true
-          sudo rm -rf system_mount product_mount
-        fi
+    if [ "$TYPE" = "erofs" ]; then
+      echo "🔹 Montaggio EROFS tramite fuse..."
+      mkdir -p fuse_sys fuse_prod
+      erofsfuse out/system.img fuse_sys
+      erofsfuse out/product.img fuse_prod
+      sudo rsync -aHAX fuse_sys/ system_modified/
+      sudo rsync -aHAX fuse_prod/ product_modified/
+      fusermount -u fuse_sys || true
+      fusermount -u fuse_prod || true
+      rm -rf fuse_sys fuse_prod
+    else
+      echo "🔹 Montaggio EXT4..."
+      sudo mount -t ext4 -o loop out/system.img system_mount || { echo "❌ Mount di system.img fallito"; exit 1; }
+      sudo mount -t ext4 -o loop out/product.img product_mount || { echo "❌ Mount di product.img fallito"; exit 1; }
 
-        echo "✅ Contenuto estratto in system_modified/ e product_modified/"
-        monitor_spazio
+      echo "📂 Copia contenuto..."
+      sudo rsync -aHAX system_mount/ system_modified/
+      sudo rsync -aHAX product_mount/ product_modified/
+
+      echo "🧹 Smontaggio..."
+      sudo umount system_mount
+      sudo umount product_mount
+      sudo rm -rf system_mount product_mount
+    fi
+
+    echo "✅ Contenuto estratto in system_modified/ e product_modified/"
+    ls -lah system_modified | head
+    monitor_spazio
 
     # ⚙️ APPLICA MODIFICHE
     - name: ⚙️ Applica modifiche OneUI 7.0
