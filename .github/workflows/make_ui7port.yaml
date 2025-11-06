@@ -1,4 +1,4 @@
-name: Make OneUI 7.0 Port for Universall7885
+name: Make OneUI 7.0 Port for Universal7885
 
 on:
   workflow_dispatch:
