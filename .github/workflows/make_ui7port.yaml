@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       firmware_url:
-        description: "Inserisci l'URL diretto del firmware EXYNOS(.zip o .tar.md5)"
+        description: "Inserisci l'URL diretto del firmware EXYNOS (.zip o .tar.md5)"
         required: true
         type: string
 
 jobs:
- OneUI7_Auto_Port_Universal7885:
+  OneUI7_Auto_Port_Universal7885:
     runs-on: ubuntu-latest
 
     steps:
@@ -57,7 +57,7 @@ jobs:
     - name: 📦 Estrai archivio principale
       run: |
         cd ACK
-        if file base.zip | grep -q "gzip compressed"; then
+        if [[ "${{ github.event.inputs.firmware_url }}" == *.tar.md5 ]]; then
           echo "📦 File TAR.MD5 rilevato, estrazione..."
           tar -xf base.zip
         else
@@ -68,17 +68,26 @@ jobs:
         echo "✅ Estrazione completata"
         monitor_spazio
 
+    # 🔹 ESTRAZIONE DEL FILE SUPER
     - name: 🔹 Estrai file .tar.md5
       run: |
-          echo "📂 Estrazione di .tar.md5"
-          tar --wildcards -xf *.tar.md5 'super.*.*'
-          rm -f *.tar.md5
-          echo "✅ File TAR.MD5 estratti"
-          monitor_spazio
+        cd ACK
+        echo "📂 Estrazione di .tar.md5"
+        TAR_FILE=$(ls *.tar.md5 2>/dev/null | head -n 1 || true)
+        if [ -f "$TAR_FILE" ]; then
+          echo "➡️ Estrazione di $TAR_FILE"
+          tar --wildcards -xf "$TAR_FILE" 'super.*.*'
+          rm -f "$TAR_FILE"
+          echo "✅ File TAR.MD5 estratto"
+        else
+          echo "⚠️ Nessun file .tar.md5 trovato"
+        fi
+        monitor_spazio
 
     # 🔸 DECOMPRESSIONE SUPER.IMG.LZ4
     - name: 🔸 Decomprimi super.img.lz4
       run: |
+        cd ACK
         if [ -f super.img.lz4 ]; then
           echo "🔹 Decompressione super.img.lz4"
           lz4 -d super.img.lz4 super.img.sparse
@@ -89,6 +98,7 @@ jobs:
     # 🔁 CONVERSIONE SPARSE → RAW
     - name: 🔁 Converti sparse in raw
       run: |
+        cd ACK
         echo "🔁 Conversione super.img.sparse → super.img"
         simg2img super.img.sparse super.img
         rm -f super.img.sparse
@@ -104,25 +114,30 @@ jobs:
     # 🗂️ ESTRAZIONE PARTIZIONI
     - name: 🗂️ Estrai partizioni da super.img
       run: |
-        mkdir out
+        cd ACK
+        mkdir -p out
         echo "📂 Estrazione da super.img..."
-        python3 lpunpack/lpunpack.py -p product,system super.img out/
+        python3 ../lpunpack/lpunpack.py -p product,system super.img out/
         rm -f super.img
         ls -lh out
         monitor_spazio
 
+    # ⚙️ RILEVA FILESYSTEM
     - name: ⚙️ Rileva filesystem di system.img
       id: detect
       run: |
+        cd ACK
         TYPE=$(file out/system.img | grep -oE 'ext4|f2fs|erofs' || true)
         echo "✅ Filesystem rilevato: $TYPE"
         echo "type=$TYPE" >> $GITHUB_OUTPUT
         monitor_spazio
 
+    # 🧩 MONTA E MODIFICA SYSTEM/PRODUCT
     - name: 🧩 Monta e modifica system.img
       run: |
+        cd ACK
         TYPE=${{ steps.detect.outputs.type }}
-        mkdir system_mount system_modified && mkdir product_mount product_modified 
+        mkdir -p system_mount system_modified product_mount product_modified 
 
         if [ "$TYPE" = "ext4" ]; then
           sudo mount -o loop out/system.img system_mount && sudo mount -o loop out/product.img product_mount
@@ -132,71 +147,76 @@ jobs:
           sudo mount -t erofs -o loop out/system.img system_mount && sudo mount -t erofs -o loop out/product.img product_mount
         fi
 
-        echo "📂 Copia contenuto di system.img..."
-        sudo rsync -aHAX system_mount/* system_modified/ && sudo rsync -aHAX product_mount/* product_modified/
+        echo "📂 Copia contenuto..."
+        sudo rsync -aHAX system_mount/ system_modified/ && sudo rsync -aHAX product_mount/ product_modified/
         sudo sync
         sudo umount system_mount product_mount
-        sudo rm -f out/*
+        sudo rm -rf system_mount product_mount
         echo "✅ Contenuto estratto in system_modified/"
         monitor_spazio
 
-    - name: 📁 Applica correzzioni
+    # 🧰 APPLICA CORREZIONI
+    - name: 📁 Applica correzioni
       run: |
+        cd ACK
         echo "⚙️ OneUI 7.0 Port AutoBuild..."
         chmod +x ../script/system/ui7_debloat.sh
         sudo bash ../script/system/ui7_debloat.sh
-        
-    - name: 🏗️ Compressione system.img
-      run: |
-        echo "⚙️ Ricompilazione filesystem: $TYPE"
-        
-        # 🔹 Crea file vuoto da 4GB
-        dd if=/dev/zero of=out/system.img bs=1M count=4096 status=progress
 
-        # 🔹 Format ext4 con label system
+    # 🏗️ RICOMPILA SYSTEM IN EXT4
+    - name: 🏗️ Ricompila system.img (EXT4)
+      run: |
+        cd ACK
+        echo "⚙️ Ricompilazione filesystem: ext4"
+
+        dd if=/dev/zero of=out/system.img bs=1M count=4096 status=progress
         mkfs.ext4 -F -L system out/system.img
 
-        # 🔹 Monta e copia i file dentro
         sudo mkdir -p /mnt/system
         sudo mount -o loop out/system.img /mnt/system
         echo "📂 Copia file in system..."
-        sudo rsync -aHAX system_modified/* /mnt/system/
+        sudo rsync -aHAX system_modified/ /mnt/system/
         sudo sync
         sudo umount /mnt/system
-        sudo rm -rf /mnt/system && sudo rm -rf system_modified
+        sudo rm -rf /mnt/system system_modified
 
-        # 🔹 Converte in immagine sparse
         echo "🔁 Conversione in sparse image..."
         img2simg out/system.img out/system_sparse.img
-        echo "✅ Ricompilazione completata"
         sudo rm -f out/system.img
         ls -lh out/system_sparse.img
         monitor_spazio
 
+    # 🔄 CONVERTI SYSTEM → NEW.DAT
     - name: 🔄 Converti system_sparse.img → .new.dat
       run: |
+        cd ACK
         git clone https://github.com/xpirt/img2sdat.git
         cd img2sdat
         python3 img2sdat.py ../out/system_sparse.img -o ../out -v 4
-        sudo rm -f ../out/system_sparse.img && cd ..
+        sudo rm -f ../out/system_sparse.img
+        cd ..
         ls -lh out/system.new.dat
         monitor_spazio
-        
+
     # 🗜️ COMPRESSIONE OUTPUT
     - name: 🗜️ Comprimi risultati finali
       run: |
+        cd ACK
         echo "🗜️ Compressione file..."
-        mkdir out/product
-        sudo rsync -aHAX product_modified/* out/product/ && sudo rm -rf product_modified
+        sudo mkdir -p out/product
+        sudo rsync -aHAX product_modified/ out/product/
+        sudo rm -rf product_modified
         cd out
         zip -9 ../Port.zip *
-        cd .. && sudo rm -rf out
+        cd ..
+        sudo rm -rf out
         ls -lh Port.zip
         monitor_spazio
 
     # ☁️ UPLOAD SU SOURCEFORGE
     - name: 🔐 Configura SSH e carica su SourceForge
       run: |
+        cd ACK
         mkdir -p ~/.ssh
         echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
