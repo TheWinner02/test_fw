@@ -1,325 +1,325 @@
 # System/ Debloat
-rm -rf system_modified/system/heimdallddata
-rm -rf system_modified/system/hidden
-rm -rf system_modified/system/preload
-rm -rf system_modified/system/voicecommanddata
-rm -f system_modified/system/product
-rm -f system_modified/system/vendor
+sudo rm -rf system_modified/system/heimdallddata
+sudo rm -rf system_modified/system/hidden
+sudo rm -rf system_modified/system/preload
+sudo rm -rf system_modified/system/voicecommanddata
+sudo rm -rf system_modified/system/product
+sudo rm -rf system_modified/system/vendor
 
 # System/App Debloat
 
-rm -rf system_modified/system/app/ARCore
-rm -rf system_modified/system/app/ARDrawing
-rm -rf system_modified/system/app/ARZone
-rm -rf system_modified/system/app/AutomationTest_FB
-rm -rf system_modified/system/app/BasicDreams
-rm -rf system_modified/system/app/BBCAgent
-rm -rf system_modified/system/app/BGMProvider
-rm -rf system_modified/system/app/BixbyWakeup
-rm -rf system_modified/system/app/BlockchainBasicKit
-rm -rf system_modified/system/app/CameraExtensionsProxy
-rm -rf system_modified/system/app/Cameralyzer
-rm -rf system_modified/system/app/ccinfo
-rm -rf system_modified/system/app/ChromeCustomizations
-rm -rf system_modified/system/app/DAAgent
-rm -rf system_modified/system/app/DictDiotekForSec
-rm -rf system_modified/system/app/ARCorDRParser
-rm -rf system_modified/system/app/DsmsAPK
-rm -rf system_modified/system/app/EasymodeContactsWidget81
-rm -rf system_modified/system/app/EmergencyLauncher
-rm -rf system_modified/system/app/ESEServiceAgent
-rm -rf system_modified/system/app/FactoryAirCommandManager
-rm -rf system_modified/system/app/FactoryCameraFB
-rm -rf system_modified/system/app/Fast
-rm -rf system_modified/system/app/FBAppManager_NS
-rm -rf system_modified/system/app/Foundation
-rm -rf system_modified/system/app/GalaxyResourceUpdater
-rm -rf system_modified/system/app/GearManagerStub
-rm -rf system_modified/system/app/GooglePrintRecommendationService
-rm -rf system_modified/system/app/HMT
-rm -rf system_modified/system/app/KidsHome_Installer
-rm -rf system_modified/system/app/LiveTranscribe
-rm -rf system_modified/system/app/MAPSAgent
-rm -rf system_modified/system/app/MDMApp
-rm -rf system_modified/system/app/MdxKitService
-rm -rf system_modified/system/app/MinusOnePage
-rm -rf system_modified/system/app/Mocca*
-rm -rf system_modified/system/app/Motion*
-rm -rf system_modified/system/app/ParentalCare
-rm -rf system_modified/system/app/Photo*
-rm -rf system_modified/system/app/PlayAutoInstallConfig
-rm -rf system_modified/system/app/PrintSpooler
-rm -rf system_modified/system/app/Rampart
-rm -rf system_modified/system/app/Roboto
-rm -rf system_modified/system/app/SafetyInformation
-rm -rf system_modified/system/app/SamsungCalendar
-rm -rf system_modified/system/app/SamsungOne
-rm -rf system_modified/system/app/SamsungPassAutofill_v1
-rm -rf system_modified/system/app/SamsungTTS*
-rm -rf system_modified/system/app/SecFactoryPhoneTest
-rm -rf system_modified/system/app/SecureElement
-rm -rf system_modified/system/app/SmartManager*
-rm -rf system_modified/system/app/SetupWizardLegalProvider
-rm -rf system_modified/system/app/SmartReminder
-rm -rf system_modified/system/app/SmartSwitch*
-rm -rf system_modified/system/app/StickerCenter
-rm -rf system_modified/system/app/TEEgrisTuiService
-rm -rf system_modified/system/app/Traceur
-rm -rf system_modified/system/app/UnifiedWFC
-rm -rf system_modified/system/app/UniversalMDMClient
-rm -rf system_modified/system/app/VideoEditorLite_Dream_N
-rm -rf system_modified/system/app/VisionIntelligence3.7
-rm -rf system_modified/system/app/VoiceAccess
-rm -rf system_modified/system/app/VTCameraSetting
-rm -rf system_modified/system/app/WebManual
-rm -rf system_modified/system/app/WifiGuider
-rm -rf system_modified/system/app/WlanTest
+sudo rm -rf system_modified/system/app/ARCore
+sudo rm -rf system_modified/system/app/ARDrawing
+sudo rm -rf system_modified/system/app/ARZone
+sudo rm -rf system_modified/system/app/AutomationTest_FB
+sudo rm -rf system_modified/system/app/BasicDreams
+sudo rm -rf system_modified/system/app/BBCAgent
+sudo rm -rf system_modified/system/app/BGMProvider
+sudo rm -rf system_modified/system/app/BixbyWakeup
+sudo rm -rf system_modified/system/app/BlockchainBasicKit
+sudo rm -rf system_modified/system/app/CameraExtensionsProxy
+sudo rm -rf system_modified/system/app/Cameralyzer
+sudo rm -rf system_modified/system/app/ccinfo
+sudo rm -rf system_modified/system/app/ChromeCustomizations
+sudo rm -rf system_modified/system/app/DAAgent
+sudo rm -rf system_modified/system/app/DictDiotekForSec
+sudo rm -rf system_modified/system/app/ARCorDRParser
+sudo rm -rf system_modified/system/app/DsmsAPK
+sudo rm -rf system_modified/system/app/EasymodeContactsWidget81
+sudo rm -rf system_modified/system/app/EmergencyLauncher
+sudo rm -rf system_modified/system/app/ESEServiceAgent
+sudo rm -rf system_modified/system/app/FactoryAirCommandManager
+sudo rm -rf system_modified/system/app/FactoryCameraFB
+sudo rm -rf system_modified/system/app/Fast
+sudo rm -rf system_modified/system/app/FBAppManager_NS
+sudo rm -rf system_modified/system/app/Foundation
+sudo rm -rf system_modified/system/app/GalaxyResourceUpdater
+sudo rm -rf system_modified/system/app/Geasudo rmanagerStub
+sudo rm -rf system_modified/system/app/GooglePrintRecommendationService
+sudo rm -rf system_modified/system/app/HMT
+sudo rm -rf system_modified/system/app/KidsHome_Installer
+sudo rm -rf system_modified/system/app/LiveTranscribe
+sudo rm -rf system_modified/system/app/MAPSAgent
+sudo rm -rf system_modified/system/app/MDMApp
+sudo rm -rf system_modified/system/app/MdxKitService
+sudo rm -rf system_modified/system/app/MinusOnePage
+sudo rm -rf system_modified/system/app/Mocca*
+sudo rm -rf system_modified/system/app/Motion*
+sudo rm -rf system_modified/system/app/ParentalCare
+sudo rm -rf system_modified/system/app/Photo*
+sudo rm -rf system_modified/system/app/PlayAutoInstallConfig
+sudo rm -rf system_modified/system/app/PrintSpooler
+sudo rm -rf system_modified/system/app/Rampart
+sudo rm -rf system_modified/system/app/Roboto
+sudo rm -rf system_modified/system/app/SafetyInfosudo rmation
+sudo rm -rf system_modified/system/app/SamsungCalendar
+sudo rm -rf system_modified/system/app/SamsungOne
+sudo rm -rf system_modified/system/app/SamsungPassAutofill_v1
+sudo rm -rf system_modified/system/app/SamsungTTS*
+sudo rm -rf system_modified/system/app/SecFactoryPhoneTest
+sudo rm -rf system_modified/system/app/SecureElement
+sudo rm -rf system_modified/system/app/SmartManager*
+sudo rm -rf system_modified/system/app/SetupWizardLegalProvider
+sudo rm -rf system_modified/system/app/SmartReminder
+sudo rm -rf system_modified/system/app/SmartSwitch*
+sudo rm -rf system_modified/system/app/StickerCenter
+sudo rm -rf system_modified/system/app/TEEgrisTuiService
+sudo rm -rf system_modified/system/app/Traceur
+sudo rm -rf system_modified/system/app/UnifiedWFC
+sudo rm -rf system_modified/system/app/UniversalMDMClient
+sudo rm -rf system_modified/system/app/VideoEditorLite_Dream_N
+sudo rm -rf system_modified/system/app/VisionIntelligence3.7
+sudo rm -rf system_modified/system/app/VoiceAccess
+sudo rm -rf system_modified/system/app/VTCameraSetting
+sudo rm -rf system_modified/system/app/WebManual
+sudo rm -rf system_modified/system/app/WifiGuider
+sudo rm -rf system_modified/system/app/WlanTest
 
 # System/Bin Debloat
 
-rm -rf system_modified/system/bin/kumihodecoder
-rm -rf system_modified/system/bin/fabric_crypto
+sudo rm -rf system_modified/system/bin/kumihodecoder
+sudo rm -rf system_modified/system/bin/fabric_crypto
 
 # System/CameraData Debloat
 
-rm -rf system_modified/system/cameradata/portrait_data
-rm -rf system_modified/system/cameradata/log*
-rm -rf system_modified/system/cameradata/singletake
-rm -rf system_modified/system/cameradata/aremoji-feature.xml
-rm -rf system_modified/system/cameradata/camera-feature.xml
+sudo rm -rf system_modified/system/cameradata/portrait_data
+sudo rm -rf system_modified/system/cameradata/log*
+sudo rm -rf system_modified/system/cameradata/singletake
+sudo rm -rf system_modified/system/cameradata/aremoji-feature.xml
+sudo rm -rf system_modified/system/cameradata/camera-feature.xml
 
 # System/Etc Debloat
 
-rm -rf system_modified/system/etc/ailasso
-rm -rf system_modified/system/etc/ardoodle
-rm -rf system_modified/system/etc/bpf/cloBpf.o
-rm -rf system_modified/system/etc/bpf/netlog.o
-rm -rf system_modified/system/etc/bpf/tcpAccECN.o
-rm -rf system_modified/system/etc/bpf/tosMarker.o
-rm -rf system_modified/system/etc/epdg
-rm -rf system_modified/system/etc/init/fabric_crypto.rc
-rm -rf system_modified/system/etc/init/kumioencoder.rc
-rm -rf system_modified/system/etc/kumiho
-rm -rf system_modified/system/etc/mars
-rm -rf system_modified/system/etc/mediasearch
-rm -rf system_modified/system/etc/objectremoval
-rm -rf system_modified/system/etc/permissions/com.sec.feature.cover.*
-rm -rf system_modified/system/etc/permissions/com.sec.feature.sensorhub*
-rm -rf system_modified/system/etc/permissions/Fabric*
-rm -rf system_modified/system/etc/reflectionremoval
-rm -rf system_modified/system/etc/selinux/mapping/2*
-rm -rf system_modified/system/etc/selinux/mapping/30*
-rm -rf system_modified/system/etc/selinux/mapping/31*
-rm -rf system_modified/system/etc/selinux/mapping/32*
-rm -rf system_modified/system/etc/selinux/mapping/34*
-rm -rf system_modified/system/etc/shadowremoval
-rm -rf system_modified/system/etc/theme
+sudo rm -rf system_modified/system/etc/ailasso
+sudo rm -rf system_modified/system/etc/ardoodle
+sudo rm -rf system_modified/system/etc/bpf/cloBpf.o
+sudo rm -rf system_modified/system/etc/bpf/netlog.o
+sudo rm -rf system_modified/system/etc/bpf/tcpAccECN.o
+sudo rm -rf system_modified/system/etc/bpf/tosMarker.o
+sudo rm -rf system_modified/system/etc/epdg
+sudo rm -rf system_modified/system/etc/init/fabric_crypto.rc
+sudo rm -rf system_modified/system/etc/init/kumioencoder.rc
+sudo rm -rf system_modified/system/etc/kumiho
+sudo rm -rf system_modified/system/etc/mars
+sudo rm -rf system_modified/system/etc/mediasearch
+sudo rm -rf system_modified/system/etc/objectremoval
+sudo rm -rf system_modified/system/etc/pesudo rmissions/com.sec.feature.cover.*
+sudo rm -rf system_modified/system/etc/pesudo rmissions/com.sec.feature.sensorhub*
+sudo rm -rf system_modified/system/etc/pesudo rmissions/Fabric*
+sudo rm -rf system_modified/system/etc/reflectionremoval
+sudo rm -rf system_modified/system/etc/selinux/mapping/2*
+sudo rm -rf system_modified/system/etc/selinux/mapping/30*
+sudo rm -rf system_modified/system/etc/selinux/mapping/31*
+sudo rm -rf system_modified/system/etc/selinux/mapping/32*
+sudo rm -rf system_modified/system/etc/selinux/mapping/34*
+sudo rm -rf system_modified/system/etc/shadowremoval
+sudo rm -rf system_modified/system/etc/theme
 
 # System/Framework Debloat
 
-rm -rf system_modified/system/framework/arm*
-rm -rf system_modified/system/framework/oat
-rm -rf system_modified/system/framework/Fabric*
+sudo rm -rf system_modified/system/framework/asudo rm*
+sudo rm -rf system_modified/system/framework/oat
+sudo rm -rf system_modified/system/framework/Fabric*
 
 # System/lib Debloat
 
-rm -rf system_modified/system/lib/lib_SoundBooster*
-rm -rf system_modified/system/lib/libface_landmark.arcsoft.so
-rm -rf system_modified/system/lib/libofi*
-rm -rf system_modified/system/lib/libsamsungSoundbooster*
+sudo rm -rf system_modified/system/lib/lib_SoundBooster*
+sudo rm -rf system_modified/system/lib/libface_landmark.arcsoft.so
+sudo rm -rf system_modified/system/lib/libofi*
+sudo rm -rf system_modified/system/lib/libsamsungSoundbooster*
 
 # System/lib64 Debloat
 
-rm -rf system_modified/system/lib64/lib_pet*
-rm -rf system_modified/system/lib64/lib_SoundBooster*
-rm -rf system_modified/system/lib64/libacz_hhdr.arcsoft.so
-rm -rf system_modified/system/lib64/libae_bracket_hdr.arcsoft.so
-rm -rf system_modified/system/lib64/libaiclearzoom_raw.arcsoft.so
-rm -rf system_modified/system/lib64/libarcsoft_*
-rm -rf system_modified/system/lib64/libarcsoft_dualcam*
-rm -rf system_modified/system/lib64/libarcsoft_single_cam_glasses_seg.so
-rm -rf system_modified/system/lib64/libDocShadowRemoval.arcsoft.so
-rm -rf system_modified/system/lib64/libdualcam*
-rm -rf system_modified/system/lib64/libface_landmark.arcsoft.so
-rm -rf system_modified/system/lib64/libFaceRecognition.arcsoft.so
-rm -rf system_modified/system/lib64/libFacialAttributeDetection.arcsoft.so
-rm -rf system_modified/system/lib64/libFacialStickerEngine.arcsoft.so
-rm -rf system_modified/system/lib64/libPortraitDistortionCorrection.arcsoft.so
-rm -rf system_modified/system/lib64/libimage_enhancement.arcsoft.so
-rm -rf system_modified/system/lib64/libGalleryDistortionCorrection.arcsoft.so
-rm -rf system_modified/system/lib64/libhumantracking.arcsoft.so
-rm -rf system_modified/system/lib64/libfacialrestoration.arcsoft.so
-rm -rf system_modified/system/lib64/libGalleryDistortionDetector.arcsoft.so
-rm -rf system_modified/system/lib64/libhighres_enhancement.arcsoft.so
-rm -rf system_modified/system/lib64/libkumiho*
-rm -rf system_modified/system/lib64/libMultiFrameProcessing30*
-rm -rf system_modified/system/lib64/libofi*
-rm -rf system_modified/system/lib64/libPet*
-rm -rf system_modified/system/lib/libsamsungSoundbooster*
-rm -rf system_modified/system/lib64/libSuperresolution*
-rm -rf system_modified/system/lib64/libsuperresolution*
+sudo rm -rf system_modified/system/lib64/lib_pet*
+sudo rm -rf system_modified/system/lib64/lib_SoundBooster*
+sudo rm -rf system_modified/system/lib64/libacz_hhdr.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libae_bracket_hdr.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libaiclearzoom_raw.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libarcsoft_*
+sudo rm -rf system_modified/system/lib64/libarcsoft_dualcam*
+sudo rm -rf system_modified/system/lib64/libarcsoft_single_cam_glasses_seg.so
+sudo rm -rf system_modified/system/lib64/libDocShadowRemoval.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libdualcam*
+sudo rm -rf system_modified/system/lib64/libface_landmark.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libFaceRecognition.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libFacialAttributeDetection.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libFacialStickerEngine.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libPortraitDistortionCorrection.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libimage_enhancement.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libGalleryDistortionCorrection.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libhumantracking.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libfacialrestoration.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libGalleryDistortionDetector.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libhighres_enhancement.arcsoft.so
+sudo rm -rf system_modified/system/lib64/libkumiho*
+sudo rm -rf system_modified/system/lib64/libMultiFrameProcessing30*
+sudo rm -rf system_modified/system/lib64/libofi*
+sudo rm -rf system_modified/system/lib64/libPet*
+sudo rm -rf system_modified/system/lib/libsamsungSoundbooster*
+sudo rm -rf system_modified/system/lib64/libSuperresolution*
+sudo rm -rf system_modified/system/lib64/libsuperresolution*
 
 # System/Priv-App Debloat
 
-rm -rf system_modified/system/priv-app/AdaptSound*
-rm -rf system_modified/system/priv-app/AppUpdateCenter
-rm -rf system_modified/system/priv-app/AREmoji
-rm -rf system_modified/system/priv-app/AREmojiEditor
-rm -rf system_modified/system/priv-app/Audio*
-rm -rf system_modified/system/priv-app/Avatar*
-rm -rf system_modified/system/priv-app/AuthFramework
-rm -rf system_modified/system/priv-app/AutoDoodle
-rm -rf system_modified/system/priv-app/AvatarEmojiSticker
-rm -rf system_modified/system/priv-app/BCService
-rm -rf system_modified/system/priv-app/BeaconManager
-rm -rf system_modified/system/priv-app/Bixby*
-rm -rf system_modified/system/priv-app/BixbyVisionFramework3.5
-rm -rf system_modified/system/priv-app/BiometricSettings
-rm -rf system_modified/system/priv-app/BuiltInPrintService
-rm -rf system_modified/system/priv-app/CIDManager
-rm -rf system_modified/system/priv-app/Crane
-rm -rf system_modified/system/priv-app/DevGPU*
-rm -rf system_modified/system/priv-app/DeviceBasedServiceConsent
-rm -rf system_modified/system/priv-app/DeviceD*
-rm -rf system_modified/system/priv-app/DeviceQ*
-rm -rf system_modified/system/priv-app/DigitalKey
-rm -rf system_modified/system/priv-app/DiagMon*
-rm -rf system_modified/system/priv-app/DigitalWellbeing
-rm -rf system_modified/system/priv-app/DualOutFocus*
-rm -rf system_modified/system/priv-app/DynamicLockscreen
-rm -rf system_modified/system/priv-app/DynamicSystemInstallationService
-rm -rf system_modified/system/priv-app/E2*
-rm -rf system_modified/system/priv-app/Ear*
-rm -rf system_modified/system/priv-app/EasySetup
-rm -rf system_modified/system/priv-app/EmergencySOS
-rm -rf system_modified/system/priv-app/EpdgService
-rm -rf system_modified/system/priv-app/Esim*
-rm -rf system_modified/system/priv-app/Euicc*
-rm -rf system_modified/system/priv-app/FacAtFunction
-rm -rf system_modified/system/priv-app/FactoryTestProvider
-rm -rf system_modified/system/priv-app/FBInstaller_NS
-rm -rf system_modified/system/priv-app/FBServices
-rm -rf system_modified/system/priv-app/Fmm
-rm -rf system_modified/system/priv-app/FotaAgent
-rm -rf system_modified/system/priv-app/GalleryWidget
-rm -rf system_modified/system/priv-app/Game*
-rm -rf system_modified/system/priv-app/GpuWatchApp
-rm -rf system_modified/system/priv-app/Hash*
-rm -rf system_modified/system/priv-app/HdmApk
-rm -rf system_modified/system/priv-app/Hw*
-rm -rf system_modified/system/priv-app/HW*
-rm -rf system_modified/system/priv-app/IAFDManagerService
-rm -rf system_modified/system/priv-app/IntelligentDynamicFpsService
-rm -rf system_modified/system/priv-app/IpsGeofence
-rm -rf system_modified/system/priv-app/KLMSAgent
-rm -rf system_modified/system/priv-app/KmxService
-rm -rf system_modified/system/priv-app/knoxanalyticsagent
-rm -rf system_modified/system/priv-app/KnoxCore
-rm -rf system_modified/system/priv-app/KnoxER*
-rm -rf system_modified/system/priv-app/KnoxFrame*
-rm -rf system_modified/system/priv-app/KnoxGuard
-rm -rf system_modified/system/priv-app/KnoxMposAgent
-rm -rf system_modified/system/priv-app/KnoxNetworkFilter
-rm -rf system_modified/system/priv-app/KnoxNeural*
-rm -rf system_modified/system/priv-app/KnoxSandBox
-rm -rf system_modified/system/priv-app/knoxvpnproxyhandler
-rm -rf system_modified/system/priv-app/KnoxZtFramework
-rm -rf system_modified/system/priv-app/KPECore
-rm -rf system_modified/system/priv-app/LinkToWindowsService
-rm -rf system_modified/system/priv-app/MediaSearch
-rm -rf system_modified/system/priv-app/MobileWips
-rm -rf system_modified/system/priv-app/Multi*
-rm -rf system_modified/system/priv-app/OdaService
-rm -rf system_modified/system/priv-app/OMCAgent5
-rm -rf system_modified/system/priv-app/NfcNci/lib
-rm -rf system_modified/system/priv-app/OneDrive_Samsung_v3
-rm -rf system_modified/system/priv-app/ONS
-rm -rf system_modified/system/priv-app/PaymentFramework
-rm -rf system_modified/system/priv-app/Pet*
-rm -rf system_modified/system/priv-app/PhoneErrService
-rm -rf system_modified/system/priv-app/PhotoRemasterService
-rm -rf system_modified/system/priv-app/RubinVersion*
-rm -rf system_modified/system/priv-app/SamsungBilling
-rm -rf system_modified/system/priv-app/SamsungCar*
-rm -rf system_modified/system/priv-app/SamsungCore*
-rm -rf system_modified/system/priv-app/SamsungExperienceService
-rm -rf system_modified/system/priv-app/SamsungMagnifier3
-rm -rf system_modified/system/priv-app/SamsungMulti*
-rm -rf system_modified/system/priv-app/SamsungPass
-rm -rf system_modified/system/priv-app/SamsungSe*
-rm -rf system_modified/system/priv-app/SCamera*
-rm -rf system_modified/system/priv-app/SCPMAgent
-rm -rf system_modified/system/priv-app/SDMConfig
-rm -rf system_modified/system/priv-app/sec_camerax_service
-rm -rf system_modified/system/priv-app/SecAppSeparation
-rm -rf system_modified/system/priv-app/SecFactoryPhoneTest
-rm -rf system_modified/system/priv-app/SecureFolder
-rm -rf system_modified/system/priv-app/SEMFactoryApp
-rm -rf system_modified/system/priv-app/SendHelpMessage
-rm -rf system_modified/system/priv-app/SettingsBixby
-rm -rf system_modified/system/priv-app/SingleTakeService
-rm -rf system_modified/system/priv-app/SKMSAgent
-rm -rf system_modified/system/priv-app/SmartEpdgTestApp
-rm -rf system_modified/system/priv-app/SmartManager_v6_DeviceSecurity
-rm -rf system_modified/system/priv-app/SmartSwitch*
-rm -rf system_modified/system/priv-app/SmartThingsKit
-rm -rf system_modified/system/priv-app/SO*
-rm -rf system_modified/system/priv-app/SPPPushClient
-rm -rf system_modified/system/priv-app/Ssu*
-rm -rf system_modified/system/priv-app/StickerFaceARAvatar
-rm -rf system_modified/system/priv-app/StoryService
-rm -rf system_modified/system/priv-app/SumeNNService
-rm -rf system_modified/system/priv-app/SVoiceIME
-rm -rf system_modified/system/priv-app/Tag
-rm -rf system_modified/system/priv-app/TalkbackSE
-rm -rf system_modified/system/priv-app/Upday
-rm -rf system_modified/system/priv-app/vex*
-rm -rf system_modified/system/priv-app/Vex*
-rm -rf system_modified/system/priv-app/VideoScan
-rm -rf system_modified/system/priv-app/YourPhone_P1_5
+sudo rm -rf system_modified/system/priv-app/AdaptSound*
+sudo rm -rf system_modified/system/priv-app/AppUpdateCenter
+sudo rm -rf system_modified/system/priv-app/AREmoji
+sudo rm -rf system_modified/system/priv-app/AREmojiEditor
+sudo rm -rf system_modified/system/priv-app/Audio*
+sudo rm -rf system_modified/system/priv-app/Avatar*
+sudo rm -rf system_modified/system/priv-app/AuthFramework
+sudo rm -rf system_modified/system/priv-app/AutoDoodle
+sudo rm -rf system_modified/system/priv-app/AvatarEmojiSticker
+sudo rm -rf system_modified/system/priv-app/BCService
+sudo rm -rf system_modified/system/priv-app/BeaconManager
+sudo rm -rf system_modified/system/priv-app/Bixby*
+sudo rm -rf system_modified/system/priv-app/BixbyVisionFramework3.5
+sudo rm -rf system_modified/system/priv-app/BiometricSettings
+sudo rm -rf system_modified/system/priv-app/BuiltInPrintService
+sudo rm -rf system_modified/system/priv-app/CIDManager
+sudo rm -rf system_modified/system/priv-app/Crane
+sudo rm -rf system_modified/system/priv-app/DevGPU*
+sudo rm -rf system_modified/system/priv-app/DeviceBasedServiceConsent
+sudo rm -rf system_modified/system/priv-app/DeviceD*
+sudo rm -rf system_modified/system/priv-app/DeviceQ*
+sudo rm -rf system_modified/system/priv-app/DigitalKey
+sudo rm -rf system_modified/system/priv-app/DiagMon*
+sudo rm -rf system_modified/system/priv-app/DigitalWellbeing
+sudo rm -rf system_modified/system/priv-app/DualOutFocus*
+sudo rm -rf system_modified/system/priv-app/DynamicLockscreen
+sudo rm -rf system_modified/system/priv-app/DynamicSystemInstallationService
+sudo rm -rf system_modified/system/priv-app/E2*
+sudo rm -rf system_modified/system/priv-app/Ear*
+sudo rm -rf system_modified/system/priv-app/EasySetup
+sudo rm -rf system_modified/system/priv-app/EmergencySOS
+sudo rm -rf system_modified/system/priv-app/EpdgService
+sudo rm -rf system_modified/system/priv-app/Esim*
+sudo rm -rf system_modified/system/priv-app/Euicc*
+sudo rm -rf system_modified/system/priv-app/FacAtFunction
+sudo rm -rf system_modified/system/priv-app/FactoryTestProvider
+sudo rm -rf system_modified/system/priv-app/FBInstaller_NS
+sudo rm -rf system_modified/system/priv-app/FBServices
+sudo rm -rf system_modified/system/priv-app/Fmm
+sudo rm -rf system_modified/system/priv-app/FotaAgent
+sudo rm -rf system_modified/system/priv-app/GalleryWidget
+sudo rm -rf system_modified/system/priv-app/Game*
+sudo rm -rf system_modified/system/priv-app/GpuWatchApp
+sudo rm -rf system_modified/system/priv-app/Hash*
+sudo rm -rf system_modified/system/priv-app/HdmApk
+sudo rm -rf system_modified/system/priv-app/Hw*
+sudo rm -rf system_modified/system/priv-app/HW*
+sudo rm -rf system_modified/system/priv-app/IAFDManagerService
+sudo rm -rf system_modified/system/priv-app/IntelligentDynamicFpsService
+sudo rm -rf system_modified/system/priv-app/IpsGeofence
+sudo rm -rf system_modified/system/priv-app/KLMSAgent
+sudo rm -rf system_modified/system/priv-app/KmxService
+sudo rm -rf system_modified/system/priv-app/knoxanalyticsagent
+sudo rm -rf system_modified/system/priv-app/KnoxCore
+sudo rm -rf system_modified/system/priv-app/KnoxER*
+sudo rm -rf system_modified/system/priv-app/KnoxFrame*
+sudo rm -rf system_modified/system/priv-app/KnoxGuard
+sudo rm -rf system_modified/system/priv-app/KnoxMposAgent
+sudo rm -rf system_modified/system/priv-app/KnoxNetworkFilter
+sudo rm -rf system_modified/system/priv-app/KnoxNeural*
+sudo rm -rf system_modified/system/priv-app/KnoxSandBox
+sudo rm -rf system_modified/system/priv-app/knoxvpnproxyhandler
+sudo rm -rf system_modified/system/priv-app/KnoxZtFramework
+sudo rm -rf system_modified/system/priv-app/KPECore
+sudo rm -rf system_modified/system/priv-app/LinkToWindowsService
+sudo rm -rf system_modified/system/priv-app/MediaSearch
+sudo rm -rf system_modified/system/priv-app/MobileWips
+sudo rm -rf system_modified/system/priv-app/Multi*
+sudo rm -rf system_modified/system/priv-app/OdaService
+sudo rm -rf system_modified/system/priv-app/OMCAgent5
+sudo rm -rf system_modified/system/priv-app/NfcNci/lib
+sudo rm -rf system_modified/system/priv-app/OneDrive_Samsung_v3
+sudo rm -rf system_modified/system/priv-app/ONS
+sudo rm -rf system_modified/system/priv-app/PaymentFramework
+sudo rm -rf system_modified/system/priv-app/Pet*
+sudo rm -rf system_modified/system/priv-app/PhoneErrService
+sudo rm -rf system_modified/system/priv-app/PhotoRemasterService
+sudo rm -rf system_modified/system/priv-app/RubinVersion*
+sudo rm -rf system_modified/system/priv-app/SamsungBilling
+sudo rm -rf system_modified/system/priv-app/SamsungCar*
+sudo rm -rf system_modified/system/priv-app/SamsungCore*
+sudo rm -rf system_modified/system/priv-app/SamsungExperienceService
+sudo rm -rf system_modified/system/priv-app/SamsungMagnifier3
+sudo rm -rf system_modified/system/priv-app/SamsungMulti*
+sudo rm -rf system_modified/system/priv-app/SamsungPass
+sudo rm -rf system_modified/system/priv-app/SamsungSe*
+sudo rm -rf system_modified/system/priv-app/SCamera*
+sudo rm -rf system_modified/system/priv-app/SCPMAgent
+sudo rm -rf system_modified/system/priv-app/SDMConfig
+sudo rm -rf system_modified/system/priv-app/sec_camerax_service
+sudo rm -rf system_modified/system/priv-app/SecAppSeparation
+sudo rm -rf system_modified/system/priv-app/SecFactoryPhoneTest
+sudo rm -rf system_modified/system/priv-app/SecureFolder
+sudo rm -rf system_modified/system/priv-app/SEMFactoryApp
+sudo rm -rf system_modified/system/priv-app/SendHelpMessage
+sudo rm -rf system_modified/system/priv-app/SettingsBixby
+sudo rm -rf system_modified/system/priv-app/SingleTakeService
+sudo rm -rf system_modified/system/priv-app/SKMSAgent
+sudo rm -rf system_modified/system/priv-app/SmartEpdgTestApp
+sudo rm -rf system_modified/system/priv-app/SmartManager_v6_DeviceSecurity
+sudo rm -rf system_modified/system/priv-app/SmartSwitch*
+sudo rm -rf system_modified/system/priv-app/SmartThingsKit
+sudo rm -rf system_modified/system/priv-app/SO*
+sudo rm -rf system_modified/system/priv-app/SPPPushClient
+sudo rm -rf system_modified/system/priv-app/Ssu*
+sudo rm -rf system_modified/system/priv-app/StickerFaceARAvatar
+sudo rm -rf system_modified/system/priv-app/StoryService
+sudo rm -rf system_modified/system/priv-app/SumeNNService
+sudo rm -rf system_modified/system/priv-app/SVoiceIME
+sudo rm -rf system_modified/system/priv-app/Tag
+sudo rm -rf system_modified/system/priv-app/TalkbackSE
+sudo rm -rf system_modified/system/priv-app/Upday
+sudo rm -rf system_modified/system/priv-app/vex*
+sudo rm -rf system_modified/system/priv-app/Vex*
+sudo rm -rf system_modified/system/priv-app/VideoScan
+sudo rm -rf system_modified/system/priv-app/YourPhone_P1_5
 
 # System/SystemExt Debloat
 
-rm -rf system_modified/system/system_ext/apex
-rm -rf system_modified/system/system_ext/etc/selinux/mapping/*
+sudo rm -rf system_modified/system/system_ext/apex
+sudo rm -rf system_modified/system/system_ext/etc/selinux/mapping/*
 
 # System/SystemExt/Priv-app Debloat
 
-rm -rf system_modified/system/system_ext/priv-app/GoogleFeedback
-rm -rf system_modified/system/system_ext/priv-app/SetupWizard
+sudo rm -rf system_modified/system/system_ext/priv-app/GoogleFeedback
+sudo rm -rf system_modified/system/system_ext/priv-app/SetupWizard
 
 # Product/app Debloat
 
-rm -rf product_modified/app/Chrome
-rm -rf product_modified/app/com.google.mainline.adservices
-rm -rf product_modified/app/Duo*
-rm -rf product_modified/app/Gmail*
-rm -rf product_modified/app/Maps
-rm -rf product_modified/app/Speech*
-rm -rf product_modified/app/YouTube
+sudo rm -rf product_modified/app/Chrome
+sudo rm -rf product_modified/app/com.google.mainline.adservices
+sudo rm -rf product_modified/app/Duo*
+sudo rm -rf product_modified/app/Gmail*
+sudo rm -rf product_modified/app/Maps
+sudo rm -rf product_modified/app/Speech*
+sudo rm -rf product_modified/app/YouTube
 
 # Product/priv-app Debloat
 
-rm -rf product_modified/priv-app/Android*
-rm -rf product_modified/priv-app/Config*
-rm -rf product_modified/priv-app/Family*
-rm -rf product_modified/priv-app/Google*
-rm -rf product_modified/priv-app/Gms*/m/*/oat
-rm -rf product_modified/priv-app/Hot*
-rm -rf product_modified/priv-app/Messages
-rm -rf product_modified/priv-app/Search*
-rm -rf product_modified/priv-app/Turbo*
-rm -rf product_modified/priv-app/Velvet
+sudo rm -rf product_modified/priv-app/Android*
+sudo rm -rf product_modified/priv-app/Config*
+sudo rm -rf product_modified/priv-app/Family*
+sudo rm -rf product_modified/priv-app/Google*
+sudo rm -rf product_modified/priv-app/Gms*/m/*/oat
+sudo rm -rf product_modified/priv-app/Hot*
+sudo rm -rf product_modified/priv-app/Messages
+sudo rm -rf product_modified/priv-app/Search*
+sudo rm -rf product_modified/priv-app/Turbo*
+sudo rm -rf product_modified/priv-app/Velvet
 
 # Product/usr Debloat
 
-rm -rf product_modified/usr
+sudo rm -rf product_modified/usr
 
 # apps oat
 
-rm -rf product_modified/app/*/oat
-rm -rf product_modified/priv-app/*/oat
-rm -rf system_modified/system/app/*/oat
-rm -rf system_modified/system/priv-app/*/oat
-rm -rf system_modified/system/system_ext/app/*/oat
-rm -rf system_modified/system/system_ext/priv-app/*/oat
+sudo rm -rf product_modified/app/*/oat
+sudo rm -rf product_modified/priv-app/*/oat
+sudo rm -rf system_modified/system/app/*/oat
+sudo rm -rf system_modified/system/priv-app/*/oat
+sudo rm -rf system_modified/system/system_ext/app/*/oat
+sudo rm -rf system_modified/system/system_ext/priv-app/*/oat
