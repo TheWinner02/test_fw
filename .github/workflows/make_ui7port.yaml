@@ -127,7 +127,7 @@ jobs:
       - name: 🧩 Estrazione offline system e product
         run: |
           cd ACK
-          mkdir -p system_modified/system_root system_modified/system_main product_modified tmp_out
+          mkdir -p system_modified product_modified tmp_out
 
           for IMG in out/system.img out/product.img; do
             PART=$(basename $IMG .img)
@@ -155,9 +155,9 @@ jobs:
 
             if [[ "$PART" == "system" ]]; then
               # Copia root-level (prism, optics...) → system_root
-              sudo cp -a --preserve=all tmp_out/* system_modified/system_root/
+              sudo cp -a --preserve=all tmp_out/* system_modified/
               # Copia main-level (app, lib, lib64, priv-app...) → system_main
-              sudo cp -a --preserve=all tmp_out/system/* system_modified/system_main/
+              sudo cp -a --preserve=all tmp_out/system/* system_modified/system/
             else
               # product
               sudo cp -a --preserve=all tmp_out/* product_modified/
@@ -187,13 +187,11 @@ jobs:
           cd ACK
           dd if=/dev/zero of=out/system.img bs=1M count=4096 status=progress
           mkfs.ext4 -F -L system out/system.img
-          sudo mkdir -p /mnt/system
-          sudo mount -o loop out/system.img /mnt/system
-          # Unisci system_root + system_main
-          sudo cp -a --preserve=all system_modified/system_root/* /mnt/system/
-          sudo cp -a --preserve=all system_modified/system_main/* /mnt/system/
+          sudo mkdir -p /mntsys/
+          sudo mount -o loop out/system.img /mntsys/
+          sudo cp -a --preserve=all system_modified/* /mntsys/
           sudo sync
-          sudo umount /mnt/system
+          sudo umount /mntsys/
           sudo rm -rf system_modified
           img2simg out/system.img out/system_sparse.img
           sudo rm -f out/system.img
