@@ -46,7 +46,7 @@ jobs:
           sudo apt update
           DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
             unzip lz4 android-sdk-libsparse-utils attr zip wget git tar \
-            f2fs-tools erofs-utils e2fsprogs python3 brotli fuse3
+            f2fs-tools erofs-utils e2fsprogs python3 brotli rsync fuse3
           sudo apt install -y linux-modules-extra-$(uname -r)
           sudo modprobe f2fs || echo "⚠️ Modulo F2FS non disponibile"
           sudo modprobe erofs || echo "⚠️ Modulo EROFS non disponibile"
@@ -114,11 +114,11 @@ jobs:
           ls -lh out
           monitor_spazio
 
-      # 🧩 Estrazione offline system e product
+      # 🧩 Estrazione offline system e product (con doppio system)
       - name: 🧩 Estrazione offline system e product
         run: |
           cd ACK
-          mkdir -p system_modified/product_modified tmp_out
+          mkdir -p system_modified/system_root system_modified/system_main product_modified tmp_out
 
           for IMG in out/system.img out/product.img; do
             PART=$(basename $IMG .img)
@@ -145,15 +145,16 @@ jobs:
             esac
 
             if [[ "$PART" == "system" ]]; then
-              DEST="system_modified"
+              # Copia root-level (prism, optics...) → system_root
+              sudo cp -a --preserve=all tmp_out/* system_modified/system_root/
+              # Copia main-level (app, lib, lib64, priv-app...) → system_main
+              sudo cp -a --preserve=all tmp_out/system/* system_modified/system_main/
             else
-              DEST="product_modified"
+              # product
+              sudo cp -a --preserve=all tmp_out/* product_modified/
             fi
 
-            mkdir -p $DEST
-            echo "📂 Copia contenuto in $DEST"
-            sudo cp -a --preserve=all tmp_out/ $DEST/
-            sudo find $DEST/ -exec chown -h $USER:$USER {} \;
+            sudo find system_modified product_modified -exec chown -h $USER:$USER {} \;
 
             if [[ "$FS" == "f2fs" || "$FS" == "ext4" ]]; then
               sudo umount tmp_out || true
@@ -177,11 +178,13 @@ jobs:
           cd ACK
           dd if=/dev/zero of=out/system.img bs=1M count=4096 status=progress
           mkfs.ext4 -F -L system out/system.img
-          sudo mkdir -p /mnt
-          sudo mount -o loop out/system.img /mnt
-          sudo cp -a --preserve=all system_modified/ /mnt/
+          sudo mkdir -p /mnt/system
+          sudo mount -o loop out/system.img /mnt/system
+          # Unisci system_root + system_main
+          sudo cp -a --preserve=all system_modified/system_root/* /mnt/system/
+          sudo cp -a --preserve=all system_modified/system_main/* /mnt/system/
           sudo sync
-          sudo umount /mnt
+          sudo umount /mnt/system
           sudo rm -rf system_modified
           img2simg out/system.img out/system_sparse.img
           sudo rm -f out/system.img
