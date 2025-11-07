@@ -46,7 +46,7 @@ jobs:
           sudo apt update
           DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
             unzip lz4 android-sdk-libsparse-utils attr zip wget git tar \
-            f2fs-tools erofs-utils e2fsprogs python3 brotli rsync fuse3
+            f2fs-tools erofs-utils e2fsprogs python3 brotli fuse3
           sudo apt install -y linux-modules-extra-$(uname -r)
           sudo modprobe f2fs || echo "⚠️ Modulo F2FS non disponibile"
           sudo modprobe erofs || echo "⚠️ Modulo EROFS non disponibile"
@@ -118,16 +118,15 @@ jobs:
       - name: 🧩 Estrazione offline system e product
         run: |
           cd ACK
-          mkdir -p system_modified product_modified tmp_out
+          mkdir -p system_modified/product_modified tmp_out
+
           for IMG in out/system.img out/product.img; do
             PART=$(basename $IMG .img)
             echo "📂 Estrazione $PART senza mount"
 
-            # Pulisce tmp_out
             rm -rf tmp_out/*
             mkdir -p tmp_out
 
-            # Determina filesystem
             FS=$(file $IMG | grep -oE 'F2FS|ext4|EroFS' | tr '[:upper:]' '[:lower:]')
 
             case "$FS" in
@@ -145,17 +144,23 @@ jobs:
                 ;;
             esac
 
-            # Copia contenuto in cartella finale
-            echo "📂 Copia contenuto in ${PART}_modified"
-            sudo cp -a --preserve=all tmp_out/. ${PART}_modified/
-            sudo find ${PART}_modified/ -exec chown $USER:$USER {} \;
+            if [[ "$PART" == "system" ]]; then
+              DEST="system_modified/system"
+            else
+              DEST="product_modified"
+            fi
 
-            # Smonta se necessario
+            mkdir -p $DEST
+            echo "📂 Copia contenuto in $DEST"
+            sudo cp -a --preserve=all tmp_out/. $DEST/
+            sudo find $DEST/ -exec chown -h $USER:$USER {} \;
+
             if [[ "$FS" == "f2fs" || "$FS" == "ext4" ]]; then
               sudo umount tmp_out || true
             fi
             rm -rf tmp_out/*
           done
+
           echo "✅ Estrazione offline completata"
           monitor_spazio
 
@@ -174,10 +179,10 @@ jobs:
           mkfs.ext4 -F -L system out/system.img
           sudo mkdir -p /mnt/system
           sudo mount -o loop out/system.img /mnt/system
-          rsync -aHAX system_modified/* /mnt/system/
+          sudo cp -a --preserve=all system_modified/. /mnt/system/
           sudo sync
           sudo umount /mnt/system
-          sudo rm -rf /mnt/system system_modified
+          sudo rm -rf system_modified
           img2simg out/system.img out/system_sparse.img
           sudo rm -f out/system.img
           monitor_spazio
@@ -198,8 +203,8 @@ jobs:
       - name: 🗜️ Comprimi risultati finali
         run: |
           cd ACK
-          mkdir out/product
-          rsync -aHAX product_modified/* out/product/
+          mkdir -p out/product
+          sudo cp -a --preserve=all product_modified/* out/product/
           sudo rm -rf product_modified
           cd out
           zip -9 ../Port.zip *
