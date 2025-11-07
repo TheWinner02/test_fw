@@ -124,7 +124,7 @@ jobs:
       run: |
         cd ACK
         # 🔍 Rileva il tipo di filesystem solo dal system.img
-        TYPE="${{ steps.detect.outputs.type }}"
+        TYPE="${{ github.event.inputs.fs_type }}"
 
         # Variabili filesystem
         EXT4_FS="ext4"
