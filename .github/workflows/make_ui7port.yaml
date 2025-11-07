@@ -123,6 +123,7 @@ jobs:
     - name: 🧩 Monta system.img e product.img
       run: |
         cd ACK
+        # 🔍 Rileva il tipo di filesystem solo dal system.img
         TYPE="${{ steps.detect.outputs.type }}"
 
         # Variabili filesystem
@@ -130,7 +131,7 @@ jobs:
         F2FS_FS="f2fs"
         EROFS_FS="erofs"
 
-        echo "⚙️ Montaggio filesystem rilevato: $TYPE"
+        echo "⚙️ Filesystem rilevato per system.img: $TYPE"
         mkdir -p system_mount system_modified product_mount product_modified
 
         if [ "$TYPE" = "$EXT4_FS" ]; then
@@ -143,16 +144,28 @@ jobs:
           sudo rsync -aHAX product_mount/ product_modified/
 
         elif [ "$TYPE" = "$F2FS_FS" ]; then
-          echo "🔹 Montaggio F2FS..."
-          sudo mount -t f2fs -o loop out/system.img system_mount || { echo "⚠️ F2FS non supportato, provo mount generico..."; sudo mount -o loop out/system.img system_mount || true; }
-          sudo mount -t f2fs -o loop out/product.img product_mount || { echo "⚠️ F2FS non supportato, provo mount generico..."; sudo mount -o loop out/product.img product_mount || true; }
+          echo "🔹 Montaggio F2FS rilevato (non supportato nativamente, fallback attivo)..."
 
-          echo "📂 Copia contenuto..."
+          echo "📦 Estraggo system.img in modalità fallback..."
+          if ! sudo mount -t f2fs -o loop out/system.img system_mount 2>/dev/null; then
+            echo "⚠️ Kernel non supporta F2FS — uso mount generico..."
+            sudo mount -o loop out/system.img system_mount || true
+          fi
+
+          echo "📦 Estraggo product.img in modalità fallback..."
+          if ! sudo mount -t f2fs -o loop out/product.img product_mount 2>/dev/null; then
+            echo "⚠️ Kernel non supporta F2FS — uso mount generico..."
+            sudo mount -o loop out/product.img product_mount || true
+          fi
+
+          echo "📂 Copia contenuto (se riuscito)..."
           sudo rsync -aHAX system_mount/ system_modified/ || true
           sudo rsync -aHAX product_mount/ product_modified/ || true
 
+          echo "💡 Nota: tutti i filesystem verranno comunque ricreati in formato EXT4 (.new.dat)."
+
         elif [ "$TYPE" = "$EROFS_FS" ]; then
-          echo "🔹 Montaggio EROFS tramite fuse..."
+          echo "🔹 Montaggio EROFS tramite FUSE..."
           mkdir -p fuse_sys fuse_prod
           erofsfuse out/system.img fuse_sys
           erofsfuse out/product.img fuse_prod
@@ -161,6 +174,7 @@ jobs:
           sudo rsync -aHAX fuse_sys/ system_modified/
           sudo rsync -aHAX fuse_prod/ product_modified/
 
+          echo "🧹 Smontaggio FUSE..."
           fusermount -u fuse_sys || true
           fusermount -u fuse_prod || true
           rm -rf fuse_sys fuse_prod
