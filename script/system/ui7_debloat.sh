@@ -34,7 +34,7 @@ sudo rm -rf system_modified/system/app/Fast
 sudo rm -rf system_modified/system/app/FBAppManager_NS
 sudo rm -rf system_modified/system/app/Foundation
 sudo rm -rf system_modified/system/app/GalaxyResourceUpdater
-sudo rm -rf system_modified/system/app/Geasudo rmanagerStub
+sudo rm -rf system_modified/system/app/GearManagerStub
 sudo rm -rf system_modified/system/app/GooglePrintRecommendationService
 sudo rm -rf system_modified/system/app/HMT
 sudo rm -rf system_modified/system/app/KidsHome_Installer
@@ -51,7 +51,7 @@ sudo rm -rf system_modified/system/app/PlayAutoInstallConfig
 sudo rm -rf system_modified/system/app/PrintSpooler
 sudo rm -rf system_modified/system/app/Rampart
 sudo rm -rf system_modified/system/app/Roboto
-sudo rm -rf system_modified/system/app/SafetyInfosudo rmation
+sudo rm -rf system_modified/system/app/SafetyInformation
 sudo rm -rf system_modified/system/app/SamsungCalendar
 sudo rm -rf system_modified/system/app/SamsungOne
 sudo rm -rf system_modified/system/app/SamsungPassAutofill_v1
@@ -103,9 +103,9 @@ sudo rm -rf system_modified/system/etc/kumiho
 sudo rm -rf system_modified/system/etc/mars
 sudo rm -rf system_modified/system/etc/mediasearch
 sudo rm -rf system_modified/system/etc/objectremoval
-sudo rm -rf system_modified/system/etc/pesudo rmissions/com.sec.feature.cover.*
-sudo rm -rf system_modified/system/etc/pesudo rmissions/com.sec.feature.sensorhub*
-sudo rm -rf system_modified/system/etc/pesudo rmissions/Fabric*
+sudo rm -rf system_modified/system/etc/permissions/com.sec.feature.cover.*
+sudo rm -rf system_modified/system/etc/permissions/com.sec.feature.sensorhub*
+sudo rm -rf system_modified/system/etc/permissions/Fabric*
 sudo rm -rf system_modified/system/etc/reflectionremoval
 sudo rm -rf system_modified/system/etc/selinux/mapping/2*
 sudo rm -rf system_modified/system/etc/selinux/mapping/30*
@@ -117,7 +117,7 @@ sudo rm -rf system_modified/system/etc/theme
 
 # System/Framework Debloat
 
-sudo rm -rf system_modified/system/framework/asudo rm*
+sudo rm -rf system_modified/system/framework/arm*
 sudo rm -rf system_modified/system/framework/oat
 sudo rm -rf system_modified/system/framework/Fabric*
 
