@@ -20,7 +20,7 @@ jobs:
       - name: 📦 Checkout Repository
         uses: actions/checkout@v4
 
-      # 🧹 PULIZIA E SPAZIO
+      # 🧹 Pulizia e spazio
       - name: 🔧 Libera spazio su disco
         run: |
           echo "🧹 Rimozione pacchetti non necessari..."
@@ -40,7 +40,7 @@ jobs:
           fi' | sudo tee /usr/local/bin/monitor_spazio > /dev/null
           sudo chmod +x /usr/local/bin/monitor_spazio
 
-      # ⚙️ INSTALLAZIONE DIPENDENZE
+      # ⚙️ Installazione dipendenze
       - name: ⚙️ Installa dipendenze necessarie
         run: |
           sudo apt update
@@ -52,7 +52,7 @@ jobs:
           sudo modprobe erofs || echo "⚠️ Modulo EROFS non disponibile"
           monitor_spazio
 
-      # 📥 DOWNLOAD FIRMWARE
+      # 📥 Download firmware
       - name: 📥 Scarica firmware
         run: |
           mkdir -p ACK
@@ -61,15 +61,13 @@ jobs:
           ls -lh ACK
           monitor_spazio
 
-      # 📦 ESTRAZIONE ZIP/TAR.MD5
+      # 📦 Estrazione ZIP/TAR.MD5
       - name: 📦 Estrai archivio principale
         run: |
           cd ACK
           if file base.zip | grep -q "gzip compressed"; then
-            echo "📦 File TAR.MD5 rilevato, estrazione..."
             tar -xf base.zip
           else
-            echo "📦 File ZIP rilevato, estrazione..."
             unzip base.zip
           fi
           rm -f base.zip
@@ -78,27 +76,24 @@ jobs:
       - name: 🔹 Estrai file .tar.md5
         run: |
           cd ACK
-          echo "📂 Estrazione di .tar.md5"
           tar --wildcards -xf *.tar.md5 'super.*.*'
           rm -f *.tar.md5
           monitor_spazio
 
-      # 🔸 DECOMPRESSIONE SUPER.IMG.LZ4
+      # 🔸 Decompressione super.img.lz4
       - name: 🔸 Decomprimi super.img.lz4
         run: |
           cd ACK
           if [ -f super.img.lz4 ]; then
-            echo "🔹 Decompressione super.img.lz4"
             lz4 -d super.img.lz4 super.img.sparse
             rm -f super.img.lz4
           fi
           monitor_spazio
 
-      # 🔁 CONVERSIONE SPARSE → RAW
+      # 🔁 Conversione sparse → raw
       - name: 🔁 Converti sparse in raw
         run: |
           cd ACK
-          echo "🔁 Conversione super.img.sparse → super.img"
           simg2img super.img.sparse super.img
           rm -f super.img.sparse
           monitor_spazio
@@ -109,88 +104,85 @@ jobs:
           git clone https://github.com/unix3dgforce/lpunpack.git
           monitor_spazio
 
-      # 🗂️ ESTRAZIONE PARTIZIONI
-      - name: 🗂️ Estrai partizioni da super.img
+      # 🗂️ Estrazione partizioni da super.img
+      - name: 🗂️ Estrai partizioni
         run: |
           cd ACK
           mkdir out
-          echo "📂 Estrazione da super.img..."
           python3 ../lpunpack/lpunpack.py -p product,system super.img out/
           rm -f super.img
           ls -lh out
           monitor_spazio
 
-      # 🧩 MONTA SYSTEM E PRODUCT
-      - name: 🧩 Monta system.img e product.img
+      # 🧩 Estrazione offline system e product
+      - name: 🧩 Estrazione offline system e product
         run: |
           cd ACK
-          TYPE="${{ github.event.inputs.fs_type }}"
-          echo "⚙️ Filesystem rilevato: $TYPE"
-          mkdir -p system_mount system_modified product_mount product_modified
+          mkdir -p system_modified product_modified tmp_out
+          for IMG in out/system.img out/product.img; do
+            PART=$(basename $IMG .img)
+            echo "📂 Estrazione $PART senza mount"
 
-          case "$TYPE" in
-            ext4)
-              echo "🔹 Montaggio EXT4..."
-              sudo mount -t ext4 -o loop out/system.img system_mount
-              sudo mount -t ext4 -o loop out/product.img product_mount
-              ;;
-            f2fs)
-              echo "🔹 Montaggio F2FS..."
-              sudo mount -t f2fs -o loop out/system.img system_mount
-              sudo mount -t f2fs -o loop out/product.img product_mount
-              ;;
-            erofs)
-              echo "🔹 Montaggio EROFS..."
-              sudo mount -t erofs -o loop out/system.img system_mount
-              sudo mount -t erofs -o loop out/product.img product_mount
-              ;;
-            *)
-              echo "⚠️ Tipo non riconosciuto, uso mount automatico..."
-              sudo mount -o loop out/system.img system_mount || true
-              sudo mount -o loop out/product.img product_mount || true
-              ;;
-          esac
+            # Pulisce tmp_out
+            rm -rf tmp_out/*
+            mkdir -p tmp_out
 
-          echo "📂 Copia contenuto..."
-          sudo rsync -aHAX system_mount/ system_modified/ || true
-          sudo rsync -aHAX product_mount/ product_modified/ || true
+            # Determina filesystem
+            FS=$(file $IMG | grep -oE 'F2FS|ext4|EroFS' | tr '[:upper:]' '[:lower:]')
 
-          echo "🧹 Smontaggio..."
-          sudo umount system_mount || true
-          sudo umount product_mount || true
-          sudo rm -rf system_mount product_mount
+            case "$FS" in
+              f2fs|ext4)
+                echo "🔹 Filesystem $FS, mount read-only temporaneo"
+                sudo mount -o ro,loop $IMG tmp_out || true
+                ;;
+              erofs)
+                echo "🔹 Filesystem EROFS, fuse.erofs"
+                fuse.erofs $IMG tmp_out
+                ;;
+              *)
+                echo "⚠️ Filesystem non riconosciuto, salto $IMG"
+                continue
+                ;;
+            esac
 
-          echo "✅ Estratto in system_modified/ e product_modified/"
+            # Copia contenuto in cartella finale
+            echo "📂 Copia contenuto in ${PART}_modified"
+            rsync -aHAX tmp_out/ ${PART}_modified/
+            find ${PART}_modified/ -exec chown $USER:$USER {} \;
+
+            # Smonta se necessario
+            if [[ "$FS" == "f2fs" || "$FS" == "ext4" ]]; then
+              sudo umount tmp_out || true
+            fi
+            rm -rf tmp_out/*
+          done
+          echo "✅ Estrazione offline completata"
           monitor_spazio
 
-      # ⚙️ APPLICA MODIFICHE
-      - name: ⚙️ Applica modifiche OneUI 7.0
+      # ⚙️ Applica modifiche OneUI 7.0
+      - name: ⚙️ Applica patch OneUI
         run: |
           cd ACK
-          echo "⚙️ Esecuzione patch OneUI..."
           chmod +x ../script/system/ui7_debloat.sh
           sudo bash ../script/system/ui7_debloat.sh
 
-      # 🏗️ RICOMPILA SYSTEM.IMG
-      - name: 🏗️ Ricompila system.img in ext4
+      # 🏗️ Ricompilazione system.img
+      - name: 🏗️ Ricompila system.img
         run: |
           cd ACK
-          echo "⚙️ Ricompilazione filesystem forzata in ext4"
           dd if=/dev/zero of=out/system.img bs=1M count=4096 status=progress
           mkfs.ext4 -F -L system out/system.img
           sudo mkdir -p /mnt/system
           sudo mount -o loop out/system.img /mnt/system
-          echo "📂 Copia file in system..."
-          sudo rsync -aHAX system_modified/* /mnt/system/
+          rsync -aHAX system_modified/* /mnt/system/
           sudo sync
           sudo umount /mnt/system
           sudo rm -rf /mnt/system system_modified
-          echo "🔁 Conversione in sparse image..."
           img2simg out/system.img out/system_sparse.img
           sudo rm -f out/system.img
           monitor_spazio
 
-      # 🔄 CONVERTI IN .NEW.DAT
+      # 🔄 Converti system_sparse.img → .new.dat
       - name: 🔄 Converti system_sparse.img → .new.dat
         run: |
           cd ACK
@@ -202,13 +194,12 @@ jobs:
           cd ..
           monitor_spazio
 
-      # 🗜️ COMPRESSIONE OUTPUT
+      # 🗜️ Compressione output
       - name: 🗜️ Comprimi risultati finali
         run: |
           cd ACK
-          echo "🗜️ Compressione file finali..."
           mkdir out/product
-          sudo rsync -aHAX product_modified/* out/product/
+          rsync -aHAX product_modified/* out/product/
           sudo rm -rf product_modified
           cd out
           zip -9 ../Port.zip *
@@ -217,7 +208,7 @@ jobs:
           ls -lh Port.zip
           monitor_spazio
 
-      # ☁️ UPLOAD SU SOURCEFORGE
+      # ☁️ Upload su SourceForge
       - name: ☁️ Upload su SourceForge
         run: |
           cd ACK
