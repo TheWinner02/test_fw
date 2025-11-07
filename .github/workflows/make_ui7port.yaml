@@ -145,14 +145,14 @@ jobs:
             esac
 
             if [[ "$PART" == "system" ]]; then
-              DEST="system_modified/system"
+              DEST="system_modified"
             else
               DEST="product_modified"
             fi
 
             mkdir -p $DEST
             echo "📂 Copia contenuto in $DEST"
-            sudo cp -a --preserve=all tmp_out/. $DEST/
+            sudo cp -a --preserve=all tmp_out/ $DEST/
             sudo find $DEST/ -exec chown -h $USER:$USER {} \;
 
             if [[ "$FS" == "f2fs" || "$FS" == "ext4" ]]; then
@@ -177,11 +177,11 @@ jobs:
           cd ACK
           dd if=/dev/zero of=out/system.img bs=1M count=4096 status=progress
           mkfs.ext4 -F -L system out/system.img
-          sudo mkdir -p /mnt/system
-          sudo mount -o loop out/system.img /mnt/system
-          sudo cp -a --preserve=all system_modified/. /mnt/system/
+          sudo mkdir -p /mnt
+          sudo mount -o loop out/system.img /mnt
+          sudo cp -a --preserve=all system_modified/ /mnt/
           sudo sync
-          sudo umount /mnt/system
+          sudo umount /mnt
           sudo rm -rf system_modified
           img2simg out/system.img out/system_sparse.img
           sudo rm -f out/system.img
