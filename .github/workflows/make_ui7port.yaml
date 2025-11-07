@@ -147,8 +147,8 @@ jobs:
 
             # Copia contenuto in cartella finale
             echo "📂 Copia contenuto in ${PART}_modified"
-            rsync -aHAX tmp_out/ ${PART}_modified/
-            find ${PART}_modified/ -exec chown $USER:$USER {} \;
+            sudo cp -a --preserve=all tmp_out/. ${PART}_modified/
+            sudo find ${PART}_modified/ -exec chown $USER:$USER {} \;
 
             # Smonta se necessario
             if [[ "$FS" == "f2fs" || "$FS" == "ext4" ]]; then
