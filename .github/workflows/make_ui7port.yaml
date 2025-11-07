@@ -196,7 +196,7 @@ jobs:
           cd ACK
           git clone https://github.com/xpirt/img2sdat.git
           cd img2sdat
-          sed -i 's/import imp/import importlib as imp/' img2sdat/common.py
+          sed -i 's/import imp/import importlib as imp/' common.py
           python3 img2sdat.py ../out/system_sparse.img -o ../out -v 4
           sudo rm -f ../out/system_sparse.img
           cd ..
