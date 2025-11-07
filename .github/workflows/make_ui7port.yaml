@@ -46,6 +46,8 @@ jobs:
         sudo apt update
         DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
           unzip lz4 android-sdk-libsparse-utils attr zip wget git tar f2fs-tools erofs-utils e2fsprogs python3 brotli rsync fuse3
+        wget -O /usr/local/bin/imgextractor.py https://raw.githubusercontent.com/xpirt/imgextractor/master/imgextractor.py
+        chmod +x /usr/local/bin/imgextractor.py
         monitor_spazio
 
     # 📥 DOWNLOAD FIRMWARE
@@ -123,10 +125,8 @@ jobs:
     - name: 🧩 Monta system.img e product.img
       run: |
         cd ACK
-        # 🔍 Rileva il tipo di filesystem solo dal system.img
         TYPE="${{ github.event.inputs.fs_type }}"
 
-        # Variabili filesystem
         EXT4_FS="ext4"
         F2FS_FS="f2fs"
         EROFS_FS="erofs"
@@ -138,43 +138,39 @@ jobs:
           echo "🔹 Montaggio EXT4..."
           sudo mount -t ext4 -o loop out/system.img system_mount
           sudo mount -t ext4 -o loop out/product.img product_mount
-
-          echo "📂 Copia contenuto..."
           sudo rsync -aHAX system_mount/ system_modified/
           sudo rsync -aHAX product_mount/ product_modified/
 
         elif [ "$TYPE" = "$F2FS_FS" ]; then
-          echo "🔹 Montaggio F2FS rilevato (non supportato nativamente, fallback attivo)..."
-
-          echo "📦 Estraggo system.img in modalità fallback..."
-          if ! sudo mount -t f2fs -o loop out/system.img system_mount 2>/dev/null; then
-            echo "⚠️ Kernel non supporta F2FS — uso mount generico..."
-            sudo mount -o loop out/system.img system_mount || true
+          echo "🔹 Filesystem F2FS rilevato — mount diretto non supportato su GitHub, uso estrazione fallback."
+          echo "📦 Estrazione system.img..."
+          if ! sudo mount -t f2fs -o loop out/system.img system_mount &>/dev/null; then
+            echo "⚠️ Kernel non supporta F2FS — estrazione con imgextractor.py..."
+            python3 /usr/local/bin/imgextractor.py out/system.img system_modified || true
+          else
+            sudo rsync -aHAX system_mount/ system_modified/
           fi
 
-          echo "📦 Estraggo product.img in modalità fallback..."
-          if ! sudo mount -t f2fs -o loop out/product.img product_mount 2>/dev/null; then
-            echo "⚠️ Kernel non supporta F2FS — uso mount generico..."
-            sudo mount -o loop out/product.img product_mount || true
+          echo "📦 Estrazione product.img..."
+          if ! sudo mount -t f2fs -o loop out/product.img product_mount &>/dev/null; then
+            echo "⚠️ Kernel non supporta F2FS — estrazione con imgextractor.py..."
+            python3 /usr/local/bin/imgextractor.py out/product.img product_modified || true
+          else
+            sudo rsync -aHAX product_mount/ product_modified/
           fi
 
-          echo "📂 Copia contenuto (se riuscito)..."
-          sudo rsync -aHAX system_mount/ system_modified/ || true
-          sudo rsync -aHAX product_mount/ product_modified/ || true
-
-          echo "💡 Nota: tutti i filesystem verranno comunque ricreati in formato EXT4 (.new.dat)."
+          sudo umount system_mount || true
+          sudo umount product_mount || true
+          sudo rm -rf system_mount product_mount
+          echo "✅ Estrazione completata in system_modified/ e product_modified/"
 
         elif [ "$TYPE" = "$EROFS_FS" ]; then
           echo "🔹 Montaggio EROFS tramite FUSE..."
           mkdir -p fuse_sys fuse_prod
           erofsfuse out/system.img fuse_sys
           erofsfuse out/product.img fuse_prod
-
-          echo "📂 Copia contenuto..."
           sudo rsync -aHAX fuse_sys/ system_modified/
           sudo rsync -aHAX fuse_prod/ product_modified/
-
-          echo "🧹 Smontaggio FUSE..."
           fusermount -u fuse_sys || true
           fusermount -u fuse_prod || true
           rm -rf fuse_sys fuse_prod
@@ -183,82 +179,13 @@ jobs:
           echo "⚠️ Tipo sconosciuto ($TYPE), provo mount automatico..."
           sudo mount -o loop out/system.img system_mount || true
           sudo mount -o loop out/product.img product_mount || true
-
-          echo "📂 Copia contenuto..."
           sudo rsync -aHAX system_mount/ system_modified/ || true
           sudo rsync -aHAX product_mount/ product_modified/ || true
         fi
 
-        echo "🧹 Smontaggio..."
         sudo umount system_mount || true
         sudo umount product_mount || true
         sudo rm -rf system_mount product_mount
 
         echo "✅ Contenuto estratto in system_modified/ e product_modified/"
-        monitor_spazio
-        
-    # ⚙️ APPLICA MODIFICHE
-    - name: ⚙️ Applica modifiche OneUI 7.0
-      run: |
-        cd ACK
-        echo "⚙️ OneUI 7.0 Port AutoBuild..."
-        chmod +x ../script/system/ui7_debloat.sh
-        sudo bash ../script/system/ui7_debloat.sh
-
-    # 🏗️ RICOMPILA SYSTEM.IMG
-    - name: 🏗️ Ricompila system.img in ext4
-      run: |
-        cd ACK
-        echo "⚙️ Ricompilazione filesystem forzata in ext4"
-        dd if=/dev/zero of=out/system.img bs=1M count=4096 status=progress
-        mkfs.ext4 -F -L system out/system.img
-
-        sudo mkdir -p /mnt/system
-        sudo mount -o loop out/system.img /mnt/system
-        echo "📂 Copia file in system..."
-        sudo rsync -aHAX system_modified/* /mnt/system/
-        sudo sync
-        sudo umount /mnt/system
-        sudo rm -rf /mnt/system system_modified
-
-        echo "🔁 Conversione in sparse image..."
-        img2simg out/system.img out/system_sparse.img
-        sudo rm -f out/system.img
-        ls -lh out/system_sparse.img
-        monitor_spazio
-
-    # 🔄 CONVERTI IN .NEW.DAT
-    - name: 🔄 Converti system_sparse.img → .new.dat
-      run: |
-        cd ACK
-        git clone https://github.com/xpirt/img2sdat.git
-        cd img2sdat
-        python3 img2sdat.py ../out/system_sparse.img -o ../out -v 4
-        sudo rm -f ../out/system_sparse.img && cd ..
-        ls -lh out/system.new.dat
-        monitor_spazio
-
-    # 🗜️ COMPRESSIONE OUTPUT
-    - name: 🗜️ Comprimi risultati finali
-      run: |
-        cd ACK
-        echo "🗜️ Compressione file..."
-        mkdir out/product
-        sudo rsync -aHAX product_modified/* out/product/ && sudo rm -rf product_modified
-        cd out
-        zip -9 ../Port.zip *
-        cd .. && sudo rm -rf out
-        ls -lh Port.zip
-        monitor_spazio
-
-    # ☁️ UPLOAD SU SOURCEFORGE
-    - name: 🔐 Configura SSH e carica su SourceForge
-      run: |
-        cd ACK
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
-        scp Port.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
-        echo "✅ Upload completato su SourceForge"
         monitor_spazio
