@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_BTB_15_0004</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0001</customerEdition>
+    <carrierListVersion>150043</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>3</carrierCount>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>08</mnc>
+      <codeType>HEX</codeType>
+      <gid>B2</gid>
+      <networkName>BT OnePhone</networkName>
+    </carrier>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>30</mnc>
+      <codeType>HEX</codeType>
+      <gid>B3</gid>
+      <networkName>BT</networkName>
+    </carrier>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>30</mnc>
+      <codeType>HEX</codeType>
+      <gid>B2</gid>
+      <networkName>BTOP Roaming</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

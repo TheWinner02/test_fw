@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_EUR_15_0006</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0003</customerEdition>
+    <carrierListVersion>150043</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>9</carrierCount>
+    <carrier>
+      <mcc>202</mcc>
+      <mnc>01</mnc>
+      <networkName>COSMOTE</networkName>
+    </carrier>
+    <carrier>
+      <mcc>202</mcc>
+      <mnc>05</mnc>
+      <networkName>vodafone GR</networkName>
+    </carrier>
+    <carrier>
+      <mcc>202</mcc>
+      <mnc>09</mnc>
+      <networkName>Q Telecom</networkName>
+    </carrier>
+    <carrier>
+      <mcc>202</mcc>
+      <mnc>10</mnc>
+      <networkName>NOVA GR</networkName>
+    </carrier>
+    <carrier>
+      <mcc>202</mcc>
+      <mnc>17</mnc>
+      <networkName>nova</networkName>
+    </carrier>
+    <carrier>
+      <mcc>280</mcc>
+      <mnc>01</mnc>
+      <networkName>CYTAVODA</networkName>
+    </carrier>
+    <carrier>
+      <mcc>280</mcc>
+      <mnc>10</mnc>
+      <networkName>epic</networkName>
+    </carrier>
+    <carrier>
+      <mcc>280</mcc>
+      <mnc>20</mnc>
+      <networkName>Primetel</networkName>
+    </carrier>
+    <carrier>
+      <mcc>280</mcc>
+      <mnc>22</mnc>
+      <iccid>8935722</iccid>
+      <networkName>Cablenet</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

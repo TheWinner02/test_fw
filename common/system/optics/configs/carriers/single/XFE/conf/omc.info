@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_XFE_15_0009</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0003</customerEdition>
+    <carrierListVersion>150047</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>17</carrierCount>
+    <carrier>
+      <mcc>617</mcc>
+      <mnc>01</mnc>
+      <networkName>my.t</networkName>
+    </carrier>
+    <carrier>
+      <mcc>617</mcc>
+      <mnc>10</mnc>
+      <networkName>EMTEL</networkName>
+    </carrier>
+    <carrier>
+      <mcc>631</mcc>
+      <mnc>02</mnc>
+      <networkName>Unitel</networkName>
+    </carrier>
+    <carrier>
+      <mcc>640</mcc>
+      <mnc>84</mnc>
+      <networkName>Econet Wireless Zimbabwe</networkName>
+    </carrier>
+    <carrier>
+      <mcc>643</mcc>
+      <mnc>03</mnc>
+      <networkName>MOVITEL</networkName>
+    </carrier>
+    <carrier>
+      <mcc>643</mcc>
+      <mnc>04</mnc>
+      <networkName>VodaCom-MZ</networkName>
+    </carrier>
+    <carrier>
+      <mcc>645</mcc>
+      <mnc>01</mnc>
+      <networkName>Airtel Zambia</networkName>
+    </carrier>
+    <carrier>
+      <mcc>645</mcc>
+      <mnc>02</mnc>
+      <networkName>MTN Zambia</networkName>
+    </carrier>
+    <carrier>
+      <mcc>649</mcc>
+      <mnc>01</mnc>
+      <networkName>MTC Namibia</networkName>
+    </carrier>
+    <carrier>
+      <mcc>650</mcc>
+      <mnc>01</mnc>
+      <networkName>TNM</networkName>
+    </carrier>
+    <carrier>
+      <mcc>651</mcc>
+      <mnc>01</mnc>
+      <networkName>Vodacom Lesotho</networkName>
+    </carrier>
+    <carrier>
+      <mcc>651</mcc>
+      <mnc>02</mnc>
+      <codeType>HEX</codeType>
+      <networkName>Econet Telecom Lesotho</networkName>
+    </carrier>
+    <carrier>
+      <mcc>652</mcc>
+      <mnc>01</mnc>
+      <networkName>Mascom</networkName>
+    </carrier>
+    <carrier>
+      <mcc>652</mcc>
+      <mnc>02</mnc>
+      <networkName>Orange</networkName>
+    </carrier>
+    <carrier>
+      <mcc>652</mcc>
+      <mnc>04</mnc>
+      <networkName>BTC Mobile</networkName>
+    </carrier>
+    <carrier>
+      <mcc>655</mcc>
+      <mnc>01</mnc>
+      <networkName>Vodacom</networkName>
+    </carrier>
+    <carrier>
+      <mcc>655</mcc>
+      <mnc>10</mnc>
+      <networkName>MTN</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

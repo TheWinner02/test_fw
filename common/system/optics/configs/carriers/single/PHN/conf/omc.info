@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_PHN_15_0006</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0003</customerEdition>
+    <carrierListVersion>150043</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>10</carrierCount>
+    <carrier>
+      <mcc>204</mcc>
+      <mnc>03</mnc>
+      <networkName>MVNO NL</networkName>
+    </carrier>
+    <carrier>
+      <mcc>204</mcc>
+      <mnc>04</mnc>
+      <subsetCode>7960</subsetCode>
+      <networkName>MVNO NL</networkName>
+    </carrier>
+    <carrier>
+      <mcc>204</mcc>
+      <mnc>04</mnc>
+      <networkName>vodafone NL</networkName>
+    </carrier>
+    <carrier>
+      <mcc>204</mcc>
+      <mnc>04</mnc>
+      <spn>Truphone</spn>
+      <networkName>Truphone NL</networkName>
+    </carrier>
+    <carrier>
+      <mcc>204</mcc>
+      <mnc>08</mnc>
+      <subsetCode>0950</subsetCode>
+      <networkName>MVNO NL</networkName>
+    </carrier>
+    <carrier>
+      <mcc>204</mcc>
+      <mnc>08</mnc>
+      <networkName>NL KPN</networkName>
+    </carrier>
+    <carrier>
+      <mcc>204</mcc>
+      <mnc>12</mnc>
+      <networkName>NL Telfort</networkName>
+    </carrier>
+    <carrier>
+      <mcc>204</mcc>
+      <mnc>16</mnc>
+      <networkName>Odido</networkName>
+    </carrier>
+    <carrier>
+      <mcc>204</mcc>
+      <mnc>33</mnc>
+      <networkName>Truphone NL</networkName>
+    </carrier>
+    <carrier>
+      <mcc>204</mcc>
+      <mnc>95</mnc>
+      <codeType>HEX</codeType>
+      <gid>4953414C41</gid>
+      <networkName>ISALA</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

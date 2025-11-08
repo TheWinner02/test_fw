@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_O2C_15_0006</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0003</customerEdition>
+    <carrierListVersion>150043</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>1</carrierCount>
+    <carrier>
+      <mcc>230</mcc>
+      <mnc>02</mnc>
+      <networkName>O2.CZ</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

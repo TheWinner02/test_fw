@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_O2U_15_0007</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0002</customerEdition>
+    <carrierListVersion>150056</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>8</carrierCount>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>02</mnc>
+      <networkName>O2 Pay Monthly</networkName>
+    </carrier>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>10</mnc>
+      <subsetCode>995</subsetCode>
+      <networkName>O2 Testbed</networkName>
+    </carrier>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>10</mnc>
+      <codeType>HEX</codeType>
+      <gid>85</gid>
+      <networkName>O2 Pay &amp; Go</networkName>
+    </carrier>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>10</mnc>
+      <codeType>HEX</codeType>
+      <gid>61</gid>
+      <networkName>O2 Pay &amp; Go</networkName>
+    </carrier>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>10</mnc>
+      <codeType>HEX</codeType>
+      <gid>67</gid>
+      <networkName>O2 Pay &amp; Go</networkName>
+    </carrier>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>10</mnc>
+      <codeType>HEX</codeType>
+      <gid>99</gid>
+      <networkName>O2 Pay &amp; Go</networkName>
+    </carrier>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>10</mnc>
+      <networkName>O2 Pay Monthly</networkName>
+    </carrier>
+    <carrier>
+      <mcc>234</mcc>
+      <mnc>10</mnc>
+      <subsetCode>997</subsetCode>
+      <networkName>O2 Testbed</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

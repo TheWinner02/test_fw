@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_TIM_15_0004</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0002</customerEdition>
+    <carrierListVersion>150043</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>2</carrierCount>
+    <carrier>
+      <mcc>222</mcc>
+      <mnc>01</mnc>
+      <networkName>TIM</networkName>
+    </carrier>
+    <carrier>
+      <mcc>222</mcc>
+      <mnc>43</mnc>
+      <networkName>TIM</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

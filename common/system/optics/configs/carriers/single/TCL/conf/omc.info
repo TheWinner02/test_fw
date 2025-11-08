@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_TCL_15_0003</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0003</customerEdition>
+    <carrierListVersion>150042</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>5</carrierCount>
+    <carrier>
+      <mcc>268</mcc>
+      <mnc>01</mnc>
+      <networkName>vodafone P</networkName>
+    </carrier>
+    <carrier>
+      <mcc>268</mcc>
+      <mnc>01</mnc>
+      <codeType>HEX</codeType>
+      <gid>25</gid>
+      <networkName>amigo</networkName>
+    </carrier>
+    <carrier>
+      <mcc>268</mcc>
+      <mnc>89</mnc>
+      <networkName>vodafone P</networkName>
+    </carrier>
+    <carrier>
+      <mcc>268</mcc>
+      <mnc>91</mnc>
+      <networkName>vodafone P</networkName>
+    </carrier>
+    <carrier>
+      <mcc>268</mcc>
+      <mnc>92</mnc>
+      <networkName>vodafone P</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

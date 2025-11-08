@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<omc-default-permissions>
+    <sales-code csc="AMO">
+        <package name="com.aura.oobe.samsung">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </sales-code>
+    <sales-code csc="FTM">
+        <package name="com.aura.oobe.samsung">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </sales-code>
+    <sales-code csc="OPV">
+        <package name="com.aura.oobe.samsung">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </sales-code>
+    <sales-code csc="ORO">
+        <package name="com.aura.oobe.samsung">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </sales-code>
+    <sales-code csc="ORS">
+        <package name="com.aura.oobe.samsung">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </sales-code>
+</omc-default-permissions>

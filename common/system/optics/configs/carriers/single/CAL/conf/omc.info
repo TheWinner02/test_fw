@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_CAL_15_0003</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0002</customerEdition>
+    <carrierListVersion>150020</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>12</carrierCount>
+    <carrier>
+      <mcc>456</mcc>
+      <mnc>01</mnc>
+      <networkName>Cellcard</networkName>
+    </carrier>
+    <carrier>
+      <mcc>456</mcc>
+      <mnc>02</mnc>
+      <networkName>Smart</networkName>
+    </carrier>
+    <carrier>
+      <mcc>456</mcc>
+      <mnc>04</mnc>
+      <networkName>qb</networkName>
+    </carrier>
+    <carrier>
+      <mcc>456</mcc>
+      <mnc>06</mnc>
+      <networkName>Smart</networkName>
+    </carrier>
+    <carrier>
+      <mcc>456</mcc>
+      <mnc>08</mnc>
+      <networkName>Metfone</networkName>
+    </carrier>
+    <carrier>
+      <mcc>456</mcc>
+      <mnc>09</mnc>
+      <networkName>Beeline KH</networkName>
+    </carrier>
+    <carrier>
+      <mcc>456</mcc>
+      <mnc>11</mnc>
+      <networkName>Seatel</networkName>
+    </carrier>
+    <carrier>
+      <mcc>457</mcc>
+      <mnc>01</mnc>
+      <networkName>Lao Telecom</networkName>
+    </carrier>
+    <carrier>
+      <mcc>457</mcc>
+      <mnc>02</mnc>
+      <networkName>ETL Mobile</networkName>
+    </carrier>
+    <carrier>
+      <mcc>457</mcc>
+      <mnc>03</mnc>
+      <networkName>Unitel</networkName>
+    </carrier>
+    <carrier>
+      <mcc>457</mcc>
+      <mnc>07</mnc>
+      <networkName>Best Telecom</networkName>
+    </carrier>
+    <carrier>
+      <mcc>457</mcc>
+      <mnc>08</mnc>
+      <networkName>Beeline</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

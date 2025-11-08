@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<omc-default-permissions>
+    <activated-id code="ATL" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+
+    <activated-id code="AVF" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+	
+    <activated-id code="CNX" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+
+    <activated-id code="OMN" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+
+    <activated-id code="TCL" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+
+    <activated-id code="VD2" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+
+    <activated-id code="VDC" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+
+    <activated-id code="VDF" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+	
+    <activated-id code="VDH" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+	
+    <activated-id code="VDI" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+	
+    <activated-id code="VGR" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+	
+    <activated-id code="VOD" firstboot="true">
+        <package name="com.aura.oobe.samsung.gl">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </activated-id>
+</omc-default-permissions>

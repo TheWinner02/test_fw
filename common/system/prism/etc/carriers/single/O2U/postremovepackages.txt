@@ -1,0 +1,7 @@
+6
+FBInstagram_stub.apk
+FBMessenger_stub.apk
+Netflix_activationCommon.apk
+Netflix_stub.apk
+SwiftKey-market-arm64-v8a-release.apk
+SwiftKeyFactorySettings-samsung.apk

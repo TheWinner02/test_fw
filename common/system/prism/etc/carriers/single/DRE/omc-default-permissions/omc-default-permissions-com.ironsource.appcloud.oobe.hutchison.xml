@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<!--   App cloud (com.ironsource.appcloud.oobe.hutchison): 243790591 -->
+<omc-default-permissions>
+    <sales-code csc="3IE">
+        <package name="com.ironsource.appcloud.oobe.hutchison">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </sales-code>
+
+    <sales-code csc="H3G">
+        <package name="com.ironsource.appcloud.oobe.hutchison">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </sales-code>
+
+    <sales-code csc="HTS">
+        <package name="com.ironsource.appcloud.oobe.hutchison">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </sales-code>
+
+    <sales-code csc="HUI">
+        <package name="com.ironsource.appcloud.oobe.hutchison">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </sales-code>
+	
+   <sales-code csc="DRE">
+        <package name="com.ironsource.appcloud.oobe.hutchison">
+            <permission name="android.permission.POST_NOTIFICATIONS" systemfixed="false" />
+        </package>
+    </sales-code>
+</omc-default-permissions>

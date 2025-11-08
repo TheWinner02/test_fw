@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_ORS_15_0002</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0001</customerEdition>
+    <carrierListVersion>150040</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>2</carrierCount>
+    <carrier>
+      <mcc>231</mcc>
+      <mnc>01</mnc>
+      <spn>Orange</spn>
+      <networkName>Orange</networkName>
+    </carrier>
+    <carrier>
+      <mcc>231</mcc>
+      <mnc>05</mnc>
+      <networkName>Orange</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

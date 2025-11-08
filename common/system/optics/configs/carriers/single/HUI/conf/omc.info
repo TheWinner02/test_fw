@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_HUI_15_0004</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0001</customerEdition>
+    <carrierListVersion>150056</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>4</carrierCount>
+    <carrier>
+      <mcc>222</mcc>
+      <mnc>88</mnc>
+      <codeType>HEX</codeType>
+      <gid>0000000099</gid>
+      <networkName>VERY</networkName>
+    </carrier>
+    <carrier>
+      <mcc>222</mcc>
+      <mnc>88</mnc>
+      <networkName>WINDTRE</networkName>
+    </carrier>
+    <carrier>
+      <mcc>222</mcc>
+      <mnc>99</mnc>
+      <codeType>HEX</codeType>
+      <gid>0000000099</gid>
+      <networkName>VERY</networkName>
+    </carrier>
+    <carrier>
+      <mcc>222</mcc>
+      <mnc>99</mnc>
+      <networkName>WINDTRE</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>

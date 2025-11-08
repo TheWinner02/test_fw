@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omcInfo>
+  <contentType>0</contentType>
+  <version>SAOMC_SM-G991B_OXM_ATL_15_0003</version>
+  <model>
+    <name>SM-G991B</name>
+  </model>
+  <catalog>
+    <customer>yes</customer>
+    <customerEdition>ED0001</customerEdition>
+    <carrierListVersion>150042</carrierListVersion>
+    <cscfeature>yes</cscfeature>
+    <carrierfeature>yes</carrierfeature>
+    <cp>no</cp>
+    <imsupdate>no</imsupdate>
+  </catalog>
+  <carrierList>
+    <carrierCount>4</carrierCount>
+    <carrier>
+      <mcc>214</mcc>
+      <mnc>01</mnc>
+      <networkName>vodafone ES</networkName>
+    </carrier>
+    <carrier>
+      <mcc>214</mcc>
+      <mnc>06</mnc>
+      <spn>Eroski Movil</spn>
+      <networkName>Eroski Movil</networkName>
+    </carrier>
+    <carrier>
+      <mcc>214</mcc>
+      <mnc>06</mnc>
+      <spn>Finetwork</spn>
+      <networkName>Finetwork</networkName>
+    </carrier>
+    <carrier>
+      <mcc>214</mcc>
+      <mnc>06</mnc>
+      <spn>Lowi</spn>
+      <networkName>LOWI</networkName>
+    </carrier>
+  </carrierList>
+</omcInfo>
