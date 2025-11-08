@@ -110,6 +110,7 @@ jobs:
       # 🧰 LPUNPACK
       - name: 🧰 Scarica e prepara lpunpack
         run: |
+          cd ACK
           git clone https://github.com/unix3dgforce/lpunpack.git
           monitor_spazio
 
@@ -118,7 +119,7 @@ jobs:
         run: |
           cd ACK
           mkdir out
-          python3 ../lpunpack/lpunpack.py -p product,system super.img out/
+          python3 lpunpack/lpunpack.py -p product,system super.img out/
           rm -f super.img
           ls -lh out
           monitor_spazio
@@ -168,9 +169,10 @@ jobs:
             if [[ "$FS" == "f2fs" || "$FS" == "ext4" ]]; then
               sudo umount tmp_out || true
             fi
-            rm -rf tmp_out/*
+            sudo rm -rf tmp_out/*
           done
 
+          sudo rm -f out/*.img
           echo "✅ Estrazione offline completata"
           monitor_spazio
 
@@ -217,7 +219,7 @@ jobs:
           sudo cp -a --preserve=all product_modified/* out/product/
           sudo rm -rf product_modified
           cd out
-          zip -9 ../Port.zip *
+          sudo zip -r -9 ../Port.zip *
           cd ..
           sudo rm -rf out
           ls -lh Port.zip
