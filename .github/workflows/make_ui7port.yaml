@@ -60,7 +60,7 @@ jobs:
           sudo modprobe f2fs || echo "⚠️ Modulo F2FS non disponibile"
           sudo modprobe erofs || echo "⚠️ Modulo EROFS non disponibile"
           monitor_spazio
-
+          
       # 📥 Download firmware
       - name: 📥 Scarica firmware
         run: |
@@ -69,7 +69,16 @@ jobs:
           curl -L "${{ github.event.inputs.firmware_url }}" -o ACK/base.zip --progress-bar
           ls -lh ACK
           monitor_spazio
-
+          
+      # ⚙️ Copia file di configurazione personalizzati
+      - name: ⚙️ Prepara file di configurazione per build system.img
+        run: |
+          cd ACK
+          mkdir -p config
+          cp -a fix/OneUI/UI7.0/Config/* config/ || echo "ℹ️ Nessun file config trovato"
+          ls -lh config/
+          monitor_spazio
+          
       # 📦 Estrazione ZIP/TAR.MD5
       - name: 📦 Estrai archivio principale
         run: |
@@ -124,7 +133,7 @@ jobs:
           ls -lh out
           monitor_spazio
 
-      # 🧩 Estrazione offline system e product (con doppio system)
+      # 🧩 Estrazione offline system e product (rilevamento automatico layout)
       - name: 🧩 Estrazione offline system e product
         run: |
           cd ACK
@@ -145,7 +154,7 @@ jobs:
                 sudo mount -o ro,loop $IMG tmp_out || true
                 ;;
               erofs)
-                echo "🔹 Filesystem EROFS, fuse.erofs"
+                echo "🔹 Filesystem EROFS, uso fuse.erofs"
                 fuse.erofs $IMG tmp_out
                 ;;
               *)
@@ -155,12 +164,20 @@ jobs:
             esac
 
             if [[ "$PART" == "system" ]]; then
-              # Copia root-level (prism, optics...) → system_root
-              sudo cp -a --preserve=all tmp_out/* system_modified/
-              # Copia main-level (app, lib, lib64, priv-app...) → system_main
-              sudo cp -a --preserve=all tmp_out/system/* system_modified/system/
+              echo "🔍 Controllo layout system..."
+              if [ -d tmp_out/system/system ]; then
+                echo "⚙️ Layout doppio system rilevato"
+                sudo cp -a --preserve=all tmp_out/system/* system_modified/
+                sudo cp -a --preserve=all tmp_out/system/system/* system_modified/system/
+              elif [ -d tmp_out/system/app ]; then
+                echo "⚙️ Layout system classico rilevato"
+                sudo cp -a --preserve=all tmp_out/system/* system_modified/system/
+              else
+                echo "⚙️ Layout OneUI moderno rilevato (prism, optics, ecc)"
+                sudo cp -a --preserve=all tmp_out/* system_modified/
+              fi
             else
-              # product
+              echo "📦 Copio partizione product"
               sudo cp -a --preserve=all tmp_out/* product_modified/
             fi
 
@@ -173,7 +190,7 @@ jobs:
           done
 
           sudo rm -f out/*.img
-          echo "✅ Estrazione offline completata"
+          echo "✅ Estrazione offline completata con rilevamento automatico layout"
           monitor_spazio
 
       # ⚙️ Applica modifiche OneUI 7.0
@@ -183,20 +200,33 @@ jobs:
           chmod +x ../script/system/ui7_debloat.sh
           sudo bash ../script/system/ui7_debloat.sh
 
-      # 🏗️ Ricompilazione system.img
-      - name: 🏗️ Ricompila system.img
+      # 🏗️ Ricompila system.img con configurazioni personalizzate
+      - name: 🏗️ Ricompila system.img con config e dimensione precisa
         run: |
           cd ACK
-          dd if=/dev/zero of=out/system.img bs=1M count=4096 status=progress
-          mkfs.ext4 -F -L system out/system.img
-          sudo mkdir -p /mntsys/
-          sudo mount -o loop out/system.img /mntsys/
-          sudo cp -a --preserve=all system_modified/* /mntsys/
-          sudo sync
-          sudo umount /mntsys/
-          sudo rm -rf system_modified
+          echo "🧱 Creazione system.img con context e config personalizzati..."
+          
+          # Applica mke2fs.conf se presente
+          if [ -f config/mke2fs.conf ]; then
+            sudo cp config/mke2fs.conf /etc/mke2fs.conf
+            echo "✅ mke2fs.conf applicato"
+          fi
+
+          # Crea system.img con filecontext e config precisi
+          make_ext4fs -s -T 0 \
+            -S config/system_file_contexts.txt \
+            -C config/system_filesystem_config.txt \
+            -l 4294967296 -a system out/system.img system_modified/
+
+          # Applica eventuali feature aggiuntive definite in system_filesystem_features.txt
+          if [ -f config/system_filesystem_features.txt ]; then
+            echo "⚙️ Applico system_filesystem_features.txt..."
+            FEATURES=$(cat config/system_filesystem_features.txt | tr '\n' ',')
+            tune2fs -O $FEATURES out/system.img || echo "⚠️ Feature non applicabili, continuo..."
+          fi
+
           img2simg out/system.img out/system_sparse.img
-          sudo rm -f out/system.img
+          sudo rm -rf out/system.img system_modified
           monitor_spazio
 
       # 🔄 Converti system_sparse.img → .new.dat
