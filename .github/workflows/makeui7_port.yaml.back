@@ -1,140 +1,238 @@
-name: Download, Estrai e Converti Firmware Samsung
+name: Make OneUI 7.0 Port for Universal7885
 
 on:
   workflow_dispatch:
     inputs:
       firmware_url:
-        description: "Inserisci l'URL diretto del firmware (.zip o .tar.md5)"
+        description: "Inserisci l'URL diretto del firmware EXYNOS (.zip o .tar.md5)"
+        required: true
+        type: string
+      fs_type:
+        description: "Specifica il tipo di filesystem della base (ext4, f2fs o erofs)"
         required: true
         type: string
 
 jobs:
-  estrai_firmware:
-    runs-on: ubuntu-latest
+  OneUI7_Auto_Port_Universal7885:
+    runs-on: ubuntu-24.04
 
     steps:
-    - name: 📦 Checkout Repository
-      uses: actions/checkout@v4
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
 
-    # 🧹 PULIZIA E SPAZIO
-    - name: 🔧 Libera spazio su disco
-      run: |
-        echo "🧹 Rimozione pacchetti non necessari..."
-        sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
-        sudo docker system prune -a -f
-        sudo apt clean
-        df -h /
+      # 🧹 Pulizia extra disco (nuovi step)
+      - name: Free disk space (1/3)
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          sudo docker image prune --all --force
+          sudo docker builder prune -a
 
-    - name: 📊 Crea funzione monitor_spazio
-      run: |
-        echo '#!/bin/bash
-        FREE=$(df --output=avail -BG / | tail -1 | sed "s/G//")
-        echo "📊 Spazio libero: ${FREE} GB"
-        if [ "$FREE" -lt 2 ]; then
-          echo "❌ ERRORE: spazio insufficiente (<2 GB)"
-          exit 1
-        fi' | sudo tee /usr/local/bin/monitor_spazio > /dev/null
-        sudo chmod +x /usr/local/bin/monitor_spazio
+      - name: Free disk space (2/3)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
 
-    # ⚙️ INSTALLAZIONE DIPENDENZE
-    - name: ⚙️ Installa dipendenze necessarie
-      run: |
-        sudo apt update
-        DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
-          unzip lz4 android-sdk-libsparse-utils attr zip wget git tar e2fsprogs python3
-        monitor_spazio
+      - name: Free disk space (3/3)
+        uses: rokibhasansagar/slimhub_actions@main
+        with:
+          retain: 'compiler_cmake'
 
-    # 📥 DOWNLOAD FIRMWARE
-    - name: 📥 Scarica firmware
-      run: |
-        mkdir -p firmware
-        echo "➡️ Download del firmware da: ${{ github.event.inputs.firmware_url }}"
-        curl -L "${{ github.event.inputs.firmware_url }}" -o firmware/firmware.zip --progress-bar
-        ls -lh firmware
-        monitor_spazio
+      # 📊 Crea funzione monitor_spazio
+      - name: 📊 Crea funzione monitor_spazio
+        run: |
+          echo '#!/bin/bash
+          FREE=$(df --output=avail -BG / | tail -1 | sed "s/G//")
+          echo "📊 Spazio libero: ${FREE} GB"
+          if [ "$FREE" -lt 2 ]; then
+            echo "❌ ERRORE: spazio insufficiente (<2 GB)"
+            exit 1
+          fi' | sudo tee /usr/local/bin/monitor_spazio > /dev/null
+          sudo chmod +x /usr/local/bin/monitor_spazio
 
-    # 📦 ESTRAZIONE ZIP/TAR.MD5
-    - name: 📦 Estrai archivio principale
-      run: |
-        cd firmware
-        if file firmware.zip | grep -q "gzip compressed"; then
-          echo "📦 File TAR.MD5 rilevato, estrazione..."
-          tar -xf firmware.zip
-        else
-          echo "📦 File ZIP rilevato, estrazione..."
-          unzip firmware.zip
-        fi
-        rm -f firmware.zip
-        echo "✅ Estrazione completata"
-        monitor_spazio
+      # ⚙️ Installazione dipendenze
+      - name: ⚙️ Installa dipendenze necessarie
+        run: |
+          sudo apt update
+          DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
+            unzip lz4 android-sdk-libsparse-utils attr zip wget git tar \
+            f2fs-tools erofs-utils e2fsprogs python3 brotli rsync fuse3
+          sudo apt install -y linux-modules-extra-$(uname -r)
+          sudo modprobe f2fs || echo "⚠️ Modulo F2FS non disponibile"
+          sudo modprobe erofs || echo "⚠️ Modulo EROFS non disponibile"
+          monitor_spazio
 
-    - name: 🔹 Estrai file .tar.md5
-      run: |
-        cd firmware
-        for f in *.tar.md5; do
-          echo "📂 Estrazione di $f"
-          tar -xf "$f"
-          rm -f "$f"
-        done
-        echo "✅ Tutti i file TAR.MD5 estratti"
-        monitor_spazio
+      # 📥 Download firmware
+      - name: 📥 Scarica firmware
+        run: |
+          mkdir -p ACK
+          echo "➡️ Download del firmware da: ${{ github.event.inputs.firmware_url }}"
+          curl -L "${{ github.event.inputs.firmware_url }}" -o ACK/base.zip --progress-bar
+          ls -lh ACK
+          monitor_spazio
 
-    # 🔸 DECOMPRESSIONE SUPER.IMG.LZ4
-    - name: 🔸 Decomprimi super.img.lz4
-      run: |
-        cd firmware
-        if [ -f super.img.lz4 ]; then
-          echo "🔹 Decompressione super.img.lz4"
-          lz4 -d super.img.lz4 super.img.sparse
-          rm -f super.img.lz4
-        fi
-        mv super.img.sparse ../super.img.sparse || true
-        cd ..
-        rm -rf firmware
-        monitor_spazio
+      # 📦 Estrazione ZIP/TAR.MD5
+      - name: 📦 Estrai archivio principale
+        run: |
+          cd ACK
+          if file base.zip | grep -q "gzip compressed"; then
+            tar -xf base.zip
+          else
+            unzip base.zip
+          fi
+          rm -f base.zip
+          monitor_spazio
 
-    # 🔁 CONVERSIONE SPARSE → RAW
-    - name: 🔁 Converti sparse in raw
-      run: |
-        echo "🔁 Conversione super.img.sparse → super.img"
-        simg2img super.img.sparse super.img
-        rm -f super.img.sparse
-        ls -lh super.img
-        monitor_spazio
+      - name: 🔹 Estrai file .tar.md5
+        run: |
+          cd ACK
+          tar --wildcards -xf *.tar.md5 'super.*.*'
+          rm -f *.tar.md5
+          monitor_spazio
 
-    # 🧰 LPUNPACK
-    - name: 🧰 Scarica e prepara lpunpack
-      run: |
-        git clone https://github.com/unix3dgforce/lpunpack.git
-        monitor_spazio
+      # 🔸 Decompressione super.img.lz4
+      - name: 🔸 Decomprimi super.img.lz4
+        run: |
+          cd ACK
+          if [ -f super.img.lz4 ]; then
+            lz4 -d super.img.lz4 super.img.sparse
+            rm -f super.img.lz4
+          fi
+          monitor_spazio
 
-    # 🗂️ ESTRAZIONE PARTIZIONI
-    - name: 🗂️ Estrai partizioni da super.img
-      run: |
-        mkdir out
-        echo "📂 Estrazione di system.img da super.img..."
-        python3 lpunpack/lpunpack.py -p system super.img out/
-        rm -f super.img
-        ls -lh out
-        monitor_spazio
+      # 🔁 Conversione sparse → raw
+      - name: 🔁 Converti sparse in raw
+        run: |
+          cd ACK
+          simg2img super.img.sparse super.img
+          rm -f super.img.sparse
+          monitor_spazio
 
-    # 🗜️ COMPRESSIONE OUTPUT
-    - name: 🗜️ Comprimi risultati finali
-      run: |
-        echo "🗜️ Compressione file..."
-        cd out
-        zip -9 ../firmware_parts.zip system.img
-        cd ..
-        ls -lh firmware_parts.zip
-        monitor_spazio
+      # 🧰 LPUNPACK
+      - name: 🧰 Scarica e prepara lpunpack
+        run: |
+          cd ACK
+          git clone https://github.com/unix3dgforce/lpunpack.git
+          monitor_spazio
 
-    # ☁️ UPLOAD SU SOURCEFORGE
-    - name: 🔐 Configura SSH e carica su SourceForge
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
-        scp firmware_parts.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
-        echo "✅ Upload completato su SourceForge"
-        monitor_spazio
+      # 🗂️ Estrazione partizioni da super.img
+      - name: 🗂️ Estrai partizioni
+        run: |
+          cd ACK
+          mkdir out
+          python3 lpunpack/lpunpack.py -p product,system super.img out/
+          rm -f super.img
+          ls -lh out
+          monitor_spazio
+
+      # 🧩 Estrazione offline system e product (con doppio system)
+      - name: 🧩 Estrazione offline system e product
+        run: |
+          cd ACK
+          mkdir -p system_modified product_modified tmp_out
+
+          for IMG in out/system.img out/product.img; do
+            PART=$(basename $IMG .img)
+            echo "📂 Estrazione $PART senza mount"
+
+            rm -rf tmp_out/*
+            mkdir -p tmp_out
+
+            FS=$(file $IMG | grep -oE 'F2FS|ext4|EroFS' | tr '[:upper:]' '[:lower:]')
+
+            case "$FS" in
+              f2fs|ext4)
+                echo "🔹 Filesystem $FS, mount read-only temporaneo"
+                sudo mount -o ro,loop $IMG tmp_out || true
+                ;;
+              erofs)
+                echo "🔹 Filesystem EROFS, fuse.erofs"
+                fuse.erofs $IMG tmp_out
+                ;;
+              *)
+                echo "⚠️ Filesystem non riconosciuto, salto $IMG"
+                continue
+                ;;
+            esac
+
+            if [[ "$PART" == "system" ]]; then
+              # Copia root-level (prism, optics...) → system_root
+              sudo cp -a --preserve=all tmp_out/* system_modified/
+              # Copia main-level (app, lib, lib64, priv-app...) → system_main
+              sudo cp -a --preserve=all tmp_out/system/* system_modified/system/
+            else
+              # product
+              sudo cp -a --preserve=all tmp_out/* product_modified/
+            fi
+
+            sudo find system_modified product_modified -exec chown -h $USER:$USER {} \;
+
+            if [[ "$FS" == "f2fs" || "$FS" == "ext4" ]]; then
+              sudo umount tmp_out || true
+            fi
+            sudo rm -rf tmp_out/*
+          done
+
+          sudo rm -f out/*.img
+          echo "✅ Estrazione offline completata"
+          monitor_spazio
+
+      # ⚙️ Applica modifiche OneUI 7.0
+      - name: ⚙️ Applica patch OneUI
+        run: |
+          cd ACK
+          chmod +x ../script/system/ui7_debloat.sh
+          sudo bash ../script/system/ui7_debloat.sh
+
+      # 🏗️ Ricompilazione system.img
+      - name: 🏗️ Ricompila system.img
+        run: |
+          cd ACK
+          dd if=/dev/zero of=out/system.img bs=1M count=4096 status=progress
+          mkfs.ext4 -F -L system out/system.img
+          sudo mkdir -p /mntsys/
+          sudo mount -o loop out/system.img /mntsys/
+          sudo cp -a --preserve=all system_modified/* /mntsys/
+          sudo sync
+          sudo umount /mntsys/
+          sudo rm -rf system_modified
+          img2simg out/system.img out/system_sparse.img
+          sudo rm -f out/system.img
+          monitor_spazio
+
+      # 🔄 Converti system_sparse.img → .new.dat
+      - name: 🔄 Converti system_sparse.img → .new.dat
+        run: |
+          cd ACK
+          git clone https://github.com/xpirt/img2sdat.git
+          cd img2sdat
+          sed -i 's/import imp/import importlib as imp/' common.py
+          python3 img2sdat.py ../out/system_sparse.img -o ../out -v 4
+          sudo rm -f ../out/system_sparse.img
+          cd ..
+          monitor_spazio
+
+      # 🗜️ Compressione output
+      - name: 🗜️ Comprimi risultati finali
+        run: |
+          cd ACK
+          mkdir -p out/product
+          sudo cp -a --preserve=all product_modified/* out/product/
+          sudo rm -rf product_modified
+          cd out
+          sudo zip -r -9 ../Port.zip *
+          cd ..
+          sudo rm -rf out
+          ls -lh Port.zip
+          monitor_spazio
+
+      # ☁️ Upload su SourceForge
+      - name: ☁️ Upload su SourceForge
+        run: |
+          cd ACK
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SF_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
+          scp Port.zip thewinner02@frs.sourceforge.net:/home/frs/project/oneui-ports/test/
+          echo "✅ Upload completato su SourceForge"
+          monitor_spazio
