@@ -178,7 +178,6 @@ jobs:
               fi
             else
               echo "📦 Copio partizione product"
-              sudo cp -a --preserve=all tmp_out/* product_modified/
             fi
 
             sudo find system_modified product_modified -exec chown -h $USER:$USER {} \;
@@ -199,6 +198,11 @@ jobs:
           cd ACK
           chmod +x ../script/system/ui7_debloat.sh
           sudo bash ../script/system/ui7_debloat.sh
+          sudo cp -a --preserve=all product_modified/app/Trychrome* system_modified/system/app/
+          sudo cp -a --preserve=all product_modified/app/WebView* system_modified/system/app/
+          sudo cp -a --preserve=all product_modified/priv-app/Ai* system_modified/system/priv-app/
+          sudo cp -a --preserve=all product_modified/priv-app/Phonesky system_modified/system/priv-app/
+          sudo cp -a --preserve=all product_modified/priv-app/PrivateComputeServices system_modified/system/priv-app/
 
       # 🏗️ Ricompila system.img con configurazioni personalizzate
       - name: 🏗️ Ricompila system.img con config e dimensione precisa
