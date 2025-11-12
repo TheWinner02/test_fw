@@ -196,6 +196,7 @@ jobs:
       - name: ⚙️ Applica patch OneUI
         run: |
           cd ACK
+          echo "📦 Applico patch"
           chmod +x ../script/system/ui7_debloat.sh
           sudo bash ../script/system/ui7_debloat.sh
           sudo cp -a --preserve=all product_modified/app/Trychrome* system_modified/system/app/
@@ -203,6 +204,8 @@ jobs:
           sudo cp -a --preserve=all product_modified/priv-app/Ai* system_modified/system/priv-app/
           sudo cp -a --preserve=all product_modified/priv-app/Phonesky system_modified/system/priv-app/
           sudo cp -a --preserve=all product_modified/priv-app/PrivateComputeServices system_modified/system/priv-app/
+          sudo cp -a --preserve=all ../common/system/* system_modified/
+          echo "✅ Patch applicate"
 
       # 🏗️ Ricompila system.img con configurazioni personalizzate
       - name: 🏗️ Ricompila system.img con config e dimensione precisa
