@@ -7,8 +7,8 @@ on:
         description: "Inserisci l'URL diretto del firmware EXYNOS (.zip o .tar.md5)"
         required: true
         type: string
-      fs_type:
-        description: "Specifica il tipo di filesystem della base (ext4, f2fs o erofs)"
+      device_name:
+        description: "Inserisci il nome del dispositivo della base"
         required: true
         type: string
 
@@ -48,6 +48,13 @@ jobs:
             exit 1
           fi' | sudo tee /usr/local/bin/monitor_spazio > /dev/null
           sudo chmod +x /usr/local/bin/monitor_spazio
+
+      # ⚙️ Imposta nome dispositivo
+      - name: 📱 Imposta DEVICE_NAME
+        run: |
+          DEVICE_NAME="${{ github.event.inputs.device_name }}"
+          echo "📱 Nome dispositivo: $DEVICE_NAME"
+          echo "DEVICE_NAME=$DEVICE_NAME" >> $GITHUB_ENV
 
       # ⚙️ Installazione dipendenze
       - name: ⚙️ Installa dipendenze necessarie
@@ -133,7 +140,7 @@ jobs:
           ls -lh out
           monitor_spazio
 
-      # 🧩 Estrazione offline system e product (rilevamento automatico layout)
+      # 🧩 Estrazione offline system e product (rilevamento automatico layout e filesystem)
       - name: 🧩 Estrazione offline system e product
         run: |
           cd ACK
@@ -146,16 +153,17 @@ jobs:
             rm -rf tmp_out/*
             mkdir -p tmp_out
 
-            FS=$(file $IMG | grep -oE 'F2FS|ext4|EroFS' | tr '[:upper:]' '[:lower:]')
+            # Rilevamento automatico FS
+            FS=$(file "$IMG" | grep -oE 'F2FS|ext4|EroFS' | head -n1 | tr '[:upper:]' '[:lower:]')
 
             case "$FS" in
               f2fs|ext4)
                 echo "🔹 Filesystem $FS, mount read-only temporaneo"
-                sudo mount -o ro,loop $IMG tmp_out || true
+                sudo mount -o ro,loop "$IMG" tmp_out || true
                 ;;
               erofs)
                 echo "🔹 Filesystem EROFS, uso fuse.erofs"
-                fuse.erofs $IMG tmp_out
+                fuse.erofs "$IMG" tmp_out
                 ;;
               *)
                 echo "⚠️ Filesystem non riconosciuto, salto $IMG"
@@ -181,7 +189,7 @@ jobs:
               echo "📦 Copio partizione product"
             fi
 
-            sudo find system_modified product_modified -exec chown -h $USER:$USER {} \;
+            sudo find system_modified product_modified -exec chown -h $(whoami):$(whoami) {} \;
 
             if [[ "$FS" == "f2fs" || "$FS" == "ext4" ]]; then
               sudo umount tmp_out || true
@@ -271,7 +279,8 @@ jobs:
           sudo cp -a --preserve=all product_modified/* out/product/
           sudo rm -rf product_modified
           sudo cp -a --preserve=all ../common/vendor out/
-          sudo cp -a --preserve=all ../common/device out/          
+          sudo cp -a --preserve=all ../common/device out/
+          sudo cp -a --preserve=all ../common/inf/$DEVICE_NAME/* out/
           cd out
           sudo zip -r -9 ../Port.zip *
           cd ..
