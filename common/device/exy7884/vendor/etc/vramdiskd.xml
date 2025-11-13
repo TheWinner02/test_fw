@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<records>
+<boot_file>/system/framework/services.jar</boot_file>
+<boot_file>/vendor/lib64/egl/libGLES_mali.so</boot_file>
+<boot_file>/system/lib64/libhwui.so</boot_file>
+<boot_file>/system/lib/libhwui.so</boot_file>
+<boot_file>/system/lib64/libcameraservice.so</boot_file>
+<boot_file>/system/lib64/libcamera_client.so</boot_file>
+<boot_file>/apex/com.android.art/lib/libart.so</boot_file>
+<boot_file>/system/bin/surfaceflinger</boot_file>
+</records>
