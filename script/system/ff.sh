@@ -1,12 +1,10 @@
 #!/bin/bash
-# Script per sostituire le righe <SEC_FLOATING_FEATURE_CAMERA* con un blocco XML,
-# mantenendo l'indentazione originale
+# Script per modificare floating_feature.xml mantenendo l'indentazione originale
 
-# Nome del file XML
 FILE="system_modified/system/etc/floating_feature.xml"
 
-# Blocco XML da inserire
-read -r -d '' NEW_BLOCK << 'EOF'
+# ====== BLOCCO CAMERA ======
+read -r -d '' NEW_CAMERA_BLOCK << 'EOF'
 <SEC_FLOATING_FEATURE_CAMERA_CONFIG_AI_DEFLICKER>OFF</SEC_FLOATING_FEATURE_CAMERA_CONFIG_AI_DEFLICKER>
 <SEC_FLOATING_FEATURE_CAMERA_CONFIG_AI_HIGH_RESOLUTION_MAX_CAPTURE>1</SEC_FLOATING_FEATURE_CAMERA_CONFIG_AI_HIGH_RESOLUTION_MAX_CAPTURE>
 <SEC_FLOATING_FEATURE_CAMERA_CONFIG_ARDOODLE_PEN_TYPE>3d,Pattern,Regular,Highlighter,Glass_lite,Text,Organic_lite</SEC_FLOATING_FEATURE_CAMERA_CONFIG_ARDOODLE_PEN_TYPE>
@@ -47,22 +45,56 @@ read -r -d '' NEW_BLOCK << 'EOF'
 <SEC_FLOATING_FEATURE_CAMERA_SUPPORT_VIDEO_PALM>TRUE</SEC_FLOATING_FEATURE_CAMERA_SUPPORT_VIDEO_PALM>
 EOF
 
-# Esegue la sostituzione con mantenimento dell'indentazione
-awk -v block="$NEW_BLOCK" '
-    BEGIN { indent=""; replaced=0 }
-    /^([ \t]*)<SEC_FLOATING_FEATURE_CAMERA/ {
-        if (!replaced) {
-            indent = substr($0, 1, RLENGTH - length($0) + 1)
-            split(block, lines, "\n")
-            for (i in lines) {
-                if (length(lines[i]) > 0)
-                    print indent lines[i]
+# ====== ESECUZIONE ======
+awk -v block="$NEW_CAMERA_BLOCK" '
+    BEGIN { replaced_camera=0 }
+    {
+        # Blocco CAMERA
+        if ($0 ~ /^[ \t]*<SEC_FLOATING_FEATURE_CAMERA/) {
+            if (!replaced_camera) {
+                indent = match($0, /[^ \t]/)
+                prefix = substr($0, 1, indent-1)
+                n = split(block, lines, "\n")
+                for (i = 1; i <= n; i++)
+                    if (length(lines[i]) > 0)
+                        print prefix lines[i]
+                replaced_camera=1
             }
-            replaced=1
+            next
         }
-        next
+
+        # AUDIO
+        if ($0 ~ /^[ \t]*<SEC_FLOATING_FEATURE_AUDIO_CONFIG_SOUNDALIVE_VERSION>/) {
+            sub(/<SEC_FLOATING_FEATURE_AUDIO_CONFIG_SOUNDALIVE_VERSION>.*/, "<SEC_FLOATING_FEATURE_AUDIO_CONFIG_SOUNDALIVE_VERSION>eq_custom,uhq_upscale,uhq_onoff,karaoke,adapt,spk_stereo,dolby_game_spk_off</SEC_FLOATING_FEATURE_AUDIO_CONFIG_SOUNDALIVE_VERSION>")
+        }
+
+        # SYSTEM SIOP
+        if ($0 ~ /^[ \t]*<SEC_FLOATING_FEATURE_SYSTEM_CONFIG_SIOP_POLICY_FILENAME>/) {
+            sub(/<SEC_FLOATING_FEATURE_SYSTEM_CONFIG_SIOP_POLICY_FILENAME>.*/, "<SEC_FLOATING_FEATURE_SYSTEM_CONFIG_SIOP_POLICY_FILENAME>siop_default</SEC_FLOATING_FEATURE_SYSTEM_CONFIG_SIOP_POLICY_FILENAME>")
+        }
+
+        # SETTINGS ELECTRIC
+        if ($0 ~ /^[ \t]*<SEC_FLOATING_FEATURE_SETTINGS_CONFIG_ELECTRIC_RATED_VALUE>/) {
+            sub(/<SEC_FLOATING_FEATURE_SETTINGS_CONFIG_ELECTRIC_RATED_VALUE>.*/, "<SEC_FLOATING_FEATURE_SETTINGS_CONFIG_ELECTRIC_RATED_VALUE>DC 9 V; 1.67 A</SEC_FLOATING_FEATURE_SETTINGS_CONFIG_ELECTRIC_RATED_VALUE>")
+        }
+
+        # LOCKSCREEN STYLE
+        if ($0 ~ /^[ \t]*<SEC_FLOATING_FEATURE_LOCKSCREEN_CONFIG_WALLPAPER_STYLE>/) {
+            sub(/<SEC_FLOATING_FEATURE_LOCKSCREEN_CONFIG_WALLPAPER_STYLE>.*/, "<SEC_FLOATING_FEATURE_LOCKSCREEN_CONFIG_WALLPAPER_STYLE>MOTION,VIDEO,COVER_MP4</SEC_FLOATING_FEATURE_LOCKSCREEN_CONFIG_WALLPAPER_STYLE>")
+        }
+
+        # LCD CONFIG AOD
+        if ($0 ~ /^[ \t]*<SEC_FLOATING_FEATURE_LCD_CONFIG_AOD_FULLSCREEN>/) {
+            sub(/<SEC_FLOATING_FEATURE_LCD_CONFIG_AOD_FULLSCREEN>.*/, "<SEC_FLOATING_FEATURE_LCD_CONFIG_AOD_FULLSCREEN>1</SEC_FLOATING_FEATURE_LCD_CONFIG_AOD_FULLSCREEN>")
+        }
+
+        # LCD BLUE FILTER
+        if ($0 ~ /^[ \t]*<SEC_FLOATING_FEATURE_LCD_SUPPORT_BLUE_FILTER_ADAPTIVE_MODE>/) {
+            sub(/<SEC_FLOATING_FEATURE_LCD_SUPPORT_BLUE_FILTER_ADAPTIVE_MODE>.*/, "<SEC_FLOATING_FEATURE_LCD_SUPPORT_BLUE_FILTER_ADAPTIVE_MODE>0</SEC_FLOATING_FEATURE_LCD_SUPPORT_BLUE_FILTER_ADAPTIVE_MODE>")
+        }
+
+        print
     }
-    !/^([ \t]*)<SEC_FLOATING_FEATURE_CAMERA/ { print }
 ' "$FILE" > "${FILE}.tmp" && mv "${FILE}.tmp" "$FILE"
 
-echo "✅ Sostituzione completata in $FILE"
+echo "✅ Tutte le sostituzioni completate in $FILE"
