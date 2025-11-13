@@ -3,7 +3,7 @@
 # mantenendo l'indentazione originale
 
 # Nome del file XML
-FILE="feature.xml"
+FILE="system_modified/system/etc/floating_feature.xml"
 
 # Blocco XML da inserire
 read -r -d '' NEW_BLOCK << 'EOF'
