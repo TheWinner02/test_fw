@@ -205,6 +205,8 @@ jobs:
           sudo cp -a --preserve=all product_modified/priv-app/Phonesky system_modified/system/priv-app/
           sudo cp -a --preserve=all product_modified/priv-app/PrivateComputeServices system_modified/system/priv-app/
           sudo cp -a --preserve=all ../common/system/* system_modified/
+          chmod +x ../script/system/ff.sh
+          sudo bash ../script/system/ff.sh
           echo "✅ Patch applicate"
 
       # 🏗️ Ricompila system.img con configurazioni personalizzate
