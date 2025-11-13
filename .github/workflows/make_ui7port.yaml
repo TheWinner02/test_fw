@@ -177,6 +177,7 @@ jobs:
                 sudo cp -a --preserve=all tmp_out/* system_modified/
               fi
             else
+              sudo cp -a --preserve=all tmp_out/* product_modified/
               echo "📦 Copio partizione product"
             fi
 
