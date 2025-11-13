@@ -298,6 +298,14 @@ sudo rm -rf product_modified/app/Maps
 sudo rm -rf product_modified/app/Speech*
 sudo rm -rf product_modified/app/YouTube
 
+# Product/overlay Debloat
+
+sudo rm -rf product_modified/overlay/framework-res__*
+sudo rm -rf product_modified/overlay/SettingsProvider__*
+sudo rm -rf product_modified/overlay/SystemUI__
+sudo rm -rf product_modified/overlay/TeleService__*__auto_generated_rro_product.apk
+sudo rm -rf product_modified/overlay/Telecom__*
+
 # Product/priv-app Debloat
 
 sudo rm -rf product_modified/priv-app/Android*
