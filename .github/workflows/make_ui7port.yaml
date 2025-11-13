@@ -198,16 +198,28 @@ jobs:
         run: |
           cd ACK
           echo "📦 Applico patch"
+
+          # debloat
           chmod +x ../script/system/ui7_debloat.sh
           sudo bash ../script/system/ui7_debloat.sh
+          
+          # product
           sudo cp -a --preserve=all product_modified/app/Trychrome* system_modified/system/app/
           sudo cp -a --preserve=all product_modified/app/WebView* system_modified/system/app/
           sudo cp -a --preserve=all product_modified/priv-app/Ai* system_modified/system/priv-app/
           sudo cp -a --preserve=all product_modified/priv-app/Phonesky system_modified/system/priv-app/
           sudo cp -a --preserve=all product_modified/priv-app/PrivateComputeServices system_modified/system/priv-app/
-          sudo cp -a --preserve=all ../common/system/* system_modified/
+
+          # system
           chmod +x ../script/system/ff.sh
           sudo bash ../script/system/ff.sh
+          chmod +x ../script/system/prop.sh
+          sudo bash ../script/system/prop.sh
+
+          # common
+          sudo cp -a --preserve=all ../common/product/overlay/* product_modified/overlay/
+          sudo cp -a --preserve=all ../common/system/* system_modified/
+          
           echo "✅ Patch applicate"
 
       # 🏗️ Ricompila system.img con configurazioni personalizzate
@@ -258,6 +270,8 @@ jobs:
           mkdir -p out/product
           sudo cp -a --preserve=all product_modified/* out/product/
           sudo rm -rf product_modified
+          sudo cp -a --preserve=all ../common/vendor out/
+          sudo cp -a --preserve=all ../common/device out/          
           cd out
           sudo zip -r -9 ../Port.zip *
           cd ..
