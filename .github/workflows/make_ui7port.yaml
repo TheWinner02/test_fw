@@ -11,10 +11,6 @@ on:
         description: "Inserisci il nome del dispositivo della base"
         required: true
         type: string
-      fs_type:
-        description: "Specifica il tipo di filesystem della base (ext4, f2fs o erofs)"
-        required: true
-        type: string
 
 jobs:
   OneUI7_Auto_Port_Universal7885:
@@ -144,7 +140,7 @@ jobs:
           ls -lh out
           monitor_spazio
 
-      # 🧩 Estrazione offline system e product
+      # 🧩 Estrazione system e product
       - name: 🧩 Estrazione system e product
         run: |
           cd ACK
@@ -152,58 +148,80 @@ jobs:
 
           for IMG in out/system.img out/product.img; do
             PART=$(basename $IMG .img)
-            echo "📂 Estrazione $PART senza mount"
-            
+            echo "📂 Estrazione $PART"
+
             mkdir -p tmp_out
 
-            # Rilevamento FS
-            FS="${{ github.event.inputs.fs_type }}"
-            echo "🔍 filesystem: $FS"
+            # 🔍 Rilevamento filesystem
+            FS=$(file -b system.img)
 
-            case "$FS" in
-              f2fs|ext4)
-                echo "🔹 Filesystem $FS, mount read-only temporaneo"
-                sudo mount -o ro,loop "$IMG" tmp_out || true
+            echo "🔎 Risultato: $FS"
+
+            if echo "$FS" | grep -qi "erofs"; then
+              FS_TYPE="erofs"
+            elif echo "$FS" | grep -qi "f2fs"; then
+              FS_TYPE="f2fs"
+            elif echo "$FS" | grep -qi "ext2\|ext3\|ext4"; then
+              FS_TYPE="ext4"
+            else
+              echo "⚠️ Filesystem non riconosciuto, salto $IMG"
+              continue
+            fi
+
+            echo "📌 Filesystem rilevato: $FS_TYPE"
+
+            # 🔹 Montaggio in base al filesystem
+            case "$FS_TYPE" in
+              ext4|f2fs)
+                echo "🔹 Montaggio read-only di $FS_TYPE..."
+                sudo mount -o ro,loop "$IMG" tmp_out || {
+                  echo "❌ Errore mount $FS_TYPE"; continue;
+                }
                 ;;
               erofs)
-                echo "🔹 Filesystem EROFS, uso fuse.erofs"
-                fuse.erofs "$IMG" tmp_out
-                ;;
-              *)
-                echo "⚠️ Filesystem non riconosciuto, salto $IMG"
-                continue
+                echo "🔹 Montaggio EROFS tramite fuse.erofs..."
+                fuse.erofs "$IMG" tmp_out || {
+                  echo "❌ Errore mount EROFS"; continue;
+                }
                 ;;
             esac
 
+            # 📦 Copia in base alla partizione
             if [[ "$PART" == "system" ]]; then
-              echo "🔍 Controllo layout system..."
+              echo "📦 Copia partizione system (auto layout detection)"
+
               if [ -d tmp_out/system/system ]; then
-                echo "⚙️ Layout doppio system rilevato"
+                echo "⚙️ Rilevato layout doppio system"
                 sudo cp -a --preserve=all tmp_out/system/* system_modified/
                 sudo cp -a --preserve=all tmp_out/system/system/* system_modified/system/
               elif [ -d tmp_out/system/app ]; then
-                echo "⚙️ Layout system classico rilevato"
+                echo "⚙️ Layout classico system/"
                 sudo cp -a --preserve=all tmp_out/system/* system_modified/system/
               else
-                echo "⚙️ Layout OneUI moderno rilevato (prism, optics, ecc)"
+                echo "⚙️ Layout moderno prism/optics"
                 sudo cp -a --preserve=all tmp_out/* system_modified/
               fi
+
             else
+              echo "📦 Copia partizione product"
               sudo cp -a --preserve=all tmp_out/* product_modified/
-              echo "📦 Copio partizione product"
             fi
 
+            # Fix permessi
             sudo find system_modified product_modified -exec chown -h $(whoami):$(whoami) {} \;
 
-            if [[ "$FS" == "f2fs" || "$FS" == "ext4" ]]; then
+            # Smonta
+            if [[ "$FS_TYPE" == "ext4" || "$FS_TYPE" == "f2fs" ]]; then
               sudo umount tmp_out || true
             fi
             sudo rm -rf tmp_out/*
+
           done
 
           sudo rm -f out/*.img
-          echo "✅ Estrazione offline completata con rilevamento automatico layout"
+          echo "✅ Estrazione offline completata (auto filesystem detect)"
           monitor_spazio
+
 
       # ⚙️ Applica modifiche OneUI 7.0
       - name: ⚙️ Applica patch OneUI
