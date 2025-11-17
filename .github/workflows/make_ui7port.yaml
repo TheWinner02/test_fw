@@ -153,12 +153,12 @@ jobs:
           for IMG in out/system.img out/product.img; do
             PART=$(basename $IMG .img)
             echo "📂 Estrazione $PART senza mount"
-
-            rm -rf tmp_out/*
+            
             mkdir -p tmp_out
 
             # Rilevamento automatico FS
-            FS=$(file "$IMG" | grep -oE 'F2FS|ext4|EroFS' | head -n1 | tr '[:upper:]' '[:lower:]')
+            FS="${{ github.event.inputs.fs_type }}"
+            echo "🔍 filesystem rilevato; $FS"
 
             case "$FS" in
               f2fs|ext4)
@@ -176,18 +176,8 @@ jobs:
             esac
 
             if [[ "$PART" == "system" ]]; then
-              echo "🔍 Controllo layout system..."
-              if [ -d tmp_out/system/system ]; then
-                echo "⚙️ Layout doppio system rilevato"
-                sudo cp -a --preserve=all tmp_out/system/* system_modified/
-                sudo cp -a --preserve=all tmp_out/system/system/* system_modified/system/
-              elif [ -d tmp_out/system/app ]; then
-                echo "⚙️ Layout system classico rilevato"
-                sudo cp -a --preserve=all tmp_out/system/* system_modified/system/
-              else
-                echo "⚙️ Layout OneUI moderno rilevato (prism, optics, ecc)"
-                sudo cp -a --preserve=all tmp_out/* system_modified/
-              fi
+              echo "📦 Copio partizione system"
+              sudo cp -a --preserve=all tmp_out/system/* system_modified/
             else
               sudo cp -a --preserve=all tmp_out/* product_modified/
               echo "📦 Copio partizione product"
