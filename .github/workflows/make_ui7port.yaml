@@ -11,6 +11,10 @@ on:
         description: "Inserisci il nome del dispositivo della base"
         required: true
         type: string
+      fs_type:
+        description: "Specifica il tipo di filesystem della base (ext4, f2fs o erofs)"
+        required: true
+        type: string
 
 jobs:
   OneUI7_Auto_Port_Universal7885:
