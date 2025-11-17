@@ -158,7 +158,7 @@ jobs:
 
             # Rilevamento FS
             FS="${{ github.event.inputs.fs_type }}"
-            echo "🔍 filesystem; $FS"
+            echo "🔍 filesystem: $FS"
 
             case "$FS" in
               f2fs|ext4)
