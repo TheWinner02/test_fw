@@ -153,7 +153,7 @@ jobs:
             mkdir -p tmp_out
 
             # 🔍 Rilevamento filesystem
-            FS=$(file -b system.img)
+            FS=$(file -b out/system.img)
 
             echo "🔎 Risultato: $FS"
 
