@@ -144,8 +144,8 @@ jobs:
           ls -lh out
           monitor_spazio
 
-      # 🧩 Estrazione offline system e product (rilevamento automatico layout e filesystem)
-      - name: 🧩 Estrazione offline system e product
+      # 🧩 Estrazione offline system e product
+      - name: 🧩 Estrazione system e product
         run: |
           cd ACK
           mkdir -p system_modified product_modified tmp_out
@@ -156,7 +156,7 @@ jobs:
             
             mkdir -p tmp_out
 
-            # Rilevamento automatico FS
+            # Rilevamento FS
             FS="${{ github.event.inputs.fs_type }}"
             echo "🔍 filesystem rilevato; $FS"
 
@@ -178,6 +178,7 @@ jobs:
             if [[ "$PART" == "system" ]]; then
               echo "📦 Copio partizione system"
               sudo cp -a --preserve=all tmp_out/system/* system_modified/
+              sudo cp -a --preserve=all tmp_out/system/system/* system_modified/system/
             else
               sudo cp -a --preserve=all tmp_out/* product_modified/
               echo "📦 Copio partizione product"
