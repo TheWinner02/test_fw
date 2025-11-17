@@ -62,11 +62,10 @@ jobs:
           sudo apt update
           DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
             unzip lz4 android-sdk-libsparse-utils attr zip wget git tar \
-            f2fs-tools erofs-utils e2fsprogs python3 brotli rsync fuse3
+            f2fs-tools erofs-utils e2fsprogs python3 brotli erofsfuse fuse3
           sudo apt install -y linux-modules-extra-$(uname -r)
           sudo modprobe f2fs || echo "⚠️ Modulo F2FS non disponibile"
           sudo modprobe erofs || echo "⚠️ Modulo EROFS non disponibile"
-          fuse.erofs --version
           
           monitor_spazio
           
@@ -181,8 +180,8 @@ jobs:
                 }
                 ;;
               erofs)
-                echo "🔹 Montaggio EROFS tramite fuse.erofs..."
-                fuse.erofs "$IMG" tmp_out || {
+                echo "🔹 Montaggio EROFS tramite erofsfuse..."
+                erofsfuse "$IMG" tmp_out || {
                   echo "❌ Errore mount EROFS"; continue;
                 }
                 ;;
@@ -215,6 +214,8 @@ jobs:
             # Smonta
             if [[ "$FS_TYPE" == "ext4" || "$FS_TYPE" == "f2fs" ]]; then
               sudo umount tmp_out || true
+            else
+              fusermount3 -u tmp_out || true
             fi
             sudo rm -rf tmp_out/*
 
