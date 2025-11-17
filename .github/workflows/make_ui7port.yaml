@@ -66,6 +66,10 @@ jobs:
           sudo apt install -y linux-modules-extra-$(uname -r)
           sudo modprobe f2fs || echo "⚠️ Modulo F2FS non disponibile"
           sudo modprobe erofs || echo "⚠️ Modulo EROFS non disponibile"
+
+          # Installazione fuse.erofs
+          curl -L -o /usr/local/bin/fuse.erofs https://github.com/erofs-tools/erofsfuse/releases/download/v0.13/fuse.erofs
+          sudo chmod +x /usr/local/bin/fuse.erofs
           monitor_spazio
           
       # 📥 Download firmware
