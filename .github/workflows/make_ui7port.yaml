@@ -227,7 +227,7 @@ jobs:
           sudo bash ../script/system/ui7_debloat.sh
           
           # product
-          ls product_modified/app
+          ls product_modified
           sudo cp -a --preserve=all product_modified/app/Trichrome* system_modified/system/app/
           sudo cp -a --preserve=all product_modified/app/WebView* system_modified/system/app/
           sudo cp -a --preserve=all product_modified/priv-app/Ai* system_modified/system/priv-app/
