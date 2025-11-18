@@ -83,7 +83,7 @@ jobs:
         run: |
           cd ACK
           mkdir -p config
-          cp -a fix/OneUI/UI7.0/Config/* config/ || echo "ℹ️ Nessun file config trovato"
+          cp -a ../fix/OneUI/UI7.0/Config/* config/ || echo "ℹ️ Nessun file config trovato"
           ls -lh config/
           monitor_spazio
           
