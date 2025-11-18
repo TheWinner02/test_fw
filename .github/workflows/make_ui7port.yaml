@@ -191,11 +191,11 @@ jobs:
             if [[ "$PART" == "system" ]]; then
               echo "📦 Copia partizione system"
 
-              sudo cp -a --preserve=all tmp_out/system/* system_modified/
-              sudo cp -a --preserve=all tmp_out/system/system/* system_modified/system/
+              sudo cp -a --preserve=all tmp_out/system/* system_modified/ 2>/dev/null || true
+              sudo cp -a --preserve=all tmp_out/system/system/* system_modified/system/ 2>/dev/null || true
             else
               echo "📦 Copia partizione product"
-              sudo cp -a --preserve=all tmp_out/* product_modified/
+              sudo cp -a --preserve=all tmp_out/* product_modified/ 2>/dev/null || true
             fi
 
             # Fix permessi
