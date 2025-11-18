@@ -189,20 +189,10 @@ jobs:
 
             # 📦 Copia in base alla partizione
             if [[ "$PART" == "system" ]]; then
-              echo "📦 Copia partizione system (auto layout detection)"
+              echo "📦 Copia partizione system"
 
-              if [ -d tmp_out/system/system ]; then
-                echo "⚙️ Rilevato layout doppio system"
-                sudo cp -a --preserve=all tmp_out/system/* system_modified/
-                sudo cp -a --preserve=all tmp_out/system/system/* system_modified/system/
-              elif [ -d tmp_out/system/app ]; then
-                echo "⚙️ Layout classico system/"
-                sudo cp -a --preserve=all tmp_out/system/* system_modified/system/
-              else
-                echo "⚙️ Layout moderno prism/optics"
-                sudo cp -a --preserve=all tmp_out/* system_modified/
-              fi
-
+              sudo cp -a --preserve=all tmp_out/system/* system_modified/
+              sudo cp -a --preserve=all tmp_out/system/system/* system_modified/system/
             else
               echo "📦 Copia partizione product"
               sudo cp -a --preserve=all tmp_out/* product_modified/
@@ -222,7 +212,7 @@ jobs:
           done
 
           sudo rm -f out/*.img
-          echo "✅ Estrazione offline completata (auto filesystem detect)"
+          echo "✅ Estrazione completata"
           monitor_spazio
 
 
