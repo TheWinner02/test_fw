@@ -181,7 +181,7 @@ jobs:
                 ;;
               erofs)
                 echo "🔹 Montaggio EROFS tramite erofsfuse..."
-                erofsfuse "$IMG" tmp_out || {
+                sudo erofsfuse "$IMG" tmp_out || {
                   echo "❌ Errore mount EROFS"; continue;
                 }
                 ;;
