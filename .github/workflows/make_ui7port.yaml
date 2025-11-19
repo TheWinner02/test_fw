@@ -191,11 +191,10 @@ jobs:
             if [[ "$PART" == "system" ]]; then
               echo "📦 Copia partizione system"
 
-              sudo cp -a --preserve=all tmp_out/system/* system_modified/ 2>/dev/null || true
-              sudo cp -a --preserve=all tmp_out/system/system/* system_modified/system/ 2>/dev/null || true
+              sudo cp -a --preserve=all tmp_out/ system_modified/
             else
               echo "📦 Copia partizione product"
-              sudo cp -a --preserve=all tmp_out/* product_modified/ 2>/dev/null || true
+              sudo cp -a --preserve=all tmp_out/ product_modified/
             fi
 
             # Fix permessi
@@ -205,7 +204,7 @@ jobs:
             if [[ "$FS_TYPE" == "ext4" || "$FS_TYPE" == "f2fs" ]]; then
               sudo umount tmp_out || true
             else
-              fusermount3 -u tmp_out || true
+              sudo fusermount3 -u tmp_out || true
             fi
             sudo rm -rf tmp_out/*
 
