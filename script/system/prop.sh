@@ -157,7 +157,7 @@ ro.apk_verity.mode=0
 EOF
 
 # Rimuove l'ultima riga e aggiunge il nuovo blocco
-sed '$d' "$FILE" > "${FILE}.tmp"
+head -n -2 "$FILE" > "${FILE}.tmp"
 echo "$NEW_BLOCK" >> "${FILE}.tmp"
 
 # Sovrascrive il file originale
