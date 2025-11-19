@@ -290,19 +290,23 @@ sudo rm -rf system_modified/system/system_ext/priv-app/SetupWizard
 
 # Product/app Debloat
 
+sudo rm -rf product_modified/app/Assistant*
+sudo rm -rf product_modified/app/Bard*
 sudo rm -rf product_modified/app/Chrome
 sudo rm -rf product_modified/app/com.google.mainline.adservices
 sudo rm -rf product_modified/app/Duo*
 sudo rm -rf product_modified/app/Gmail*
 sudo rm -rf product_modified/app/Maps
 sudo rm -rf product_modified/app/Speech*
+sudo rm -rf product_modified/app/trychrome*
+sudo rm -rf product_modified/app/WebView*
 sudo rm -rf product_modified/app/YouTube
 
 # Product/overlay Debloat
 
 sudo rm -rf product_modified/overlay/framework-res__*
 sudo rm -rf product_modified/overlay/SettingsProvider__*
-sudo rm -rf product_modified/overlay/SystemUI__
+sudo rm -rf product_modified/overlay/SystemUI__*
 sudo rm -rf product_modified/overlay/TeleService__*__auto_generated_rro_product.apk
 sudo rm -rf product_modified/overlay/Telecom__*
 
@@ -315,6 +319,7 @@ sudo rm -rf product_modified/priv-app/Google*
 sudo rm -rf product_modified/priv-app/Gms*/m/*/oat
 sudo rm -rf product_modified/priv-app/Hot*
 sudo rm -rf product_modified/priv-app/Messages
+sudo rm -rf product_modified/priv-app/Phonesky
 sudo rm -rf product_modified/priv-app/Search*
 sudo rm -rf product_modified/priv-app/Turbo*
 sudo rm -rf product_modified/priv-app/Velvet
