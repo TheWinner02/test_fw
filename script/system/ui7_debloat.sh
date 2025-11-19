@@ -298,7 +298,7 @@ sudo rm -rf product_modified/app/Duo*
 sudo rm -rf product_modified/app/Gmail*
 sudo rm -rf product_modified/app/Maps
 sudo rm -rf product_modified/app/Speech*
-sudo rm -rf product_modified/app/trychrome*
+sudo rm -rf product_modified/app/trichrome*
 sudo rm -rf product_modified/app/WebView*
 sudo rm -rf product_modified/app/YouTube
 
