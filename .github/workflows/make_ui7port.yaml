@@ -249,26 +249,35 @@ jobs:
         run: |
           cd ACK
           echo "🧱 Creazione system.img con context e config personalizzati..."
-          
-          # Applica mke2fs.conf se presente
+
+          # ---------- Applica mke2fs.conf ----------
           if [ -f config/mke2fs.conf ]; then
             sudo cp config/mke2fs.conf /etc/mke2fs.conf
             echo "✅ mke2fs.conf applicato"
           fi
 
-          # Crea system.img con filecontext e config precisi
-          make_ext4fs -s -T 0 \
+          # ---------- CREA IMMAGINE RAW DA 4GB ----------
+          dd if=/dev/zero of=out/system.img bs=1M count=4096
+
+          # ---------- CREA FILESYSTEM EXT4 ----------
+          sudo mke2fs -t ext4 -L system out/system.img
+
+          # ---------- POPOLA system.img con context e config (SOSTITUTO DI make_ext4fs) ----------
+          sudo e2fsdroid -e \
+            -f system_modified \
+            -T 0 \
             -S config/system_file_contexts.txt \
             -C config/system_filesystem_config.txt \
-            -l 4294967296 -a system out/system.img system_modified/
+            out/system.img
 
-          # Applica eventuali feature aggiuntive definite in system_filesystem_features.txt
+          # ---------- Applica EXT4 FEATURES ----------
           if [ -f config/system_filesystem_features.txt ]; then
             echo "⚙️ Applico system_filesystem_features.txt..."
             FEATURES=$(cat config/system_filesystem_features.txt | tr '\n' ',')
-            tune2fs -O $FEATURES out/system.img || echo "⚠️ Feature non applicabili, continuo..."
+            sudo tune2fs -O $FEATURES out/system.img || echo "⚠️ Feature non applicabili, continuo..."
           fi
 
+          # ---------- CONVERTI IN SPARSE ----------
           img2simg out/system.img out/system_sparse.img
           sudo rm -rf out/system.img system_modified
           monitor_spazio
