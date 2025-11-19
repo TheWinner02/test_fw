@@ -20,7 +20,7 @@ jobs:
       - name: 📦 Checkout Repository
         uses: actions/checkout@v4
 
-      # 🧹 Pulizia extra disco (nuovi step)
+      # 🧹 Pulizia extra disco
       - name: Free disk space (1/3)
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
@@ -66,9 +66,21 @@ jobs:
           sudo apt install -y linux-modules-extra-$(uname -r)
           sudo modprobe f2fs || echo "⚠️ Modulo F2FS non disponibile"
           sudo modprobe erofs || echo "⚠️ Modulo EROFS non disponibile"
-          
           monitor_spazio
-          
+
+      # 📦 Installa Android build-tools per e2fsdroid
+      - name: 📦 Installa Android build-tools (e2fsdroid)
+        run: |
+          sudo mkdir -p /usr/lib/android-sdk
+          sudo chown $USER:$USER /usr/lib/android-sdk
+          sudo apt install -y openjdk-17-jdk unzip wget
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          unzip cmdline-tools.zip -d /usr/lib/android-sdk/
+          mv /usr/lib/android-sdk/cmdline-tools /usr/lib/android-sdk/latest
+          yes | /usr/lib/android-sdk/latest/bin/sdkmanager --sdk_root=/usr/lib/android-sdk "platform-tools" "build-tools;34.0.0"
+          echo "/usr/lib/android-sdk/build-tools/34.0.0" >> $GITHUB_PATH
+          monitor_spazio
+
       # 📥 Download firmware
       - name: 📥 Scarica firmware
         run: |
@@ -77,7 +89,7 @@ jobs:
           curl -L "${{ github.event.inputs.firmware_url }}" -o ACK/base.zip --progress-bar
           ls -lh ACK
           monitor_spazio
-          
+
       # ⚙️ Copia file di configurazione personalizzati
       - name: ⚙️ Prepara file di configurazione per build system.img
         run: |
@@ -86,7 +98,7 @@ jobs:
           cp -a ../fix/OneUI/UI7.0/Config/* config/ || echo "ℹ️ Nessun file config trovato"
           ls -lh config/
           monitor_spazio
-          
+
       # 📦 Estrazione ZIP/TAR.MD5
       - name: 📦 Estrai archivio principale
         run: |
@@ -153,9 +165,7 @@ jobs:
 
             mkdir -p tmp_out
 
-            # 🔍 Rilevamento filesystem
             FS=$(file -b out/system.img)
-
             echo "🔎 Risultato: $FS"
 
             if echo "$FS" | grep -qi "erofs"; then
@@ -171,98 +181,76 @@ jobs:
 
             echo "📌 Filesystem rilevato: $FS_TYPE"
 
-            # 🔹 Montaggio in base al filesystem
             case "$FS_TYPE" in
               ext4|f2fs)
                 echo "🔹 Montaggio read-only di $FS_TYPE..."
-                sudo mount -o ro,loop "$IMG" tmp_out || {
-                  echo "❌ Errore mount $FS_TYPE"; continue;
-                }
+                sudo mount -o ro,loop "$IMG" tmp_out || { echo "❌ Errore mount $FS_TYPE"; continue; }
                 ;;
               erofs)
                 echo "🔹 Montaggio EROFS tramite erofsfuse..."
-                sudo erofsfuse "$IMG" tmp_out || {
-                  echo "❌ Errore mount EROFS"; continue;
-                }
+                sudo erofsfuse "$IMG" tmp_out || { echo "❌ Errore mount EROFS"; continue; }
                 ;;
             esac
 
-            # 📦 Copia in base alla partizione
             if [[ "$PART" == "system" ]]; then
               echo "📦 Copia partizione system"
-
               sudo cp -a --preserve=all tmp_out/. system_modified/
             else
               echo "📦 Copia partizione product"
               sudo cp -a --preserve=all tmp_out/. product_modified/
             fi
 
-            # Fix permessi
             sudo find system_modified product_modified -exec chown -h $(whoami):$(whoami) {} \;
 
-            # Smonta
             if [[ "$FS_TYPE" == "ext4" || "$FS_TYPE" == "f2fs" ]]; then
               sudo umount tmp_out || true
             else
               sudo fusermount3 -u tmp_out || true
             fi
             sudo rm -rf tmp_out/*
-
           done
 
           sudo rm -f out/*.img
           echo "✅ Estrazione completata"
           monitor_spazio
 
-
       # ⚙️ Applica modifiche OneUI 7.0
       - name: ⚙️ Applica patch OneUI
         run: |
           cd ACK
           echo "📦 Applico patch"
-
-          # product
           sudo cp -a --preserve=all product_modified/app/Trichrome* system_modified/system/app/ 2>/dev/null || true
           sudo cp -a --preserve=all product_modified/app/WebView* system_modified/system/app/ 2>/dev/null || true
           sudo cp -a --preserve=all product_modified/priv-app/Ai* system_modified/system/priv-app/ 2>/dev/null || true
           sudo cp -a --preserve=all product_modified/priv-app/Phonesky system_modified/system/priv-app/ 2>/dev/null || true
           sudo cp -a --preserve=all product_modified/priv-app/PrivateComputeServices system_modified/system/priv-app/ 2>/dev/null || true
 
-          # debloat
           chmod +x ../script/system/ui7_debloat.sh
-          sudo bash ../script/system/ui7_debloat.sh        
-
-          # system
+          sudo bash ../script/system/ui7_debloat.sh
           chmod +x ../script/system/ff.sh
           sudo bash ../script/system/ff.sh
           chmod +x ../script/system/prop.sh
           sudo bash ../script/system/prop.sh
 
-          # common
           sudo cp -a --preserve=all ../common/product/overlay/* product_modified/overlay/
           sudo cp -a --preserve=all ../common/system/* system_modified/
-          
+
           echo "✅ Patch applicate"
 
-      # 🏗️ Ricompila system.img con configurazioni personalizzate
+      # 🏗️ Ricompila system.img
       - name: 🏗️ Ricompila system.img con config e dimensione precisa
         run: |
           cd ACK
           echo "🧱 Creazione system.img con context e config personalizzati..."
 
-          # ---------- Applica mke2fs.conf ----------
           if [ -f config/mke2fs.conf ]; then
             sudo cp config/mke2fs.conf /etc/mke2fs.conf
             echo "✅ mke2fs.conf applicato"
           fi
 
-          # ---------- CREA IMMAGINE RAW DA 4GB ----------
           dd if=/dev/zero of=out/system.img bs=1M count=4096
-
-          # ---------- CREA FILESYSTEM EXT4 ----------
           sudo mke2fs -t ext4 -L system out/system.img
 
-          # ---------- POPOLA system.img con context e config (SOSTITUTO DI make_ext4fs) ----------
           sudo e2fsdroid -e \
             -f system_modified \
             -T 0 \
@@ -270,14 +258,12 @@ jobs:
             -C config/system_filesystem_config.txt \
             out/system.img
 
-          # ---------- Applica EXT4 FEATURES ----------
           if [ -f config/system_filesystem_features.txt ]; then
             echo "⚙️ Applico system_filesystem_features.txt..."
             FEATURES=$(cat config/system_filesystem_features.txt | tr '\n' ',')
             sudo tune2fs -O $FEATURES out/system.img || echo "⚠️ Feature non applicabili, continuo..."
           fi
 
-          # ---------- CONVERTI IN SPARSE ----------
           img2simg out/system.img out/system_sparse.img
           sudo rm -rf out/system.img system_modified
           monitor_spazio
