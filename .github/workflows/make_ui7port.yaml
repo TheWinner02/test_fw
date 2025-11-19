@@ -68,6 +68,20 @@ jobs:
           sudo modprobe erofs || echo "⚠️ Modulo EROFS non disponibile"
           
           monitor_spazio
+
+      # 📦 Installa Android build-tools (per e2fsdroid)
+      - name: 📦 Installa Android build-tools (e2fsdroid)
+        run: |
+          sudo mkdir -p /usr/lib/android-sdk
+          sudo chown $USER:$USER /usr/lib/android-sdk
+          sudo apt update
+          sudo apt install -y openjdk-17-jdk unzip wget
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          unzip cmdline-tools.zip -d /usr/lib/android-sdk/
+          mv /usr/lib/android-sdk/cmdline-tools /usr/lib/android-sdk/latest
+          yes | /usr/lib/android-sdk/latest/bin/sdkmanager --sdk_root=/usr/lib/android-sdk "platform-tools" "build-tools;34.0.0"
+          echo "/usr/lib/android-sdk/build-tools/34.0.0" >> $GITHUB_PATH
+          monitor_spazio
           
       # 📥 Download firmware
       - name: 📥 Scarica firmware
@@ -154,7 +168,7 @@ jobs:
             mkdir -p tmp_out
 
             # 🔍 Rilevamento filesystem
-            FS=$(file -b out/system.img)
+            FS=$(file -b "$IMG")
 
             echo "🔎 Risultato: $FS"
 
@@ -239,7 +253,8 @@ jobs:
           sudo bash ../script/system/prop.sh
 
           # common
-          sudo cp -a --preserve=all ../common/product/overlay/* product_modified/overlay/
+          mkdir -p product_modified/overlay/
+          sudo cp -a --preserve=all ../common/product/overlay/* product_modified/overlay/ 2>/dev/null || true
           sudo cp -a --preserve=all ../common/system/* system_modified/
           
           echo "✅ Patch applicate"
@@ -256,19 +271,32 @@ jobs:
             echo "✅ mke2fs.conf applicato"
           fi
 
-          # Crea system.img con filecontext e config precisi
-          make_ext4fs -s -T 0 \
+          # Assicura out esista
+          mkdir -p out
+
+          # Crea system.img vuota da 4GB
+          dd if=/dev/zero of=out/system.img bs=1M count=4096
+
+          # Format con mkfs.ext4 (mkfs.ext4 è lo stesso di mke2fs -t ext4)
+          sudo mkfs.ext4 -F -L system out/system.img
+
+          # Popola system.img con i file e i file_contexts tramite e2fsdroid
+          # useremo il binario fornito da Android build-tools
+          /usr/lib/android-sdk/build-tools/34.0.0/e2fsdroid -e \
+            -f system_modified \
+            -T 0 \
             -S config/system_file_contexts.txt \
             -C config/system_filesystem_config.txt \
-            -l 4294967296 -a system out/system.img system_modified/
+            out/system.img
 
           # Applica eventuali feature aggiuntive definite in system_filesystem_features.txt
           if [ -f config/system_filesystem_features.txt ]; then
             echo "⚙️ Applico system_filesystem_features.txt..."
             FEATURES=$(cat config/system_filesystem_features.txt | tr '\n' ',')
-            tune2fs -O $FEATURES out/system.img || echo "⚠️ Feature non applicabili, continuo..."
+            sudo tune2fs -O $FEATURES out/system.img || echo "⚠️ Feature non applicabili, continuo..."
           fi
 
+          # Converte in sparse
           img2simg out/system.img out/system_sparse.img
           sudo rm -rf out/system.img system_modified
           monitor_spazio
