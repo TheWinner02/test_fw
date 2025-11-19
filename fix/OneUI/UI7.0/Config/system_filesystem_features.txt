@@ -3,7 +3,7 @@
   "DirectoryHashAlgorithm": "half_md4",
   "DirectoryHashSeed": "0c8da7a4-cfab-4708-9693-7f748377987f",
   "HasJournal": "^has_journal",
-  "ImageSize": "5158994432",
+  "ImageSize": "4294967296",
   "InodeSize": "256",
   "LastMountedDirectory": "/",
   "NumberOfInodes": "9984",
@@ -21,4 +21,5 @@
   "OutputFormat": "2",
   "BrotliLevel": "6",
   "PartitionName": "system"
+
 }
